@@ -1,0 +1,14 @@
+<lldp-neighbors-information>
+{% for n in range(0, n_peers) %}
+    <lldp-neighbor-information>
+        <lldp-local-port-id>et-0/0/{{n}}</lldp-local-port-id>
+        <lldp-local-parent-interface-name>-</lldp-local-parent-interface-name>
+        <lldp-remote-chassis-id-subtype>Mac address</lldp-remote-chassis-id-subtype>
+        <lldp-remote-chassis-id>84:b5:9c:c8:00:00</lldp-remote-chassis-id>
+        <lldp-remote-port-id-subtype>Locally assigned</lldp-remote-port-id-subtype>
+        <lldp-remote-port-id>{{my_index}}</lldp-remote-port-id>
+        <lldp-remote-port-description>et-0/0/{{my_index}}</lldp-remote-port-description>
+        <lldp-remote-system-name>{{peer_prefix}}-{{n}}</lldp-remote-system-name>
+    </lldp-neighbor-information>
+{% endfor %}
+</lldp-neighbors-information>

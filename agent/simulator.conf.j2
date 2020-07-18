@@ -1,0 +1,20 @@
+[DEFAULTS]
+log_level = SYS_DEBUG
+fabric = {{fabric_name}}
+role = {{role}}
+n_peers = {{n_peers}}
+n_pifs = {{n_pifs}}
+version = 20.2R2
+model = qfx10002-72q
+
+[Netconf]
+username = root
+password = c0ntrail123
+port = 22
+
+[SNMP]
+port = 161
+
+[sFlows]
+flows = {{sflows_filename}}
+collector = {{collector}}

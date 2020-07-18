@@ -1,0 +1,49 @@
+contrail:
+    config:
+        servers:
+            - 10.87.69.8
+            - 10.87.69.10
+            - 10.87.69.11
+        ssl: False
+    analytics:
+        server: 10.87.69.8
+        ssl: False
+    csn:
+        servers:
+            - 5b9s13-node4
+            - 5b9s13-node3
+
+sflow:
+    server: 10.87.69.1
+    direction: ingress
+
+keystone:
+    username: admin
+    password: c0ntrail123
+    project: admin
+    domain: Default
+    server: 10.87.67.44
+
+fabrics:
+    erb-fab:
+        interface: ens2f0
+        mgmt_subnet: 172.16.130.0/24
+        gateway: 172.16.130.254
+        address_pool:
+            - start: 172.16.130.150
+              end: 172.16.130.199
+        clos: erb
+        asn: 64512
+        leaf:
+            count: 6
+            pifs: 48
+        spine:
+            count: 2
+        overlay:
+            networks: 10
+            vpg: 20
+            vlan_per_vpg: 10
+            logical_routers: 3
+            vns_per_lr: 2
+            security_groups: 10
+            storm_control_profiles: 1

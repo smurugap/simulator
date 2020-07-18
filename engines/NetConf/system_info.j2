@@ -1,0 +1,12 @@
+<rpc-reply xmlns:junos="http://xml.juniper.net/junos/17.3R1/junos">
+    <system-information>
+        <hardware-model>{{model}}</hardware-model>
+        <os-name>junos-qfx</os-name>
+        <os-version>{{version}}</os-version>
+        <serial-number>{{hostname}}</serial-number>
+        <host-name>{{hostname}}</host-name>
+    </system-information>
+    <cli>
+        <banner>{master:0}</banner>
+    </cli>
+</rpc-reply>
