@@ -30,7 +30,7 @@ class FlowSample(BaseSampleFormat):
 class SampleRecord(Base):
     @staticmethod
     def encode(value, packer):
-        sample_length = len(value['flow_records'][0]['header']) + 52
+        sample_length = len(value['flow_records'][0]['header']) + 58
         DataFormat.encode((0, 1), packer)
         UInt.encode(sample_length, packer)
         FlowSample.encode(value, packer)
