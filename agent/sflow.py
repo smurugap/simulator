@@ -24,7 +24,7 @@ class sFlow(object):
             else:
                 self.spines.append(prouter)
         if action.lower() == 'start':
-            for i in range(n_flows):
+            for i in range(int(n_flows)):
                 self.add_sflow()
         for prouter in self.leafs + self.spines:
             self.update_flows(prouter)
