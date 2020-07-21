@@ -6,7 +6,7 @@ class SimulatorAgentApi(RestServer):
 
     def create_fabric(self, fabric_name, interface, subnet, gateway,
                           address_pool=None, n_leafs=None, n_spines=None,
-                          n_pifs=None, collector=None):
+                          n_border_leafs=None, n_pifs=None, collector=None):
         addr_ranges = [(x['start'], x['end']) for x in address_pool or []]
         payload = {'interface': interface,
                    'subnet': subnet,
@@ -14,6 +14,7 @@ class SimulatorAgentApi(RestServer):
                    'address_pool': addr_ranges,
                    'n_leafs': n_leafs,
                    'n_spines': n_spines,
+                   'n_border_leafs': n_border_leafs,
                    'n_pifs': n_pifs,
                    'collector': collector}
         return self.post('fabric/'+fabric_name, payload, timeout=600)
@@ -22,12 +23,14 @@ class SimulatorAgentApi(RestServer):
         return self.delete('fabric/'+fabric_name, timeout=1800)
 
     def update_fabric(self, fabric_name, address_pool=None, n_leafs=None,
-                      n_spines=None, n_pifs=None, collector=None):
+                      n_spines=None, n_border_leafs=None, n_pifs=None,
+                      collector=None):
         addr_ranges = [(x['start'], x['end']) for x in address_pool or []]
         payload = {'address_pool': addr_ranges,
                    'n_leafs': n_leafs,
                    'n_spines': n_spines,
                    'n_pifs': n_pifs,
+                   'n_border_leafs': n_border_leafs,
                    'collector': collector}
         return self.put('fabric/'+fabric_name, payload)
 

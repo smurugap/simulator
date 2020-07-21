@@ -28,6 +28,8 @@ def start_service(config, service):
        peer_prefix = service_config['fabric']+'-Spine'
     elif service_config['role'] == 'spine':
        peer_prefix = service_config['fabric']+'-Leaf'
+    elif service_config['role'] == 'bleaf':
+       peer_prefix = service_config['fabric']+'-Spine'
 
     n_peers = int(service_config['n_peers'])
     n_pifs = int(service_config['n_pifs'])

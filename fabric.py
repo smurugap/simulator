@@ -3,12 +3,15 @@ from scripts.agent_api import SimulatorAgentApi
 from collections import deque, defaultdict
 from common.constants import *
 from common.orderedset import OrderedSet
-from common.util import GeventLib, get_random_cidr, custom_dict
+from common.util import GeventLib, get_random_cidr, custom_dict, get_random_ip
 import argparse
 import yaml
 import sys
 import time
+import random
 advertise_route = False
+
+IP_PROTO_FILTER = ['TCP', 'UDP', 'ICMP', 'ANY']
 
 def generate_expected(f):
     def wrapper(self, *args, **kwargs):
@@ -16,6 +19,9 @@ def generate_expected(f):
             self._generate_expected_networks()
             self._generate_expected_workloads()
             self._generate_expected_gateways()
+            self._generate_expected_filters()
+            self._generate_expected_server_profiles()
+            self._generate_expected_unmanaged_instances()
             self.generated = True
         return f(self, *args, **kwargs)
     return wrapper
@@ -33,6 +39,7 @@ class Scale(object):
         self.threads = threads
         self.prouters = custom_dict(self.get_simulators)
         self.physical_interfaces = custom_dict(self.get_physical_interfaces)
+        self.ext_peer_pifs = custom_dict(self.get_ext_peer_pifs)
         self.agent_h = SimulatorAgentApi()
         self.gpool = GeventLib(threads)
 
@@ -45,12 +52,13 @@ class Scale(object):
             n_leafs = details.get('leaf', {}).get('count', 0)
             n_spines = details.get('spine', {}).get('count', 0)
             n_pifs = details.get('leaf', {}).get('pifs') or DEFAULT_PIFS
+            n_border_leafs = details.get('border_leaf', {}).get('count', 0)
             if self.get_simulators(fabric_name):
                 self.agent_h.update_fabric(fabric_name, address_pool,
-                    n_leafs, n_spines, n_pifs, self.collector)
+                    n_leafs, n_spines, n_border_leafs, n_pifs, self.collector)
             else:
                 self.agent_h.create_fabric(fabric_name, interface, cidr,
-                    gw, address_pool, n_leafs, n_spines, n_pifs,
+                    gw, address_pool, n_leafs, n_spines, n_border_leafs, n_pifs,
                     self.collector)
 
     def get_simulators(self, fabric_name):
@@ -67,13 +75,15 @@ class Scale(object):
     def assign_roles(self):
         for fabric_name, details in self.fabrics.items():
             clos = details.get('clos', DEFAULT_CLOS_TYPE)
-            leafs = list(); spines = list()
+            leafs = list(); spines = list(); bleafs = list()
             for prouter, info in self.prouters[fabric_name].items():
                 if info['role'] == 'leaf':
                     leafs.append(prouter)
+                elif info['role'] == 'bleaf':
+                    bleafs.append(prouter)
                 else:
                     spines.append(prouter)
-            self.client_h.assign_roles(fabric_name, spines, leafs, clos)
+            self.client_h.assign_roles(fabric_name, spines, leafs, bleafs, clos)
 
     def start_sflows(self, n_flows=None, fabric=None, refresh_interval=5):
         seconds = refresh_interval * 60
@@ -186,11 +196,87 @@ class Scale(object):
     def delete_stage3(self):
         self.delete_routers()
 
+    @generate_expected
+    def create_firewall_filters(self):
+        args_list = list()
+        for name, info in self.filters.items():
+            kwargs = {'fabric_name': info['fabric'],
+                      'workloads': info['workloads'],
+                      'rules': info['rules']}
+            args_list.append([(name,), kwargs])
+        self.gpool.spawn(self.client_h.create_firewall_filter, args_list)
+
+    @generate_expected
+    def delete_firewall_filters(self):
+        args_list = list()
+        for name, info in self.filters.items():
+            kwargs = dict()
+            args_list.append([(name,), kwargs])
+        self.gpool.spawn(self.client_h.delete_firewall_filter, args_list)
+
+    @generate_expected
+    def create_server_profiles(self):
+        args_list = list()
+        for name, info in self.server_profiles.items():
+            kwargs = {'fabric_name': info['fabric'],
+                      'workloads': info['workloads']}
+            args_list.append([(name,), kwargs])
+        self.gpool.spawn(self.client_h.create_server_profile, args_list)
+
+    @generate_expected
+    def delete_server_profiles(self):
+        args_list = list()
+        for name, info in self.server_profiles.items():
+            kwargs = dict()
+            args_list.append([(name,), kwargs])
+        self.gpool.spawn(self.client_h.delete_server_profile, args_list)
+
+    def stage4(self):
+        self.create_firewall_filters()
+        self.create_server_profiles()
+
+    def delete_stage4(self):
+        self.delete_firewall_filters()
+        self.delete_server_profiles()
+
+    @generate_expected
+    def create_unmanaged_instances(self):
+        args_list = list()
+        for name, info in self.unmanaged_instances.items():
+            kwargs = {'fabric_name': info['fabric'],
+                      'external_peer': info['external_peer'],
+                      'left_vlan': info['left_vlan'],
+                      'right_vlan': info['right_vlan'],
+                      'left_networks': info['left_vns'],
+                      'right_networks': info['right_vns'],
+                      'pRouters': info['pRouters']}
+            args_list.append([(name,), kwargs])
+        self.gpool.spawn(self.client_h.create_unmanaged_instance, args_list)
+
+    @generate_expected
+    def delete_unmanaged_instances(self):
+        args_list = list()
+        for name, info in self.unmanaged_instances.items():
+            kwargs = {'fabric_name': info['fabric'],
+                      'external_peer': info['external_peer']}
+            args_list.append([(name,), kwargs])
+        self.gpool.spawn(self.client_h.delete_unmanaged_instance, args_list)
+
+    def stage5(self):
+        self.create_unmanaged_instances()
+
+    def delete_stage5(self):
+        self.delete_unmanaged_instances()
+
     def create(self):
         self.stage2()
         self.stage3()
+        self.stage4()
+        self.stage5()
 
     def delete(self):
+        self.delete_stage5()
+        self.delete_stage4()
         self.delete_stage3()
         self.delete_stage2()
 
@@ -208,10 +294,42 @@ class Scale(object):
                 for prouter in prouters:
                     pif_name = ":".join([prouter, 'et-0/0/%s'%index])
                     pifs.add(pif_name)
-        return pifs
+            return pifs
+
+    def get_ext_peer_pifs(self, fabric_name):
+        if fabric_name not in self.ext_peer_pifs:
+            pifs = OrderedSet()
+            prouters = list()
+            details = self.fabrics[fabric_name]
+            clos = details.get('clos', DEFAULT_CLOS_TYPE)
+            n_spines = details['spine'].get('count') or 0
+            n_leafs = details['leaf'].get('count') or 0
+            n_pifs = details['leaf'].get('pifs') or DEFAULT_PIFS
+            pif_start = n_pifs
+            for prouter, info in self.prouters[fabric_name].items():
+                if clos == 'erb' and info['role'] == 'bleaf':
+                    prouters.append(prouter)
+                    pif_start = n_spines
+                elif clos == 'crb' and info['role'] == 'spine':
+                    prouters.append(prouter)
+                    pif_start = n_leafs
+            for index in range(pif_start, n_pifs):
+                for prouter in prouters:
+                    pif_name = ":".join([prouter, 'et-0/0/%s'%index])
+                    pifs.add(pif_name)
+            return pifs
 
     def get_ports(self, fabric, count=2):
-        return [self.physical_interfaces[fabric].pop() for x in range(count)]
+        try:
+            return [self.physical_interfaces[fabric].pop() for x in range(count)]
+        except KeyError:
+            return list()
+
+    def get_ext_ports(self, fabric, count=2):
+        try:
+            return [self.ext_peer_pifs[fabric].pop() for x in range(count)]
+        except KeyError:
+            return list()
 
     def _get_ports_per_vn(self, overlay):
         total_lifs = overlay['vlan_per_vpg'] * overlay['vpg']
@@ -254,6 +372,103 @@ class Scale(object):
                 break
         return vns
 
+    def _get_rules_for_filters(self, count=3):
+        rules = list()
+        for i in range(0, count):
+            cidr = None
+            rules.append({'dst_ip': get_random_ip(cidr),
+                          'dst_port': random.randint(20, 2000),
+                          'protocol': random.choice(IP_PROTO_FILTER)})
+        return rules
+
+    def _get_port_groups_for_filters(self, fabric, n_vpgs):
+        workloads = list()
+        for name in self.fabric_workloads[fabric]:
+            info = self.port_groups[name]
+            if info['filters'] is False:
+                workloads.append(name)
+                info['filters'] = True
+            if len(workloads) == n_vpgs:
+                break
+        return workloads
+
+    def _get_port_groups_for_server_profiles(self, fabric, n_vpgs):
+        workloads = list()
+        for name in self.fabric_workloads[fabric]:
+            info = self.port_groups[name]
+            if info['server_profiles'] is False:
+                workloads.append(name)
+                info['server_profiles'] = True
+            if len(workloads) == n_vpgs:
+                break
+        return workloads
+
+    def _generate_expected_unmanaged_instances(self):
+        self.unmanaged_instances = dict()
+        for fabric_name, details in self.fabrics.items():
+            if not details['overlay'].get('unmanaged_devices'):
+                continue
+            clos = details.get('clos', DEFAULT_CLOS_TYPE)
+            overlay = details['overlay']
+            ext_peers = overlay['unmanaged_devices']
+            n_instances_per_peer = ext_peers['instances_per_device']
+            n_vns = ext_peers['vns_per_instance']
+            prouters = set()
+            for prouter, info in self.prouters[fabric_name].items():
+                if clos == 'erb' and info['role'] == 'bleaf':
+                    prouters.add(prouter)
+                elif clos == 'crb' and info['role'] == 'spine':
+                    prouters.add(prouter)
+            vlan = 4094
+            for peer_index in range(ext_peers['count']):
+                peer_name = self.get_name(fabric_name, 'peer', peer_index)
+                pifs = self.get_ext_ports(fabric_name)
+                if not pifs:
+                    return
+                for pif in pifs:
+                    prouters.add(pif.split(':')[0])
+                for index in range(n_instances_per_peer):
+                    name = self.get_name(fabric_name,
+                        'peer%s-lr'%peer_index, index)
+                    left_networks = self._get_vns_for_lr(fabric_name, n_vns)
+                    right_networks = self._get_vns_for_lr(fabric_name, n_vns)
+                    self.unmanaged_instances[name] = {
+                        'left_vlan': vlan - 1,
+                        'right_vlan': vlan - 2,
+                        'left_vns': left_networks,
+                        'right_vns': right_networks,
+                        'fabric': fabric_name,
+                        'pRouters': list(prouters),
+                        'external_peer': {'name': peer_name, 'pifs': pifs}
+                    }
+                    vlan = vlan - 2
+
+    def _generate_expected_server_profiles(self):
+        self.server_profiles = dict()
+        for fabric_name, details in self.fabrics.items():
+            overlay = details['overlay']
+            for index in range(overlay.get('storm_control_profiles') or 0):
+                n_vpgs = overlay['vpg']/overlay['storm_control_profiles']
+                name = self.get_name(fabric_name, 'server_profile', index)
+                workloads = self._get_port_groups_for_server_profiles(
+                    fabric_name, n_vpgs)
+                self.server_profiles[name] = {'fabric': fabric_name,
+                                              'workloads': workloads}
+
+    def _generate_expected_filters(self):
+        self.filters = dict()
+        for fabric_name, details in self.fabrics.items():
+            overlay = details['overlay']
+            for index in range(overlay.get('firewall_filters') or 0):
+                n_vpgs = overlay['vpg']/overlay['firewall_filters']
+                name = self.get_name(fabric_name, 'filter', index)
+                workloads = self._get_port_groups_for_filters(fabric_name,
+                                                              n_vpgs)
+                rules = self._get_rules_for_filters(count=3)
+                self.filters[name] = {'fabric': fabric_name,
+                                      'workloads': workloads,
+                                      'rules': rules}
+
     def _generate_expected_gateways(self):
         self.routers = dict()
         for fabric_name, details in self.fabrics.items():
@@ -268,18 +483,25 @@ class Scale(object):
 
     def _generate_expected_workloads(self):
         self.port_groups = dict()
+        self.fabric_workloads = dict()
         for fabric_name, details in self.fabrics.items():
             overlay = details['overlay']
             n_vlans = overlay['vlan_per_vpg']
             ports_per_vn = self._get_ports_per_vn(overlay)
+            self.fabric_workloads[fabric_name] = OrderedSet()
             for index in range(overlay.get('vpg') or 0):
                 name = self.get_name(fabric_name, 'vpg', index)
                 pifs = self.get_ports(fabric_name)
+                if not pifs:
+                    return
                 networks = self._get_vns_for_vpg(fabric_name, n_vlans,
                                                  ports_per_vn)
                 self.port_groups[name] = {'pifs': pifs,
                                           'networks': networks,
+                                          'filters': False,
+                                          'server_profiles': False,
                                           'fabric': fabric_name}
+                self.fabric_workloads[fabric_name].add(name)
 
     def _generate_expected_networks(self):
         self.networks = dict()

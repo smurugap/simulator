@@ -838,6 +838,7 @@ def craft_response(version, community, request_id, error_status, error_index, oi
     return response
 
 def generate_snmp_oids(hostname, my_index, peer_prefix, n_peers, n_interfaces):
+    # ToDo: Fix peer_prefix to take care of Border Leaf scenarios
     my_index = int(my_index)
     oids = {
         '1.0.8802.1.1.2.1.3.3.0': octet_string(str(hostname)),

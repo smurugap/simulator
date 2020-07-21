@@ -20,10 +20,16 @@ fabric_put_schema = {
     'address_pool': fields.String(required=True,
         description='List of address pools - eg: [("10.1.1.10", "10.1.1.20"),'
                     ' ("10.1.1.30", "10.1.1.40")]'),
-    'n_leafs': fields.Integer(required=True, description='No of leafs in the fabric'),
-    'collector': fields.String(description='Address of the sflow collector if action is start'),
-    'n_spines': fields.Integer(required=True, description='No of spines in the fabric'),
-    'n_pifs': fields.Integer(description='No of physical interfaces in each leaf - eg: 48')
+    'n_leafs': fields.Integer(required=True,
+        description='No of leafs in the fabric'),
+    'n_spines': fields.Integer(required=True,
+        description='No of spines in the fabric'),
+    'n_border_leafs': fields.Integer(
+        description='No of border leafs in the fabric'),
+    'n_pifs': fields.Integer(
+        description='No of physical interfaces in each Leaf - eg: 48'),
+    'collector': fields.String(
+        description='Address of the sflow collector if action is start')
     }
 fabric_post_schema = dict(fabric_put_schema)
 fabric_post_schema.update({

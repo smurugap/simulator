@@ -3,7 +3,8 @@ from flask import jsonify
 from collections import defaultdict
 from common.docker_api import docker_h
 from netaddr import IPNetwork, IPAddress
-from common.util import get_available_ips, convert_template, GeventLib
+from common.util import get_available_ips, convert_template, \
+                        GeventLib, delete_file
 from common.exceptions import InvalidUsage
 import os
 
@@ -39,11 +40,13 @@ class Fabric(object):
             fd.write(template)
 
     def post(self, fabric_name, interface, subnet, gateway, collector=None,
-             address_pool=None, n_leafs=None, n_spines=None, n_pifs=48):
+             address_pool=None, n_leafs=None, n_spines=None,
+             n_border_leafs=None, n_pifs=48):
         """ Create a fabric with the simulated spine and leaf servers """
         self.fabric = fabric_name
         self.n_spines = n_spines
         self.n_leafs = n_leafs
+        self.n_border_leafs = n_border_leafs or 0
         self.n_pifs = n_pifs
         self.collector = collector
         self.containers = dict()
@@ -63,22 +66,33 @@ class Fabric(object):
     @classmethod
     def delete(self, fabric_name):
         """ Delete the corresponding fabric """
-        containers = list()
-        for name, details in docker_h.list_containers(fabric_name,
-                                                      all=True).items():
-            containers.append(details['id'])
-        GeventLib(10).map(docker_h.delete_container, containers)
+        self.containers = docker_h.list_containers(fabric_name,
+                               all=True)
+        GeventLib(10).map(self._delete, list(self.containers.keys()))
         network = '-'.join([fabric_name, 'Network'])
         docker_h.delete_network(network)
 
+    def _delete(self, name):
+        docker_h.delete_container(self.containers[name]['id'])
+        sflows_filename = os.path.join(CONFDIR, name+'.sflows')
+        config_filename = os.path.join(CONFDIR, name+'.conf')
+        delete_file(sflows_filename)
+        delete_file(config_filename)
+ 
     def launch_containers(self):
         for index in range(self.n_spines):
             name = '-'.join([self.fabric, 'Spine%s'%index])
-            self.launch_container(name, 'spine', self.n_leafs, self.n_leafs)
+            peers = self.n_leafs + self.n_border_leafs
+            pifs = peers + self.n_pifs
+            self.launch_container(name, 'spine', peers, pifs)
 
         for index in range(self.n_leafs):
             name = '-'.join([self.fabric, 'Leaf%s'%index])
             self.launch_container(name, 'leaf', self.n_spines, self.n_pifs)
+
+        for index in range(self.n_border_leafs):
+            name = '-'.join([self.fabric, 'BLeaf%s'%index])
+            self.launch_container(name, 'bleaf', self.n_spines, self.n_pifs)
 
     def launch_container(self, name, role, n_peers, n_pifs,
                          environment=ENV_SIMULATOR):
@@ -91,11 +105,12 @@ class Fabric(object):
             ip = next(self.free_ips)
             docker_h.create_container(self.network, ip, name, label, environment)
 
-    def put(self, fabric_name, n_leafs=None, n_spines=None,
+    def put(self, fabric_name, n_leafs=None, n_spines=None, n_border_leafs=None,
             n_pifs=48, address_pool=None, collector=None):
         """ Update the number of leafs and spines in an existing fabric """
         self.fabric = fabric_name
         self.n_spines = n_spines
+        self.n_border_leafs = n_border_leafs or 0
         self.n_leafs = n_leafs
         self.n_pifs = n_pifs
         self.collector = collector

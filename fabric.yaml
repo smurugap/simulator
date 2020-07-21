@@ -35,15 +35,21 @@ fabrics:
         clos: erb
         asn: 64512
         leaf:
-            count: 6
+            count: 4
             pifs: 48
         spine:
             count: 2
+        border_leaf:
+            count: 2
         overlay:
-            networks: 10
-            vpg: 20
+            networks: 20
+            vpg: 10
             vlan_per_vpg: 10
-            logical_routers: 3
+            logical_routers: 2
             vns_per_lr: 2
-            security_groups: 10
-            storm_control_profiles: 1
+            firewall_filters: 4
+            storm_control_profiles: 2
+            unmanaged_devices:
+                count: 4 # identifies the no of Routed VPG
+                instances_per_device: 2 # identifies the no of LR pairs
+                vns_per_instance: 2 # identifies the no of tenant VNs per LR

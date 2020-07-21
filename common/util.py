@@ -21,6 +21,12 @@ def watcher(filename, callback):
     except pyinotify.NotifierError, err:
         pass
 
+def delete_file(filename):
+    try:
+        os.remove(filename)
+    except OSError:
+        pass
+
 def register(event, events):
     def o_wrapper(f):
         events[event] = f
