@@ -7,10 +7,14 @@ https://docs.google.com/document/d/1yxiU9xpD49ZHLAMtnuzOHnYOm4ZOa89pLYqYNH9dIPY
 # Installation:
 * [Install docker](https://docs.docker.com/engine/install/centos/) on the test server
 * docker pull the simulator agent container
-`docker pull smurugap/simulator:0.2b`
+```sh
+docker pull smurugap/simulator:0.2b
+```
 * Launch the simulator agent container
-`mkdir -p /etc/simulator`
-`docker run -itd --privileged -v /var/run:/var/run -v /etc/simulator:/etc/simulator --net host --name simulator-agent smurugap/simulator:0.2b`
+```sh
+mkdir -p /etc/simulator
+docker run -itd --privileged -v /var/run:/var/run -v /etc/simulator:/etc/simulator --net host --name simulator-agent smurugap/simulator:0.2b
+```
 
 # Execution:
 ## Create fabric yaml:
