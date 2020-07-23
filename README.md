@@ -57,7 +57,9 @@ docker run -itd --privileged -v /var/run:/var/run -v /etc/simulator:/etc/simulat
 
 ## Generate sflows:
 Note: Restart the docker container after creating simulators to workaround the iproute2 bug
-`python fabric.py -i fabric.yaml -o start_sflows -c n_flows=1000,fabric=test-fabric,refresh_interval=10`
+```sh
+python fabric.py -i fabric.yaml -o start_sflows -c n_flows=1000,fabric=test-fabric,refresh_interval=10
+```
 
 ## Stop sflows:
 `python fabric.py -i fabric.yaml -o stop_sflows -c fabric=test-fabric`
