@@ -1,55 +1,57 @@
 contrail:
     config:
         servers:
-            - 10.87.69.8
-            - 10.87.69.10
-            - 10.87.69.11
-        ssl: False
+            - 10.87.70.12
+            - 10.87.70.10
+            - 10.87.70.11
+        ssl: True
     analytics:
-        server: 10.87.69.8
-        ssl: False
-    csn:
-        servers:
-            - 5b9s13-node4
-            - 5b9s13-node3
+        server: 10.87.70.10
+        ssl: True
 
 sflow:
-    server: 10.87.69.1
+    server: 192.168.13.3
     direction: ingress
 
 keystone:
     username: admin
-    password: c0ntrail123
+    password: Soln123
     project: admin
     domain: Default
-    server: 10.87.67.44
+    server: 10.87.70.10
 
 fabrics:
-    erb-fab:
-        interface: ens2f0
-        mgmt_subnet: 172.16.130.0/24
-        gateway: 172.16.130.254
+    SimulatedFabric:
+        interface: enp129s0f1
+        mgmt_subnet: 192.168.10.0/24
+        gateway: 192.168.10.254
         address_pool:
-            - start: 172.16.130.150
-              end: 172.16.130.199
+            - start: 192.168.10.150
+              end: 192.168.10.199
         clos: erb
         asn: 64512
-        leaf:
-            count: 4
-            pifs: 48
-        spine:
-            count: 2
-        border_leaf:
-            count: 2
+        pifs: 48
+        leaf: 4
+        spine: 2
+        border_leaf: 2
         overlay:
-            networks: 20
-            vpg: 10
-            vlan_per_vpg: 10
+          - name: profile1
+            networks: 24
+            vpg: 6
+            vlan_per_vpg: 3
             logical_routers: 2
             vns_per_lr: 2
             firewall_filters: 4
             storm_control_profiles: 2
             unmanaged_devices:
-                count: 4 # identifies the no of Routed VPG
+                count: 2 # identifies the no of Routed VPG
                 instances_per_device: 2 # identifies the no of LR pairs
                 vns_per_instance: 2 # identifies the no of tenant VNs per LR
+          - name: profile2
+            networks: 20
+            vpg: 2
+            vlan_per_vpg: 20
+            unmanaged_devices:
+                count: 1 # identifies the no of Routed VPG
+                instances_per_device: 1 # identifies the no of LR pairs
+                vns_per_instance: 4 # identifies the no of tenant VNs per LR

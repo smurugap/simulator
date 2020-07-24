@@ -72,6 +72,7 @@ class Fabric(object):
         network = '-'.join([fabric_name, 'Network'])
         docker_h.delete_network(network)
 
+    @classmethod
     def _delete(self, name):
         docker_h.delete_container(self.containers[name]['id'])
         sflows_filename = os.path.join(CONFDIR, name+'.sflows')

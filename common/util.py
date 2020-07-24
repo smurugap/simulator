@@ -11,6 +11,7 @@ import socket
 import struct
 import random
 import time
+import os
 
 def watcher(filename, callback):
     wm = pyinotify.WatchManager()
