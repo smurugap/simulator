@@ -92,7 +92,6 @@ class Scale(object):
         seconds = refresh_interval * 60
         direction = self.sflow_args.get('direction') or 'ingress'
         n_leafs = self.fabrics[fabric]['leaf']
-        import pdb; pdb.set_trace()
         n_vpgs = self.fabrics[fabric]['overlay'][0]['vpg']
         n_bms_per_router = (((n_vpgs-1)/n_leafs)+1) * 2
         print 'Will generate sflows every %s seconds'%seconds

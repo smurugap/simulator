@@ -30,14 +30,72 @@ class Fabric(object):
     def get(self, fabric_name=None):
         return jsonify({'fabrics': self._get(fabric_name)})
 
+    @classmethod
+    def delete(self, fabric_name):
+        """ Delete the corresponding fabric """
+        self.containers = docker_h.list_containers(fabric_name,
+                               all=True)
+        GeventLib(10).map(self._delete, list(self.containers.keys()))
+        network = '-'.join([fabric_name, 'Network'])
+        docker_h.delete_network(network)
+
+    @classmethod
+    def _delete(self, name):
+        docker_h.delete_container(self.containers[name]['id'])
+        delete_file(self.get_file(name, ftype='conf'))
+        delete_file(self.get_file(name, ftype='sflows'))
+        delete_file(self.get_file(name, engine='netconf'))
+        delete_file(self.get_file(name, engine='snmp'))
+ 
+    @classmethod
+    def get_file(self, device, engine=None, ftype='sock'):
+        if ftype == 'sock':
+            suffix = '-'+engine+'.sock'
+        elif ftype == 'sflows':
+            suffix = '.flows'
+        elif ftype == 'conf':
+            suffix = '.conf'
+        else:
+            raise Exception('Unsupported file type')
+        return os.path.join(CONFDIR, device+suffix)
+
+    def launch_containers(self):
+        for index in range(self.n_spines):
+            name = '-'.join([self.fabric, 'Spine%s'%index])
+            peers = self.n_leafs + self.n_border_leafs
+            pifs = peers + self.n_pifs
+            self.launch_container(name, 'spine', peers, pifs)
+
+        for index in range(self.n_leafs):
+            name = '-'.join([self.fabric, 'Leaf%s'%index])
+            self.launch_container(name, 'leaf', self.n_spines, self.n_pifs)
+
+        for index in range(self.n_border_leafs):
+            name = '-'.join([self.fabric, 'BLeaf%s'%index])
+            self.launch_container(name, 'bleaf', self.n_spines, self.n_pifs)
+
     def create_template(self, name, role, n_peers, n_pifs):
-        sflows_filename = os.path.join(CONFDIR, name+'.sflows')
+        sflows_filename = self.get_file(name, ftype='sflows')
+        nsock = self.get_file(name, engine='netconf')
+        snmp_sock = self.get_file(name, engine='snmp')
         template = convert_template(TEMPLATE, fabric_name=self.fabric,
                                     role=role, n_peers=n_peers, n_pifs=n_pifs,
+                                    netconf_socket=nsock, snmp_socket=snmp_sock,
                                     collector=self.collector or '',
                                     sflows_filename=sflows_filename)
-        with open(os.path.join(CONFDIR, name+'.conf'), 'w') as fd:
+        with open(self.get_file(name, ftype='conf'), 'w') as fd:
             fd.write(template)
+
+    def launch_container(self, name, role, n_peers, n_pifs,
+                         environment=ENV_SIMULATOR):
+        label = {'fabric': self.fabric, 'role': role}
+        self.create_template(name, role, n_peers, n_pifs)
+        if name in self.containers:
+            if role == 'spine':
+                docker_h.restart_container(self.containers[name]['id'])
+        else:
+            ip = next(self.free_ips)
+            docker_h.create_container(self.network, ip, name, label, environment)
 
     def post(self, fabric_name, interface, subnet, gateway, collector=None,
              address_pool=None, n_leafs=None, n_spines=None,
@@ -62,49 +120,6 @@ class Fabric(object):
             self.delete(self.fabric)
             raise
         return self.get(self.fabric)
-
-    @classmethod
-    def delete(self, fabric_name):
-        """ Delete the corresponding fabric """
-        self.containers = docker_h.list_containers(fabric_name,
-                               all=True)
-        GeventLib(10).map(self._delete, list(self.containers.keys()))
-        network = '-'.join([fabric_name, 'Network'])
-        docker_h.delete_network(network)
-
-    @classmethod
-    def _delete(self, name):
-        docker_h.delete_container(self.containers[name]['id'])
-        sflows_filename = os.path.join(CONFDIR, name+'.sflows')
-        config_filename = os.path.join(CONFDIR, name+'.conf')
-        delete_file(sflows_filename)
-        delete_file(config_filename)
- 
-    def launch_containers(self):
-        for index in range(self.n_spines):
-            name = '-'.join([self.fabric, 'Spine%s'%index])
-            peers = self.n_leafs + self.n_border_leafs
-            pifs = peers + self.n_pifs
-            self.launch_container(name, 'spine', peers, pifs)
-
-        for index in range(self.n_leafs):
-            name = '-'.join([self.fabric, 'Leaf%s'%index])
-            self.launch_container(name, 'leaf', self.n_spines, self.n_pifs)
-
-        for index in range(self.n_border_leafs):
-            name = '-'.join([self.fabric, 'BLeaf%s'%index])
-            self.launch_container(name, 'bleaf', self.n_spines, self.n_pifs)
-
-    def launch_container(self, name, role, n_peers, n_pifs,
-                         environment=ENV_SIMULATOR):
-        label = {'fabric': self.fabric, 'role': role}
-        self.create_template(name, role, n_peers, n_pifs)
-        if name in self.containers:
-            if role == 'spine':
-                docker_h.restart_container(self.containers[name]['id'])
-        else:
-            ip = next(self.free_ips)
-            docker_h.create_container(self.network, ip, name, label, environment)
 
     def put(self, fabric_name, n_leafs=None, n_spines=None, n_border_leafs=None,
             n_pifs=48, address_pool=None, collector=None):

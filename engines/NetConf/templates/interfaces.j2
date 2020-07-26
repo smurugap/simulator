@@ -1,5 +1,5 @@
 <interface-information style="normal">
-{% for n in range(0, count) %}
+{% for n in range(0, n_interfaces) %}
     <physical-interface>
         <name>
         et-0/0/{{n}}
@@ -78,7 +78,7 @@
                         <ifaf-current-primary/>
                     </ifa-flags>
                     <ifa-local>
-                    {{ lo_ip }}
+                    {{ tunnel_ip }}
                     </ifa-local>
                 </interface-address>
             </address-family>

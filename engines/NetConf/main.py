@@ -9,24 +9,31 @@ from netconf import server, nsmap_add
 #ToDo: Dynamically identify the plugin based on model
 from juniper import NetconfPlugin, SSHPlugin
 from common.constants import USERNAME, PASSWORD
+from common.util import register_event
+from common.ipc_api import register_listener
 
 import logging
 logging.basicConfig(level=logging.DEBUG)
 nsmap_add("sys", "urn:ietf:params:xml:ns:yang:ietf-system")
 MYDIR = os.path.dirname(os.path.abspath(__file__))
+NETCONF_EVENTS = dict()
 
 class NetconfServer(object):
     def start(self, port=22, username=USERNAME, password=PASSWORD,
-              version='18.4R2-S4', n_interfaces=48,
+              version='18.4R2-S4', n_interfaces=48, socket=None,
               peer_prefix=None, n_peers=2, model=None):
         my_queue = queue.Queue()
         auth = SSHWrapper(username=username, password=password, queue=my_queue)
-        plugin = NetconfPlugin(version=version, n_interfaces=n_interfaces,
+        self.plugin = NetconfPlugin(version=version, n_interfaces=n_interfaces,
                                peer_prefix=peer_prefix, n_peers=n_peers,
                                model=model)
         self.server = NetconfSSHServerWrapper(auth, port=port,
-                                              server_methods=plugin,
+                                              server_methods=self.plugin,
                                               queue=my_queue)
+        register_event('summary', NETCONF_EVENTS, self.summary)
+        register_event('update', NETCONF_EVENTS, self.update)
+        register_event('register', NETCONF_EVENTS, self.register)
+        register_listener(socket, NETCONF_EVENTS)
         try:
             while True:
                 time.sleep(1)
@@ -36,6 +43,30 @@ class NetconfServer(object):
 
     def close(self):
         self.server.close()
+
+    def dynamic_rpc_fn(self, rpc_name):
+        def wrapper(*args, **kwargs):
+            return self.plugin._convert_template(rpc_name)
+        return wrapper
+
+    def summary(self, payload):
+        return {'vns': {'count': 13}}
+
+    def update(self, kv_pairs):
+        for k,v in kv_pairs.items():
+            try:
+                v = int(v)
+            except ValueError:
+                pass
+            setattr(self.plugin, k, v)
+
+    def register(self, templates):
+        for rpc_name, content in templates.items():
+            filename = os.path.join('/tmp', rpc_name)
+            with open(filename, 'w') as fd:
+                fd.write(content)
+            self.plugin.templates[rpc_name] = filename
+            setattr(self.plugin, 'rpc_'+rpc_name, self.dynamic_rpc_fn(rpc_name))
 
 class NetconfSSHServerWrapper(server.NetconfSSHServer):
     def __init__(self, auth, server_methods=None, port=830,

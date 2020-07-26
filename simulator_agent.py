@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_restx import Api, Resource, fields
 from agent.fabric import Fabric
 from agent.sflow import sFlow
+from agent.netconf import Netconf
 from common.exceptions import InvalidUsage
 
 app = Flask(__name__)
@@ -30,7 +31,7 @@ fabric_put_schema = {
         description='No of physical interfaces in each Leaf - eg: 48'),
     'collector': fields.String(
         description='Address of the sflow collector if action is start')
-    }
+}
 fabric_post_schema = dict(fabric_put_schema)
 fabric_post_schema.update({
     'interface': fields.String(required=True,
@@ -65,13 +66,14 @@ class FlaskFabricList(Resource):
     def get(self):
         return Fabric.get()
 
+# Register sFlow engine apis
 ns_sflow = api.namespace('sflow', description='sFlow start/stop actions')
 sflow_schema = {
     'action': fields.String(required=True, description='start or stop sflows'),
     'direction': fields.String(description='ingress or egress direction for sflow collection'),
     'bms_per_router': fields.String(description='No of BMS servers per Device (floor and not ceil)'),
     'n_flows': fields.Integer(description='No of sampled flows if action is "start"')
-    }
+}
 sflow_model = api.model('sflow_model', sflow_schema)
 @ns_sflow.route("/<string:fabric_name>")
 class FlaskSFlow(Resource):
@@ -79,6 +81,30 @@ class FlaskSFlow(Resource):
     def post(self, fabric_name):
         data = request.get_json(force=True)
         sFlow().post(fabric_name, **data)
+
+# Register netconf engine apis
+ns_netconf = api.namespace('netconf', description='Send events to netconf engine')
+netconf_schema = {
+    'kv_pairs': fields.List(fields.Nested(api.model('kv_model',
+        {'key': fields.String, 'value': fields.String}))),
+    'template': fields.Nested(api.model('template_model',
+        {'rpc_name': fields.String, 'content': fields.String})),
+    'devices': fields.List(fields.String, description='List of devices')
+}
+netconf_model = api.model('netconf_model', netconf_schema)
+@ns_netconf.route("/<string:fabric_name>")
+class FlaskNetconf(Resource):
+    def get(self, fabric_name):
+        devices = request.args.get('devices')
+        raw = request.args.get('raw')
+        if devices:
+            devices = devices.split(',')
+        return Netconf().get(fabric_name, devices, raw)
+
+    @ns_netconf.expect(netconf_model)
+    def post(self, fabric_name):
+        data = request.get_json(force=True)
+        Netconf().post(fabric_name, **data)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=8989)

@@ -28,13 +28,8 @@ def delete_file(filename):
     except OSError:
         pass
 
-def register(event, events):
-    def o_wrapper(f):
-        events[event] = f
-        def i_wrapper(*args, **kwargs):
-            return f(*args, **kwargs)
-        return i_wrapper
-    return o_wrapper
+def register_event(event, events, callback):
+    events[event] = callback
 
 def get_prouter_index(prouter):
     return re.findall("\d+", prouter.split("-")[-1])[0]

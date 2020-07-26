@@ -35,14 +35,15 @@ def start_service(config, service):
     n_pifs = int(service_config['n_pifs'])
     version = service_config['version']
     model = service_config['model']
+    socket = service_config.get('socket')
     if service == 'Netconf':
         nc = NetconfServer()
         gevent.spawn(nc.start, version=version, n_peers=n_peers,
                      n_interfaces=n_pifs, peer_prefix=peer_prefix,
-                     model=model)
+                     model=model, socket=socket)
     elif service == 'SNMP':
         snmp = SNMPServer(peer_prefix=peer_prefix, n_peers=n_peers,
-                          n_interfaces=n_pifs)
+                          n_interfaces=n_pifs, socket=socket)
         gevent.spawn(snmp.start)
     elif service == 'sFlows':
         sflows_file = service_config.get('flows')

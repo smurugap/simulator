@@ -21,9 +21,11 @@ try:
 except ImportError:
     from io import StringIO
 
+from common.ipc_api import register_listener
 from common.docker_api import docker_h
 
 PY3 = sys.version_info[0] == 3
+SNMP_EVENTS = dict()
 
 logging.basicConfig(format='[%(levelname)s] %(message)s')
 logger = logging.getLogger()
@@ -872,12 +874,13 @@ def generate_snmp_oids(hostname, my_index, peer_prefix, n_peers, n_interfaces):
     return oids
 
 class SNMPServer(object):
-    def __init__(self, peer_prefix=None, n_peers=2, n_interfaces=48):
+    def __init__(self, peer_prefix=None, n_peers=2, n_interfaces=48, socket=None):
         self.n_peers = n_peers
         self.n_interfaces = n_interfaces
         self.peer_prefix = peer_prefix
         self.hostname = docker_h.my_hostname
         self.my_index = docker_h.my_index
+        register_listener(socket, SNMP_EVENTS)
 
     def start(self):
         oids = generate_snmp_oids(self.hostname, self.my_index, self.peer_prefix,

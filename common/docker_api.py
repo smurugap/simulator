@@ -52,7 +52,7 @@ class DockerInterface(object):
 
     def get_assigned_ips(self, network):
         assigned_ips = set()
-        network_id = self.get_network_id(name)
+        network_id = self.get_network_id(network)
         if not network_id:
             return list()
         net_details = self._client.inspect_network(network_id)

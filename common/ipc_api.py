@@ -1,12 +1,12 @@
-import gevent
-from gevent import monkey; monkey.patch_all()
 import socket
 import os
 import json
 import logging
 import errno
+from common.util import gevent
 
 def register_listener(sockfile, events):
+    ''' Server would register the unix domain socket .sock file '''
     try:
         os.unlink(sockfile)
     except OSError:
@@ -14,42 +14,51 @@ def register_listener(sockfile, events):
             raise
     sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     sock.bind(sockfile)
-    gevent.spawn(wait_for_events, sock, callback)
+    gevent.spawn(wait_for_events, sock, events)
 
 def wait_for_events(sock, events):
+    ''' Server would listen for any events on the socket '''
     sock.listen(1)
     while True:
+        status = False
         connection, client = sock.accept()
         data = connection.recv(2048)
-        if data:
-            payload = json.loads(data.strip())
-            event = payload.get('event', None)
-            if event in events:
-                logging.debug('Received %s with %s payload'%(event, payload))
-                events[event](payload['payload'])
-            else:
-                logging.error('No such event %s registered: payload - %s'%(
-                    event, payload))
+        received_data = data.decode('utf-8')
+        payload = json.loads(received_data)
+        event = payload['event']
+        if event in events:
+            logging.debug('Received %s with %s payload'%(event, payload))
+            try:
+                msg = events[event](payload['payload'])
+                status = True
+            except Exception as e:
+                status = False
+                msg = e.message
+                logging.error(msg)
+        else:
+            status = False
+            msg = 'No such event %s registered: payload - %s'%(
+                event, palyload)
+            logging.error(msg)
+        to_send = json.dumps({'status': status, 'msg': msg})
+        connection.send(to_send.encode('utf-8'))
 
-def send_events(sockfile, payload, event=None):
-    if event:
-        dct = {'event': event, 'payload': payload}
-        payload = json.dumps(dct)
+def send_event(sockfile, event, payload=None):
+    ''' Client needs to use this api to send events to the registered server '''
+    if not os.path.exists(sockfile):
+        raise Exception('Server not registered - %s'%sockfile)
+    dct = {'event': event, 'payload': payload}
+    actual_payload = json.dumps(dct)
     sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     sock.connect(sockfile)
-    sock.sendall(payload.encode('utf-8'))
+    sock.sendall(actual_payload.encode('utf-8'))
+    data = sock.recv(2048)
     sock.close()
+    received_payload = json.loads(data.decode('utf-8'))
+    if received_payload['status'] is not True:
+        raise Exception(received_payload['msg'])
+    return received_payload['msg']
 
-'''
-REGISTERED_EVENTS = {'test': test_callback}
-
-def test_callback(payload):
-    print 'recv payload', payload
-
-register_listener('/tmp/test.sock', REGISTERED_EVENTS)
-print 'sending event'
-send_events('/tmp/test.sock', 'test')
-'''
 class UdpClient(object):
     def __init__(self, server, port):
         self.server = server
@@ -73,4 +82,3 @@ class UdpClient(object):
                 pass
             else:
                 raise
-

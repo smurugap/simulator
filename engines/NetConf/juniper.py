@@ -19,7 +19,7 @@ TEMPLATES = {'version': 'version.j2',
             }
 
 def get_templates_abs_path():
-    return {k: os.path.join(MYDIR, v) for k,v in TEMPLATES.items()}
+    return {k: os.path.join(MYDIR, 'templates', v) for k,v in TEMPLATES.items()}
 
 class NetconfPlugin(NetconfPluginBase):
     def __init__(self, *args, **kwargs):
@@ -28,8 +28,7 @@ class NetconfPlugin(NetconfPluginBase):
         self.update_system_info()
 
     def update_system_info(self):
-        content = self._convert_template('system_info', rtype='raw',
-            version=self.version, model=self.model, hostname=self.hostname)
+        content = self._convert_template('system_info', rtype='raw')
         with open(SYSINFO, 'w+') as fd:
             fd.write(content)
 
@@ -45,37 +44,32 @@ class NetconfPlugin(NetconfPluginBase):
         is_roptions = rpc.xpath('./configuration/routing-options')
         if is_committed:
           if is_interfaces:
-            return self._convert_template('config_interfaces',
-                                                 lo0_ip=self.tunnel_ip)
+            return self._convert_template('config_interfaces')
           elif is_roptions:
             reply = '<configuration>\n<routing-options>\n<static>\n<route>\n'+\
                 '<name>0.0.0.0/0</name>\n<next-hop>10.87.101.13</next-hop>\n'+\
                 '</route>\n</static>\n</routing-options>\n</configuration>'
             return etree.fromstring(reply)
 
-    def rpc_get_interface_information(self, *args, **kwargs):
-        return self._convert_template('interfaces',
-            count=self.n_interfaces, lo_ip=self.tunnel_ip)
-
     def rpc_command(self, session, rpc):
         command = rpc.xpath('./command')[0].text
         filename = None
         if 'show chassis hardware' in command:
-            return self._convert_template('hardware_inventory',
-                hostname=self.hostname, model=self.model)
+            template = 'hardware_inventory'
         elif 'show interfaces' in command:
-            return self.rpc_get_interface_information()
+            template = 'interfaces'
         elif 'show chassis mac-addresses' in command:
-            return self._convert_template('chassis_mac',
-                macaddr=self.macaddr)
+            template = 'chassis_mac'
         elif 'show system commit' in command:
-            return self._convert_template('commit_info', count=10)
+            template = 'commit_info'
         elif 'show version' in command:
-            return self._convert_template('version', model=self.model,
-                hostname=self.hostname, version=self.version)
+            template = 'version'
         elif 'lldp' in command:
-            return self._convert_template('lldp_info', my_index=self.my_index,
-                peer_prefix=self.peer_prefix or 'dummy', n_peers=self.n_peers)
+            template = 'lldp_info'
+        return self._convert_template(template)
+
+    def rpc_get_interface_information(self, *args, **kwargs):
+        return self._convert_template('interfaces')
 
 class SSHPlugin(object):
     def check_channel_exec_request(self, channel, command):
