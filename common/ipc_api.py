@@ -82,3 +82,30 @@ class UdpClient(object):
                 pass
             else:
                 raise
+
+class UdpServer(object):
+    def __init__(self, server=None, port=None):
+        self.server = server
+        self.port = port
+        self.create()
+
+    def create(self):
+        family, socktype, proto, canonname, sockaddr = \
+            socket.getaddrinfo(self.server, self.port, 0,
+                               socket.SOCK_DGRAM, 0, socket.AI_PASSIVE)[0]
+        self.socket = socket.socket(family, socktype)
+        self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.socket.bind(sockaddr)
+
+    def recv(self):
+        request_data, address = self.socket.recvfrom(4096)
+        return request_data, address
+
+    def send(self, address, payload):
+        try:
+            self.socket.sendto(payload, address)
+        except socket.error as e:
+            if e.args[0] == errno.EAGAIN or e.args[0] == errno.EINTR:
+                pass
+            else:
+                raise

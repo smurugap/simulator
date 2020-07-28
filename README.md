@@ -13,7 +13,7 @@ $ docker pull smurugap/simulator:0.2b
 * Launch the simulator agent container
 ```sh
 $ mkdir -p /etc/simulator
-$ docker run -itd --privileged -v /var/run:/var/run -v /etc/simulator:/etc/simulator --net host --name simulator-agent smurugap/simulator:0.2b
+$ docker run -itd --privileged -v /var/run:/var/run -v /etc/simulator:/etc/simulator --net host --name simulator-agent smurugap/simulator:latest
 ```
 
 # Execution:
@@ -22,7 +22,7 @@ $ docker run -itd --privileged -v /var/run:/var/run -v /etc/simulator:/etc/simul
 
 ## Onboard devices:
 ```sh
-$ python scale.py -i fabric.yaml -o stage1
+$ python fabric.py -i fabric.yaml -o stage1
 ```
 * Create simulators (-o create_simulators)
 * Brownfield onboard the fabric (-o onboard_fabric)
@@ -30,54 +30,62 @@ $ python scale.py -i fabric.yaml -o stage1
 
 ## Deleting Simulators:
 ```sh
-$ python scale.py -i fabric.yaml -o delete_simulators
+$ python fabric.py -i fabric.yaml -o delete_simulators
 ```
 
 ## Create workloads:
 ```sh
-python scale.py -t fabric.yaml -o stage2
+python fabric.py -i fabric.yaml -o stage2 -t 5
 ```
 * Create Virtual Networks
 * Create Virtual Port Groups
 * Create Vlans in the VPGs
+Note: -t controls the no of parallel threads
 
 ## Create L3 gateway:
 ```sh
-python scale.py -t fabric.yaml -o stage3
+python fabric.py -i fabric.yaml -o stage3 -t 5
 ```
 * Create Logical Routers and link the VNs
 * Extend the logical routers to respective physical routers
 
 ## Create services:
 ```sh
-python scale.py -t fabric.yaml -o stage4
+python fabric.py -i fabric.yaml -o stage4 -t 6
 ```
 * Create Security Groups and attach to VPGs
 * Create Storm Control Profiles + Port Profiles and attach to VPGs
 
 ## Create Unmanaged Instances:
 ```sh
-python scale.py -t fabric.yaml -o stage5
+python fabric.py -i fabric.yaml -o stage5 -t 3
 ```
 * Create Routed VN, Routed VPG and LogicalRouter with Routed VN properties
 
+## Create all overlay objects:
+Wrapper around all the stages
+```sh
+python fabric.py -i fabric.yaml -o create -t 5
+```
+
 ## Deleting overlay objects:
 ```sh
-python scale.py -t fabric.yaml -o delete
+python fabric.py -i fabric.yaml -o delete -t 6
 ```
 
 ## Deleting fabric:
 ```sh
-python scale.py -t fabric.yaml -o delete_fabric
+python fabric.py -i fabric.yaml -o delete_fabric
 ```
 
 ## Generate sflows:
-Note: Restart the docker container after creating simulators to workaround the iproute2 bug
+To generate 1000 sampled flows with new flows every 10 minutes under test-fabric fabric
 ```sh
 python fabric.py -i fabric.yaml -o start_sflows -c n_flows=1000,fabric=test-fabric,refresh_interval=10
 ```
 
 ## Stop sflows:
+To stop generating sampled flows
 ```sh
 python fabric.py -i fabric.yaml -o stop_sflows -c fabric=test-fabric
 ```

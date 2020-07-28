@@ -13,3 +13,15 @@ class InvalidUsage(Exception):
         rv['message'] = self.message
         return rv
 
+class ProtocolError(Exception):
+    """Raise when SNMP protocol error occured"""
+
+class ConfigError(Exception):
+    """Raise when config error occured"""
+
+class BadValueError(Exception):
+    """Raise when bad value error occured"""
+
+class WrongValueError(Exception):
+    """Raise when wrong value (e.g. value not in available range) error occured"""
+
