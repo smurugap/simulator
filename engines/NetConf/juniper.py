@@ -16,6 +16,7 @@ TEMPLATES = {'version': 'version.j2',
              'hardware_inventory': 'hardware_inventory.j2',
              'commit_info': 'commit_info.j2',
              'lldp_info': 'lldp_info.j2',
+             'chassis_alarms': 'chassis_alarms.j2',
             }
 
 def get_templates_abs_path():
@@ -26,6 +27,7 @@ class NetconfPlugin(NetconfPluginBase):
         super(NetconfPlugin, self).__init__(*args, **kwargs)
         self.templates = get_templates_abs_path()
         self.update_system_info()
+        self.chassis_alarms = dict()
 
     def update_system_info(self):
         content = self._convert_template('system_info', rtype='raw')
@@ -70,6 +72,9 @@ class NetconfPlugin(NetconfPluginBase):
 
     def rpc_get_interface_information(self, *args, **kwargs):
         return self._convert_template('interfaces')
+
+    def rpc_get_alarm_information(self, *args, **kwargs):
+        return self._convert_template('chassis_alarms')
 
 class SSHPlugin(object):
     def check_channel_exec_request(self, channel, command):

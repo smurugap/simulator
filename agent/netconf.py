@@ -6,6 +6,7 @@ from flask import jsonify
 import random
 import os
 import json
+import ast
 
 class Netconf(object):
     def get(self, fabric_name, devices=None, raw=None):
@@ -31,7 +32,17 @@ class Netconf(object):
                                   device, fabric_name))
         devices = devices or list(pRouters.keys())
         if kv_pairs:
-            payload_kv = {x['key']: x['value'] for x in kv_pairs}
+            payload_kv = dict()
+            for kv_pair in kv_pairs:
+                value = kv_pair['value']
+                try:
+                    value = ast.literal_eval(value)
+                except ValueError:
+                    try:
+                        value = int(value)
+                    except ValueError:
+                        pass
+                payload[kv_pair['key']] = value
         if template:
             payload_register = {template['rpc_name']: template['content']}
         for device in devices:

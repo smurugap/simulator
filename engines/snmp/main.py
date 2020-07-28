@@ -25,6 +25,7 @@ from engines.snmp.constants import ASN1Tags, ASN1Error, Opaque, OpaqueLen, SnmpP
 from common.ipc_api import register_listener, UdpServer
 from common.docker_api import docker_h
 from common.exceptions import ProtocolError, ConfigError, BadValueError, WrongValueError
+from common.util import register_event
 
 PY3 = sys.version_info[0] == 3
 SNMP_EVENTS = dict()
@@ -200,7 +201,7 @@ def _parse_asn1_opaque_float(stream):
     # convert int to float
     float_value = struct.unpack('>f', struct.pack('>l', value))[0]
     logger.debug('ASN1_OPAQUE_FLOAT: %s', round(float_value, 5))
-    return 'FLOAT', round(float_value, 5)
+    return 'Float', round(float_value, 5)
 
 
 def _parse_asn1_opaque_double(stream):
@@ -210,7 +211,7 @@ def _parse_asn1_opaque_double(stream):
     # convert long long to double
     double_value = struct.unpack('>d', struct.pack('>q', value))[0]
     logger.debug('ASN1_OPAQUE_DOUBLE: %s', round(double_value, 5))
-    return 'DOUBLE', round(double_value, 5)
+    return 'Double', round(double_value, 5)
 
 
 def _parse_asn1_opaque_int64(stream):
@@ -218,7 +219,7 @@ def _parse_asn1_opaque_int64(stream):
     length = _parse_asn1_length(stream)
     value = _read_int_len(stream, length, signed=True)
     logger.debug('ASN1_OPAQUE_INT64: %s', value)
-    return 'INT64', value
+    return 'Int64', value
 
 
 def _parse_asn1_opaque_uint64(stream):
@@ -226,7 +227,7 @@ def _parse_asn1_opaque_uint64(stream):
     length = _parse_asn1_length(stream)
     value = _read_int_len(stream, length)
     logger.debug('ASN1_OPAQUE_UINT64: %s', value)
-    return 'UINT64', value
+    return 'UInt64', value
 
 
 def _parse_asn1_opaque(stream):
@@ -286,13 +287,13 @@ def _parse_snmp_asn1(stream):
             logger.debug('ASN1_INTEGER: %s', value)
             # pdu_index is version, request-id, error-status, error-index
             if wait_oid_value or pdu_index in [1, 4, 5, 6]:
-                result.append(('INTEGER', value))
+                result.append(('Integer', value))
                 wait_oid_value = False
         elif tag == ASN1Tags.OctetString:
             value = _parse_asn1_octet_string(stream)
             logger.debug('ASN1_OCTET_STRING: %s', value)
             if wait_oid_value or pdu_index == 2:  # community
-                result.append(('STRING', value))
+                result.append(('String', value))
                 wait_oid_value = False
         elif tag == ASN1Tags.OID:
             length = _read_byte(stream)
@@ -332,41 +333,41 @@ def _parse_snmp_asn1(stream):
             value = _read_int_len(stream, length)
             logger.debug('ASN1_TIMETICKS: %s (%s)', value, timeticks_to_str(value))
             if wait_oid_value:
-                result.append(('TIMETICKS', value))
+                result.append(('Timeticks', value))
                 wait_oid_value = False
         elif tag == ASN1Tags.IPAddress:
             length = _read_byte(stream)
             value = _read_int_len(stream, length)
             logger.debug('ASN1_IPADDRESS: %s (%s)', value, int_to_ip(value))
             if wait_oid_value:
-                result.append(('IPADDRESS', int_to_ip(value)))
+                result.append(('IPAddress', int_to_ip(value)))
                 wait_oid_value = False
         elif tag == ASN1Tags.Counter32:
             length = _read_byte(stream)
             value = _read_int_len(stream, length)
             logger.debug('ASN1_COUNTER32: %s', value)
             if wait_oid_value:
-                result.append(('COUNTER32', value))
+                result.append(('Counter32', value))
                 wait_oid_value = False
         elif tag == ASN1Tags.Gauge32:
             length = _read_byte(stream)
             value = _read_int_len(stream, length)
             logger.debug('ASN1_GAUGE32: %s', value)
             if wait_oid_value:
-                result.append(('GAUGE32', value))
+                result.append(('Gauge32', value))
                 wait_oid_value = False
         elif tag == ASN1Tags.Opaque:
             value = _parse_asn1_opaque(stream)
             logger.debug('ASN1_OPAQUE: %r', value)
             if wait_oid_value:
-                result.append(('OPAQUE', value))
+                result.append(('Opaque', value))
                 wait_oid_value = False
         elif tag == ASN1Tags.Counter64:
             length = _read_byte(stream)
             value = _read_int_len(stream, length)
             logger.debug('ASN1_COUNTER64: %s', value)
             if wait_oid_value:
-                result.append(('COUNTER64', value))
+                result.append(('Counter64', value))
                 wait_oid_value = False
         elif tag == ASN1Tags.Null:
             value = _read_byte(stream)
@@ -662,33 +663,33 @@ def handle_set_request(oids, oid, type_and_value):
     error_status = ASN1Error.NoError
     error_index = 0
     value_type, value = type_and_value
-    if value_type == 'INTEGER':
+    if value_type == 'Integer':
         enum_values = None
         if isinstance(oids[oid], tuple) and len(oids[oid]) > 1:
             enum_values = oids[oid][1]
         oids[oid] = integer(value, enum=enum_values)
-    elif value_type == 'STRING':
+    elif value_type == 'String':
         oids[oid] = octet_string(value if PY3 else value.encode('latin'))
     elif value_type == 'OID':
         oids[oid] = object_identifier(value)
-    elif value_type == 'TIMETICKS':
+    elif value_type == 'Timeticks':
         oids[oid] = timeticks(value)
-    elif value_type == 'IPADDRESS':
+    elif value_type == 'IPAddress':
         oids[oid] = ip_address(value)
-    elif value_type == 'COUNTER32':
+    elif value_type == 'Counter32':
         oids[oid] = counter32(value)
-    elif value_type == 'COUNTER64':
+    elif value_type == 'Counter64':
         oids[oid] = counter64(value)
-    elif value_type == 'GAUGE32':
+    elif value_type == 'Gauge32':
         oids[oid] = gauge32(value)
-    elif value_type == 'OPAQUE':
-        if value[0] == 'FLOAT':
+    elif value_type == 'Opaque':
+        if value[0] == 'Float':
             oids[oid] = real(value[1])
-        elif value[0] == 'DOUBLE':
+        elif value[0] == 'Double':
             oids[oid] = double(value[1])
-        elif value[0] == 'UINT64':
+        elif value[0] == 'UInt64':
             oids[oid] = uint64(value[1])
-        elif value[0] == 'INT64':
+        elif value[0] == 'Int64':
             oids[oid] = int64(value[1])
         else:
             raise Exception('Unsupported type: {} ({})'.format(value_type, repr(value)))
@@ -729,7 +730,7 @@ def craft_response(version, community, request_id, error_status, error_index, oi
     )
     return response
 
-def generate_snmp_oids(hostname, my_index, peer_prefix, n_peers, n_interfaces):
+def get_lldp_neighbor_oids(hostname, my_index, peer_prefix, n_peers, n_interfaces):
     # ToDo: Fix peer_prefix to take care of Border Leaf scenarios
     my_index = int(my_index)
     oids = {
@@ -770,16 +771,23 @@ class SNMPServer(object):
         self.peer_prefix = peer_prefix
         self.hostname = docker_h.my_hostname
         self.my_index = docker_h.my_index
-        register_listener(socket, SNMP_EVENTS)
         self.socket = UdpServer(port=161)
+        self.oids = get_lldp_neighbor_oids(self.hostname, self.my_index,
+            self.peer_prefix, self.n_peers, self.n_interfaces)
+        register_event('update', NETCONF_EVENTS, self.update)
+        register_listener(socket, SNMP_EVENTS)
+
+    def update(self, oid_list):
+        for oid in oid_list:
+            try:
+                v = int(v)
+            except ValueError:
+                pass
 
     def start(self):
-        oids = generate_snmp_oids(self.hostname, self.my_index, self.peer_prefix,
-                                  self.n_peers, self.n_interfaces)
         while True:
             request_data, address = self.socket.recv()
             logger.debug('Received %d bytes from %s', len(request_data), address)
-
             request_stream = StringIO(request_data.decode('latin'))
             try:
                 request_result = _parse_snmp_asn1(request_stream)
@@ -809,7 +817,7 @@ class SNMPServer(object):
             if pdu_type == ASN1Tags.GetRequest:
                 requested_oids = request_result[6:]
                 for _, oid in requested_oids:
-                    _, _, oid_value = handle_get_request(oids, oid)
+                    _, _, oid_value = handle_get_request(self.oids, oid)
                     # if oid value is a function - call it to get the value
                     if isinstance(oid_value, types.FunctionType):
                         oid_value = oid_value(oid)
@@ -818,7 +826,7 @@ class SNMPServer(object):
                     oid_items.append((oid_to_bytes(oid), oid_value))
             elif pdu_type == ASN1Tags.GetNextRequest:
                 oid = request_result[6][1]
-                error_status, error_index, oid, oid_value = handle_get_next_request(oids, oid)
+                error_status, error_index, oid, oid_value = handle_get_next_request(self.oids, oid)
                 if isinstance(oid_value, types.FunctionType):
                     oid_value = oid_value(oid)
                 if isinstance(oid_value, tuple):
@@ -829,7 +837,7 @@ class SNMPServer(object):
                 for _ in range(0, max_repetitions):
                     for idx, val in enumerate(requested_oids):
                         oid = val[1]
-                        error_status, error_index, oid, oid_value = handle_get_next_request(oids, oid)
+                        error_status, error_index, oid, oid_value = handle_get_next_request(self.oids, oid)
                         if isinstance(oid_value, types.FunctionType):
                             oid_value = oid_value(oid)
                         if isinstance(oid_value, tuple):
@@ -842,12 +850,12 @@ class SNMPServer(object):
                 oid = request_result[6][1]
                 type_and_value = request_result[7]
                 try:
-                    if isinstance(oids[oid], tuple) and len(oids[oid]) > 1:
-                        enum_values = oids[oid][1]
+                    if isinstance(self.oids[oid], tuple) and len(self.oids[oid]) > 1:
+                        enum_values = self.oids[oid][1]
                         new_value = type_and_value[1]
                         if isinstance(enum_values, Iterable) and new_value not in enum_values:
                             raise WrongValueError('Value {} is outside the range of enum values'.format(new_value))
-                    error_status, error_index, oid_value = handle_set_request(oids, oid, type_and_value)
+                    error_status, error_index, oid_value = handle_set_request(self.oids, oid, type_and_value)
                 except WrongValueError as ex:
                     logger.error(ex)
                     error_status = ASN1Error.WrongValue
