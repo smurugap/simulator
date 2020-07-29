@@ -42,7 +42,7 @@ class Netconf(object):
                         value = int(value)
                     except ValueError:
                         pass
-                payload[kv_pair['key']] = value
+                payload_kv[kv_pair['key']] = value
         if template:
             payload_register = {template['rpc_name']: template['content']}
         for device in devices:
