@@ -54,10 +54,6 @@ class NetconfServer(object):
 
     def update(self, kv_pairs):
         for k,v in kv_pairs.items():
-            try:
-                v = int(v)
-            except ValueError:
-                pass
             setattr(self.plugin, k, v)
 
     def register(self, templates):

@@ -44,6 +44,7 @@ class Fabric(object):
         docker_h.delete_container(self.containers[name]['id'])
         delete_file(self.get_file(name, ftype='conf'))
         delete_file(self.get_file(name, ftype='sflows'))
+        delete_file(self.get_file(name, ftype='snmp'))
         delete_file(self.get_file(name, engine='netconf'))
         delete_file(self.get_file(name, engine='snmp'))
  
@@ -53,6 +54,8 @@ class Fabric(object):
             suffix = '-'+engine+'.sock'
         elif ftype == 'sflows':
             suffix = '.flows'
+        elif ftype == 'oids':
+            suffix = '.oids'
         elif ftype == 'conf':
             suffix = '.conf'
         else:
@@ -76,12 +79,15 @@ class Fabric(object):
 
     def create_template(self, name, role, n_peers, n_pifs):
         sflows_filename = self.get_file(name, ftype='sflows')
+        snmp_oids = self.get_file(name, ftype='oids')
         nsock = self.get_file(name, engine='netconf')
         snmp_sock = self.get_file(name, engine='snmp')
         template = convert_template(TEMPLATE, fabric_name=self.fabric,
                                     role=role, n_peers=n_peers, n_pifs=n_pifs,
                                     netconf_socket=nsock, snmp_socket=snmp_sock,
                                     collector=self.collector or '',
+                                    n_bleafs=self.n_border_leafs or 0,
+                                    snmp_oids=snmp_oids,
                                     sflows_filename=sflows_filename)
         with open(self.get_file(name, ftype='conf'), 'w') as fd:
             fd.write(template)
@@ -102,6 +108,11 @@ class Fabric(object):
              n_border_leafs=None, n_pifs=48):
         """ Create a fabric with the simulated spine and leaf servers """
         self.fabric = fabric_name
+        self.network = '-'.join([self.fabric, 'Network'])
+        network_detail = docker_h.get_network(self.network)
+        if network_detail:
+            return self.put(fabric_name, n_leafs, n_spines, n_border_leafs,
+                            n_pifs, address_pool, collector)
         self.n_spines = n_spines
         self.n_leafs = n_leafs
         self.n_border_leafs = n_border_leafs or 0
@@ -110,7 +121,6 @@ class Fabric(object):
         self.containers = dict()
         if address_pool and type(address_pool) is not list:
             address_pool = ast.literal_eval(address_pool)
-        self.network = '-'.join([self.fabric, 'Network'])
         docker_h.create_network(self.network, interface=interface,
                                 subnet=subnet, gw=gateway)
         self.free_ips = iter(get_available_ips(subnet, gateway, address_pool))

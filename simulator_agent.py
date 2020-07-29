@@ -4,6 +4,7 @@ from agent.fabric import Fabric
 from agent.sflow import sFlow
 from agent.netconf import Netconf
 from common.exceptions import InvalidUsage
+from agent.snmp import SNMP
 
 app = Flask(__name__)
 api = Api(app, version='1.0', title='Simulator Agent API',
@@ -105,6 +106,23 @@ class FlaskNetconf(Resource):
     def post(self, fabric_name):
         data = request.get_json(force=True)
         Netconf().post(fabric_name, **data)
+
+ns_snmp = api.namespace('snmp', description='Send events to snmp engine')
+snmp_schema = {
+    'oids': fields.List(fields.Nested(api.model('oid_model',
+        {'oid': fields.String, 'value': fields.String,
+         'type': fields.String(enum=["Integer", "String", "OID", "Timeticks",
+                                     "IPAddress", "Counter32", "Counter64",
+                                     "Gauge32", "Opaque"])})), required=True),
+    'devices': fields.List(fields.String, description='List of devices')
+}
+snmp_model = api.model('snmp_model', snmp_schema)
+@ns_snmp.route("/<string:fabric_name>")
+class FlaskNetconf(Resource):
+    @ns_snmp.expect(snmp_model)
+    def post(self, fabric_name):
+        data = request.get_json(force=True)
+        SNMP().post(fabric_name, **data)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=8989)

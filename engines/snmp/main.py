@@ -12,9 +12,9 @@ import string
 import struct
 import sys
 import types
+import json
 
 from collections import Iterable
-from contextlib import closing
 
 try:
     from StringIO import StringIO
@@ -25,7 +25,7 @@ from engines.snmp.constants import ASN1Tags, ASN1Error, Opaque, OpaqueLen, SnmpP
 from common.ipc_api import register_listener, UdpServer
 from common.docker_api import docker_h
 from common.exceptions import ProtocolError, ConfigError, BadValueError, WrongValueError
-from common.util import register_event
+from common.util import register_event, touch, watcher
 
 PY3 = sys.version_info[0] == 3
 SNMP_EVENTS = dict()
@@ -665,7 +665,7 @@ def handle_set_request(oids, oid, type_and_value):
     value_type, value = type_and_value
     if value_type == 'Integer':
         enum_values = None
-        if isinstance(oids[oid], tuple) and len(oids[oid]) > 1:
+        if oid in oids and isinstance(oids[oid], tuple) and len(oids[oid]) > 1:
             enum_values = oids[oid][1]
         oids[oid] = integer(value, enum=enum_values)
     elif value_type == 'String':
@@ -730,61 +730,90 @@ def craft_response(version, community, request_id, error_status, error_index, oi
     )
     return response
 
-def get_lldp_neighbor_oids(hostname, my_index, peer_prefix, n_peers, n_interfaces):
-    # ToDo: Fix peer_prefix to take care of Border Leaf scenarios
-    my_index = int(my_index)
-    oids = {
-        '1.0.8802.1.1.2.1.3.3.0': octet_string(str(hostname)),
-        '1.3.6.1.2.1.1.2.0': object_identifier("1.3.6.1.4.1.2636.1.1.1.4.82.10"),
-    }
-    for i in range(n_peers):
-        index = i
-        oids.update({
-            '1.0.8802.1.1.2.1.3.7.1.3.%s'%index: octet_string("%s"%index),
-            '1.0.8802.1.1.2.1.3.7.1.4.%s'%index: octet_string("et-0/0/%s"%i),
-            '1.0.8802.1.1.2.1.4.1.1.9.1459.%s.9'%index: octet_string("%s%s"%(peer_prefix, i)),
-            '1.0.8802.1.1.2.1.4.1.1.8.1459.%s.9'%index: octet_string("et-0/0/%s"%my_index),
-            '1.0.8802.1.1.2.1.4.1.1.7.1459.%s.9'%index: octet_string("%s"%(my_index)),
-            '1.3.6.1.2.1.2.2.1.1.%s'%index: integer(index),
-            '1.3.6.1.2.1.2.2.1.2.%s'%index: octet_string("et-0/0/%s"%i),
-            '1.3.6.1.2.1.2.2.1.3.%s'%index: integer(6),
-            '1.3.6.1.2.1.2.2.1.7.%s'%index: integer(1),
-            '1.3.6.1.2.1.2.2.1.8.%s'%index: integer(1),
-        })
-    for j in range(n_peers, n_interfaces):
-        index = j
-        oids.update({
-            '1.0.8802.1.1.2.1.3.7.1.3.%s'%index: octet_string("%s"%index),
-            '1.0.8802.1.1.2.1.3.7.1.4.%s'%index: octet_string("et-0/0/%s"%j),
-            '1.3.6.1.2.1.2.2.1.2.%s'%index: octet_string("et-0/0/%s"%j),
-            '1.3.6.1.2.1.2.2.1.1.%s'%index: integer(index),
-            '1.3.6.1.2.1.2.2.1.3.%s'%index: integer(6),
-            '1.3.6.1.2.1.2.2.1.7.%s'%index: integer(1),
-            '1.3.6.1.2.1.2.2.1.8.%s'%index: integer(1),
-        })
-    return oids
-
 class SNMPServer(object):
-    def __init__(self, peer_prefix=None, n_peers=2, n_interfaces=48, socket=None):
+    def __init__(self, peer_prefix=None, n_peers=2, n_interfaces=48, socket=None, oid_file=None):
         self.n_peers = n_peers
         self.n_interfaces = n_interfaces
         self.peer_prefix = peer_prefix
-        self.hostname = docker_h.my_hostname
-        self.my_index = docker_h.my_index
+        self.hostname = str(docker_h.my_hostname)
+        self.my_index = int(docker_h.my_index)
         self.socket = UdpServer(port=161)
-        self.oids = get_lldp_neighbor_oids(self.hostname, self.my_index,
-            self.peer_prefix, self.n_peers, self.n_interfaces)
-        register_event('update', NETCONF_EVENTS, self.update)
-        register_listener(socket, SNMP_EVENTS)
+        self.sock_file = socket
+        self.oids = dict()
+        touch(oid_file)
+        self.oid_file = oid_file
+        self.initialize_oids()
+        self.read_snmp_oids()
+
+    def callback(self, notifier):
+        self.read_snmp_oids()
+
+    def initialize_oids(self):
+        # ToDo: Fix peer_prefix to take care of Border Leaf scenarios
+        oids = [{'oid': '1.0.8802.1.1.2.1.3.3.0', 'type': 'String',
+                 'value': self.hostname},
+                {'oid': '1.3.6.1.2.1.1.2.0', 'type': 'OID',
+                 'value': "1.3.6.1.4.1.2636.1.1.1.4.82.10"}]
+        remote_interface = "et-0/0/%s"%self.my_index
+        for index in range(self.n_peers):
+            local_interface = "et-0/0/%s"%(index)
+            remote_hostname = "%s%s"%(self.peer_prefix, index)
+            oids.append({'oid': '1.0.8802.1.1.2.1.3.7.1.3.%s'%index,
+                'type': 'String', 'value': str(index)})
+            oids.append({'oid': '1.0.8802.1.1.2.1.3.7.1.4.%s'%index,
+                'type': 'String', 'value': local_interface})
+            oids.append({'oid': '1.0.8802.1.1.2.1.4.1.1.9.1459.%s.9'%index,
+                'type': 'String', 'value': remote_hostname})
+            oids.append({'oid': '1.0.8802.1.1.2.1.4.1.1.8.1459.%s.9'%index,
+                'type': 'String', 'value': remote_interface})
+            oids.append({'oid': '1.0.8802.1.1.2.1.4.1.1.7.1459.%s.9'%index,
+                'type': 'String', 'value': str(self.my_index)})
+            oids.append({'oid': '1.3.6.1.2.1.2.2.1.1.%s'%index,
+                'type': 'Integer', 'value': index})
+            oids.append({'oid': '1.3.6.1.2.1.2.2.1.2.%s'%index,
+                'type': 'String', 'value': local_interface})
+            oids.append({'oid': '1.3.6.1.2.1.2.2.1.3.%s'%index,
+                'type': 'Integer', 'value': 6})
+            oids.append({'oid': '1.3.6.1.2.1.2.2.1.7.%s'%index,
+                'type': 'Integer', 'value': 1})
+            oids.append({'oid': '1.3.6.1.2.1.2.2.1.8.%s'%index,
+                'type': 'Integer', 'value': 1})
+        for index in range(self.n_peers, self.n_interfaces):
+            local_interface = "et-0/0/%s"%(index)
+            oids.append({'oid': '1.0.8802.1.1.2.1.3.7.1.3.%s'%index,
+                'type': 'String', 'value': str(index)})
+            oids.append({'oid': '1.0.8802.1.1.2.1.3.7.1.4.%s'%index,
+                'type': 'String', 'value': local_interface})
+            oids.append({'oid': '1.3.6.1.2.1.2.2.1.1.%s'%index,
+                'type': 'Integer', 'value': index})
+            oids.append({'oid': '1.3.6.1.2.1.2.2.1.2.%s'%index,
+                'type': 'String', 'value': local_interface})
+            oids.append({'oid': '1.3.6.1.2.1.2.2.1.3.%s'%index,
+                'type': 'Integer', 'value': 6})
+            oids.append({'oid': '1.3.6.1.2.1.2.2.1.7.%s'%index,
+                'type': 'Integer', 'value': 1})
+            oids.append({'oid': '1.3.6.1.2.1.2.2.1.8.%s'%index,
+                'type': 'Integer', 'value': 1})
+        self.update(oids)
+
+    def read_snmp_oids(self):
+        with open(self.oid_file, 'r') as fd:
+            try:
+                oids = json.load(fd)
+                if oids:
+                    self.update(oids)
+            except Exception as e:
+                print e
 
     def update(self, oid_list):
-        for oid in oid_list:
-            try:
-                v = int(v)
-            except ValueError:
-                pass
+        for oid_dict in oid_list:
+            type_and_value = (oid_dict['type'], oid_dict['value'])
+            handle_set_request(self.oids, oid_dict['oid'], type_and_value)
 
     def start(self):
+        watcher(self.oid_file, self.callback)
+        register_event('update', SNMP_EVENTS, self.update)
+        register_listener(self.sock_file, SNMP_EVENTS)
         while True:
             request_data, address = self.socket.recv()
             logger.debug('Received %d bytes from %s', len(request_data), address)
