@@ -8,7 +8,7 @@ https://docs.google.com/document/d/1yxiU9xpD49ZHLAMtnuzOHnYOm4ZOa89pLYqYNH9dIPY
 * [Install docker](https://docs.docker.com/engine/install/centos/) on the test server
 * docker pull the simulator agent container
 ```sh
-$ docker pull smurugap/simulator:0.2b
+$ docker pull smurugap/simulator:latest
 ```
 * Launch the simulator agent container
 ```sh
