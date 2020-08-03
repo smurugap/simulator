@@ -19,11 +19,14 @@ class ASN1Tags:
     NoSuchObject = 0x80
     NoSuchInstance = 0x81
     EndOfMIB = 0x82
+
+class PduType:
     GetRequest = 0xa0
     GetNextRequest = 0xa1
     GetResponse = 0xa2
     SetRequest = 0xa3
     GetBulkRequest = 0xa5
+    TrapResponse = 0xa7
 
 class ASN1Error:
     NoError = 0x00

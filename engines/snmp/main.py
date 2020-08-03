@@ -13,6 +13,7 @@ import struct
 import sys
 import types
 import json
+import random
 
 from collections import Iterable
 
@@ -21,8 +22,8 @@ try:
 except ImportError:
     from io import StringIO
 
-from engines.snmp.constants import ASN1Tags, ASN1Error, Opaque, OpaqueLen, SnmpPdu
-from common.ipc_api import register_listener, UdpServer
+from engines.snmp.constants import ASN1Tags, ASN1Error, Opaque, OpaqueLen, SnmpPdu, PduType
+from common.ipc_api import register_listener, UdpServer, UdpClient
 from common.docker_api import docker_h
 from common.exceptions import ProtocolError, ConfigError, BadValueError, WrongValueError
 from common.util import register_event, touch, watcher
@@ -274,9 +275,9 @@ def _parse_snmp_asn1(stream):
         # check protocol's tags at indices
         if (pdu_index in [1, 4, 5, 6] and tag != ASN1Tags.Integer) \
             or (pdu_index == 2 and tag != ASN1Tags.OctetString) \
-            or (pdu_index == 3 and tag not in [ASN1Tags.GetRequest,
-                ASN1Tags.GetNextRequest, ASN1Tags.SetRequest,
-                ASN1Tags.GetBulkRequest]):
+            or (pdu_index == 3 and tag not in [PduType.GetRequest,
+                PduType.GetNextRequest, PduType.SetRequest,
+                PduType.GetBulkRequest]):
             raise ProtocolError('Invalid tag for PDU unit "{}"'.format(SnmpPdu[pdu_index]))
         if tag == ASN1Tags.Sequence:
             length = _parse_asn1_length(stream)
@@ -305,29 +306,29 @@ def _parse_snmp_asn1(stream):
             length = _parse_asn1_length(stream)
             value = stream.read(length)
             logger.debug('ASN1_PRINTABLE_STRING: %s', value)
-        elif tag == ASN1Tags.GetRequest:
+        elif tag == PduType.GetRequest:
             length = _parse_asn1_length(stream)
             logger.debug('ASN1_GET_REQUEST_PDU: %s', 'length = {}'.format(length))
             if pdu_index == 3:  # PDU-type
-                result.append(('ASN1Tags.GetRequest', tag))
-        elif tag == ASN1Tags.GetNextRequest:
+                result.append(('PduType.GetRequest', tag))
+        elif tag == PduType.GetNextRequest:
             length = _parse_asn1_length(stream)
             logger.debug('ASN1_GET_NEXT_REQUEST_PDU: %s', 'length = {}'.format(length))
             if pdu_index == 3:  # PDU-type
-                result.append(('ASN1Tags.GetNextRequest', tag))
-        elif tag == ASN1Tags.GetBulkRequest:
+                result.append(('PduType.GetNextRequest', tag))
+        elif tag == PduType.GetBulkRequest:
             length = _parse_asn1_length(stream)
             logger.debug('ASN1_GET_BULK_REQUEST_PDU: %s', 'length = {}'.format(length))
             if pdu_index == 3:  # PDU-type
-                result.append(('ASN1Tags.GetBulkRequest', tag))
-        elif tag == ASN1Tags.GetResponse:
+                result.append(('PduType.GetBulkRequest', tag))
+        elif tag == PduType.GetResponse:
             length = _parse_asn1_length(stream)
             logger.debug('ASN1_GET_RESPONSE_PDU: %s', 'length = {}'.format(length))
-        elif tag == ASN1Tags.SetRequest:
+        elif tag == PduType.SetRequest:
             length = _parse_asn1_length(stream)
             logger.debug('ASN1_SET_REQUEST_PDU: %s', 'length = {}'.format(length))
             if pdu_index == 3:  # PDU-type
-                result.append(('ASN1Tags.SetRequest', tag))
+                result.append(('PduType.SetRequest', tag))
         elif tag == ASN1Tags.TimeTicks:
             length = _read_byte(stream)
             value = _read_int_len(stream, length)
@@ -697,8 +698,9 @@ def handle_set_request(oids, oid, type_and_value):
     return error_status, error_index, oid_value
 
 
-def craft_response(version, community, request_id, error_status, error_index, oid_items):
+def craft_response(version, community, request_id, error_status, error_index, oid_items, pdu_type=None):
     """Craft SNMP response"""
+    pdu_type = pdu_type or PduType.GetResponse
     response = write_tv(
         ASN1Tags.Sequence,
         # add version and community from request
@@ -706,7 +708,7 @@ def craft_response(version, community, request_id, error_status, error_index, oi
         write_tv(ASN1Tags.OctetString, community.encode('latin') if PY3 else str(community)) +
         # add GetResponse PDU with get response fields
         write_tv(
-            ASN1Tags.GetResponse,
+            pdu_type,
             # add response id, error status and error index
             write_tv(ASN1Tags.Integer, _write_int(request_id)) +
             write_tlv(ASN1Tags.Integer, 1, _write_int(error_status)) +
@@ -731,13 +733,16 @@ def craft_response(version, community, request_id, error_status, error_index, oi
     return response
 
 class SNMPServer(object):
-    def __init__(self, peer_prefix=None, n_peers=2, n_interfaces=48, socket=None, oid_file=None):
+    def __init__(self, peer_prefix=None, n_peers=2, n_interfaces=48,
+                 socket=None, oid_file=None, collector=None):
         self.n_peers = n_peers
         self.n_interfaces = n_interfaces
         self.peer_prefix = peer_prefix
         self.hostname = str(docker_h.my_hostname)
         self.my_index = int(docker_h.my_index)
-        self.socket = UdpServer(port=161)
+        self.server = UdpServer(port=161)
+        if collector:
+            self.client = UdpClient(server=collector, port=162)
         self.sock_file = socket
         self.oids = dict()
         touch(oid_file)
@@ -810,12 +815,36 @@ class SNMPServer(object):
             type_and_value = (oid_dict['type'], oid_dict['value'])
             handle_set_request(self.oids, oid_dict['oid'], type_and_value)
 
-    def start(self):
+    def send_trap(self, oid, community='public'):
+        request = random.randint(100, 100000)
+        oids = [{'oid': '1.3.6.1.2.1.1.3.0', 'type': 'Timeticks',
+                 'value': random.randint(10000, 1000000)},
+                {'oid': '1.3.6.1.6.3.1.1.4.1.0', 'type': 'OID',
+                 'value': oid},
+                {'oid': '1.3.6.1.6.3.1.1.4.3.0', 'type': 'OID',
+                 'value': '1.3.6.1.4.1.2636.1.1.1.4.82.10'}]
+        to_send_oids = dict()
+        for oid in oids:
+            type_and_value = (oid['type'], oid['value'])
+            estatus, eindex, _ = handle_set_request(to_send_oids,
+                oid['oid'], type_and_value)
+        traps = list()
+        for oid, value in to_send_oids.items():
+            traps.append((oid_to_bytes(oid), value))
+        response = craft_response(1, community, request, estatus, eindex,
+                                  traps, PduType.TrapResponse)
+        self.client.send(response)
+
+    def register(self):
         watcher(self.oid_file, self.callback)
         register_event('update', SNMP_EVENTS, self.update)
+        register_event('send_trap', SNMP_EVENTS, self.send_trap)
         register_listener(self.sock_file, SNMP_EVENTS)
+
+    def start(self):
+        self.register()
         while True:
-            request_data, address = self.socket.recv()
+            request_data, address = self.server.recv()
             logger.debug('Received %d bytes from %s', len(request_data), address)
             request_stream = StringIO(request_data.decode('latin'))
             try:
@@ -843,7 +872,7 @@ class SNMPServer(object):
             logger.debug('PDU Type: %s, request_id %s'%(request_result, request_id))
 
             # handle protocol data units
-            if pdu_type == ASN1Tags.GetRequest:
+            if pdu_type == PduType.GetRequest:
                 requested_oids = request_result[6:]
                 for _, oid in requested_oids:
                     _, _, oid_value = handle_get_request(self.oids, oid)
@@ -853,7 +882,7 @@ class SNMPServer(object):
                     if isinstance(oid_value, tuple):
                         oid_value = oid_value[0]
                     oid_items.append((oid_to_bytes(oid), oid_value))
-            elif pdu_type == ASN1Tags.GetNextRequest:
+            elif pdu_type == PduType.GetNextRequest:
                 oid = request_result[6][1]
                 error_status, error_index, oid, oid_value = handle_get_next_request(self.oids, oid)
                 if isinstance(oid_value, types.FunctionType):
@@ -904,4 +933,4 @@ class SNMPServer(object):
             response = craft_response(
                 version, community, request_id, error_status, error_index, oid_items)
             logger.debug('Sending %d bytes of response', len(response))
-            self.socket.send(address, response)
+            self.server.send(address, response)

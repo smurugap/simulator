@@ -44,7 +44,7 @@ class Fabric(object):
         docker_h.delete_container(self.containers[name]['id'])
         delete_file(self.get_file(name, ftype='conf'))
         delete_file(self.get_file(name, ftype='sflows'))
-        delete_file(self.get_file(name, ftype='snmp'))
+        delete_file(self.get_file(name, ftype='oids'))
         delete_file(self.get_file(name, engine='netconf'))
         delete_file(self.get_file(name, engine='snmp'))
  

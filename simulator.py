@@ -44,8 +44,10 @@ def start_service(config, service):
     elif service == 'SNMP':
         oid_file = service_config.get('oids')
         n_bleafs = int(service_config.get('n_bleafs') or 0)
+        server = service_config.get('collector')
         snmp = SNMPServer(peer_prefix=peer_prefix, n_peers=n_peers,
-                          n_interfaces=n_pifs, socket=socket, oid_file=oid_file)
+                          n_interfaces=n_pifs, socket=socket,
+                          oid_file=oid_file, collector=server)
         gevent.spawn(snmp.start)
     elif service == 'sFlows':
         sflows_file = service_config.get('flows')

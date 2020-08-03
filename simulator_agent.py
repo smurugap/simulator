@@ -107,6 +107,7 @@ class FlaskNetconf(Resource):
         data = request.get_json(force=True)
         Netconf().post(fabric_name, **data)
 
+
 ns_snmp = api.namespace('snmp', description='Send events to snmp engine')
 snmp_schema = {
     'oids': fields.List(fields.Nested(api.model('oid_model',
@@ -114,11 +115,12 @@ snmp_schema = {
          'type': fields.String(enum=["Integer", "String", "OID", "Timeticks",
                                      "IPAddress", "Counter32", "Counter64",
                                      "Gauge32", "Opaque"])})), required=True),
-    'devices': fields.List(fields.String, description='List of devices')
+    'devices': fields.List(fields.String, description='List of devices'),
+    'trap': fields.String(description='Trap OID to send')
 }
 snmp_model = api.model('snmp_model', snmp_schema)
 @ns_snmp.route("/<string:fabric_name>")
-class FlaskNetconf(Resource):
+class FlaskSNMP(Resource):
     @ns_snmp.expect(snmp_model)
     def post(self, fabric_name):
         data = request.get_json(force=True)
