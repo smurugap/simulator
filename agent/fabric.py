@@ -47,6 +47,7 @@ class Fabric(object):
         delete_file(self.get_file(name, ftype='oids'))
         delete_file(self.get_file(name, engine='netconf'))
         delete_file(self.get_file(name, engine='snmp'))
+        delete_file(self.get_file(name, engine='syslog'))
  
     @classmethod
     def get_file(self, device, engine=None, ftype='sock'):
@@ -82,9 +83,11 @@ class Fabric(object):
         snmp_oids = self.get_file(name, ftype='oids')
         nsock = self.get_file(name, engine='netconf')
         snmp_sock = self.get_file(name, engine='snmp')
+        syslog_sock = self.get_file(name, engine='syslog')
         template = convert_template(TEMPLATE, fabric_name=self.fabric,
                                     role=role, n_peers=n_peers, n_pifs=n_pifs,
                                     netconf_socket=nsock, snmp_socket=snmp_sock,
+                                    syslog_socket=syslog_sock,
                                     collector=self.collector or '',
                                     n_bleafs=self.n_border_leafs or 0,
                                     snmp_oids=snmp_oids,

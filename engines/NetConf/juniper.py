@@ -11,12 +11,14 @@ SYSINFO = '/tmp/system_info'
 TEMPLATES = {'version': 'version.j2',
              'system_info': 'system_info.j2',
              'chassis_mac': 'chassis_mac.j2',
+             'chassis_fan': 'chassis_fan.j2',
              'interfaces': 'interfaces.j2',
              'config_interfaces': 'config_interfaces.j2',
              'hardware_inventory': 'hardware_inventory.j2',
              'commit_info': 'commit_info.j2',
              'lldp_info': 'lldp_info.j2',
              'chassis_alarms': 'chassis_alarms.j2',
+             're_info': 're_info.j2',
             }
 
 def get_templates_abs_path():
@@ -68,19 +70,39 @@ class NetconfPlugin(NetconfPluginBase):
             template = 'version'
         elif 'lldp' in command:
             template = 'lldp_info'
+        elif 'show chassis fan' in command:
+            template = 'chassis_fan'
+        else:
+            print 'ToDo: command is ', command
+            raise Exception('command is %s'%command)
         return self._convert_template(template)
+
+    def rpc_file_show(self, session, rpc, *args, **kwargs):
+        print 'ToDo: rpc_file_show ', etree.tostring(rpc), args, kwargs
+        reply = etree.Element('ok')
+        return reply
+
+    def rpc_get_system_information(self, *args, **kwargs):
+        return self._convert_template('system_info')
 
     def rpc_get_interface_information(self, *args, **kwargs):
         return self._convert_template('interfaces')
 
+    def rpc_get_software_information(self, *args, **kwargs):
+        return self._convert_template('version')
+
     def rpc_get_alarm_information(self, *args, **kwargs):
         return self._convert_template('chassis_alarms')
+
+    def rpc_get_route_engine_information(self, *args, **kwargs):
+        return self._convert_template('re_info')
 
 class SSHPlugin(object):
     def check_channel_exec_request(self, channel, command):
         self.queue.put('disable', False)
         if "show system information" in command:
             command = "cat %s"%SYSINFO
+        print 'ToDo: SSH command', command
         process = gevent.subprocess.Popen(command, stdout=gevent.subprocess.PIPE,
                                           stdin=gevent.subprocess.PIPE,
                                           stderr=gevent.subprocess.PIPE,

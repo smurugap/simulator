@@ -757,8 +757,22 @@ class SNMPServer(object):
         # ToDo: Fix peer_prefix to take care of Border Leaf scenarios
         oids = [{'oid': '1.0.8802.1.1.2.1.3.3.0', 'type': 'String',
                  'value': self.hostname},
+                {'oid': '1.3.6.1.2.1.1.1.0', 'type': 'String',
+                 'value': "Juniper qfx10002-36q"},
                 {'oid': '1.3.6.1.2.1.1.2.0', 'type': 'OID',
-                 'value': "1.3.6.1.4.1.2636.1.1.1.4.82.10"}]
+                 'value': "1.3.6.1.4.1.2636.1.1.1.4.82.10"},
+                {'oid': '1.3.6.1.2.1.1.3.0', 'type': 'Timeticks',
+                 'value': random.randint(10000, 1000000)},
+                {'oid': '1.3.6.1.2.1.1.4.0', 'type': 'String',
+                 'value': "msenthil@juniper.net"},
+                {'oid': '1.3.6.1.2.1.1.5.0', 'type': 'String',
+                 'value': self.hostname},
+                {'oid': '1.3.6.1.2.1.1.6.0', 'type': 'String',
+                 'value': "simulated container"},
+                {'oid': '1.3.6.1.2.1.1.7.0', 'type': 'Integer',
+                 'value': 6},
+                {'oid': '1.3.6.1.2.1.2.1.0', 'type': 'Integer',
+                 'value': self.n_interfaces}]
         remote_interface = "et-0/0/%s"%self.my_index
         for index in range(self.n_peers):
             local_interface = "et-0/0/%s"%(index)
@@ -890,7 +904,7 @@ class SNMPServer(object):
                 if isinstance(oid_value, tuple):
                     oid_value = oid_value[0]
                 oid_items.append((oid_to_bytes(oid), oid_value))
-            elif pdu_type == ASN1Tags.GetBulkRequest:
+            elif pdu_type == PduType.GetBulkRequest:
                 requested_oids = request_result[6:]
                 for _ in range(0, max_repetitions):
                     for idx, val in enumerate(requested_oids):
@@ -902,7 +916,7 @@ class SNMPServer(object):
                             oid_value = oid_value[0]
                         oid_items.append((oid_to_bytes(oid), oid_value))
                         requested_oids[idx] = ('OID', oid)
-            elif pdu_type == ASN1Tags.SetRequest:
+            elif pdu_type == PduType.SetRequest:
                 if len(request_result) < 8:
                     raise Exception('Invalid ASN.1 parsed request length for SNMP set request!')
                 oid = request_result[6][1]

@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_restx import Api, Resource, fields
 from agent.fabric import Fabric
 from agent.sflow import sFlow
+from agent.syslog import Syslog
 from agent.netconf import Netconf
 from common.exceptions import InvalidUsage
 from agent.snmp import SNMP
@@ -125,6 +126,21 @@ class FlaskSNMP(Resource):
     def post(self, fabric_name):
         data = request.get_json(force=True)
         SNMP().post(fabric_name, **data)
+
+ns_syslog = api.namespace('syslog', description='Send syslog messages to server')
+syslog_schema = {
+    'devices': fields.List(fields.String, description='List of devices'),
+    'level': fields.String(description='Log level', required=True),
+    'facility': fields.String(description='facility type', required=True),
+    'message': fields.String(description='Syslog message', required=True)
+}
+syslog_model = api.model('syslog_model', syslog_schema)
+@ns_syslog.route("/<string:fabric_name>")
+class FlaskSyslog(Resource):
+    @ns_syslog.expect(syslog_model)
+    def post(self, fabric_name):
+        data = request.get_json(force=True)
+        Syslog().post(fabric_name, **data)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=8989)

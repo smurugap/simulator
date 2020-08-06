@@ -1,12 +1,6 @@
 from common.exceptions import InvalidUsage
-from agent.fabric import Fabric, CONFDIR
+from agent.fabric import Fabric
 from common.ipc_api import send_event
-from common.util import gevent
-from flask import jsonify
-import random
-import os
-import json
-import ast
 
 class SNMP(object):
     def post(self, fabric_name, devices=None, oids=None, trap=None):

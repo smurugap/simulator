@@ -7,6 +7,7 @@ monkey.patch_all()
 from engines.NetConf import NetconfServer
 from engines.snmp import SNMPServer
 from engines.sflow import sFlowEngine
+from engines.syslog import SyslogEngine
 from ConfigParser import SafeConfigParser
 from common.docker_api import docker_h
 
@@ -55,10 +56,17 @@ def start_service(config, service):
         if server:
             sflow = sFlowEngine(server, sflows_file)
             gevent.spawn(sflow.start)
+    elif service == 'Syslog':
+        server = service_config.get('collector')
+        port = service_config.get('port', 514)
+        if server:
+            syslog = SyslogEngine(server, port, sockfile=socket)
+            gevent.spawn(syslog.start)
 
 def main(config):
     start_service(config, "Netconf")
     start_service(config, "SNMP")
+    start_service(config, "Syslog")
     start_service(config, "sFlows")
     while True:
         time.sleep(60)
