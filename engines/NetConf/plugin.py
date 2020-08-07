@@ -22,6 +22,7 @@ class NetconfPluginBase(object):
         self.tunnel_ip = docker_h.my_ip
         self.macaddr = get_random_mac()
         self._config_files = list()
+        self.rollback_count = 10
 
     def nc_append_capabilities(self, capabilities):  # pylint: disable=W0613
         """The server should append any capabilities it supports to capabilities"""
