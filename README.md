@@ -12,6 +12,7 @@ $ docker pull smurugap/simulator:latest
 ```
 * Launch the simulator agent container
 ```sh
+$ echo 1024 > /proc/sys/fs/inotify/max_user_instances
 $ mkdir -p /etc/simulator
 $ docker run -itd --privileged -v /var/run:/var/run -v /etc/simulator:/etc/simulator --net host --name simulator-agent smurugap/simulator:latest
 ```
