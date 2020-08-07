@@ -4,6 +4,7 @@ from netconf import util, NSMAP
 from datetime import datetime
 from jinja2 import Template, Environment, meta
 from lxml import etree
+from engines.NetConf import summarize
 import time
 
 IGNORE_KEYWORDS = ['range']
@@ -20,7 +21,7 @@ class NetconfPluginBase(object):
         self.my_index = docker_h.my_index
         self.tunnel_ip = docker_h.my_ip
         self.macaddr = get_random_mac()
-        self.rollback_count = 10
+        self._config_files = list()
 
     def nc_append_capabilities(self, capabilities):  # pylint: disable=W0613
         """The server should append any capabilities it supports to capabilities"""
@@ -66,11 +67,12 @@ class NetconfPluginBase(object):
         return reply
 
     def rpc_load_configuration(self, session, rpc, config, *args, **kwargs):
-        tfile = datetime.now().strftime("%Y-%m-%d-%H:%M:%S.%f")+'.conf'
-        filename=os.path.join('/tmp', tfile)
+        epoch = time.time()
+        filename = os.path.join('/tmp', epoch)
+        self._config_files.append(filename)
         with open(filename, 'w') as fd:
             fd.write(config.text)
-        filename=os.path.join('/tmp', 'current_config.conf')
+        filename = os.path.join('/tmp', 'current_config.conf')
         with open(filename, 'w') as fd:
             fd.write(config.text)
         seconds = 10
@@ -83,3 +85,11 @@ class NetconfPluginBase(object):
 
     def check_channel_exec_request(self, *args, **kwargs):
         return True
+
+    def summary(self, payload):
+        if not self._config_files:
+            return dict()
+        filename = self._config_files[-1]
+        obj = summarize.ParseConfig(filename)
+        ctime = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(float(os.path.basename(filename))))
+        return {'timestamp': ctime, 'content': obj.parse()}

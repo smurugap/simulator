@@ -50,7 +50,7 @@ class NetconfServer(object):
         return wrapper
 
     def summary(self, payload):
-        return {'vns': {'count': 13}}
+        return self.plugin.summary(payload)
 
     def update(self, kv_pairs):
         for k,v in kv_pairs.items():
