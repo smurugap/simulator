@@ -22,7 +22,7 @@ def wait_for_events(sock, events):
     while True:
         status = False
         connection, client = sock.accept()
-        data = connection.recv(2048)
+        data = connection.recv(65535)
         received_data = data.decode('utf-8')
         payload = json.loads(received_data)
         event = payload['event']
@@ -52,7 +52,7 @@ def send_event(sockfile, event, payload=None):
     sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     sock.connect(sockfile)
     sock.sendall(actual_payload.encode('utf-8'))
-    data = sock.recv(2048)
+    data = sock.recv(65535)
     sock.close()
     received_payload = json.loads(data.decode('utf-8'))
     if received_payload['status'] is not True:
@@ -98,7 +98,7 @@ class UdpServer(object):
         self.socket.bind(sockaddr)
 
     def recv(self):
-        request_data, address = self.socket.recvfrom(4096)
+        request_data, address = self.socket.recvfrom(65535)
         return request_data, address
 
     def send(self, address, payload):

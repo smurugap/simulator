@@ -68,7 +68,7 @@ class NetconfPluginBase(object):
 
     def rpc_load_configuration(self, session, rpc, config, *args, **kwargs):
         epoch = time.time()
-        filename = os.path.join('/tmp', epoch)
+        filename = os.path.join('/tmp', str(epoch))
         self._config_files.append(filename)
         with open(filename, 'w') as fd:
             fd.write(config.text)
