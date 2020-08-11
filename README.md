@@ -1,5 +1,5 @@
 # Brief background on Simulator:
-https://docs.google.com/document/d/1yxiU9xpD49ZHLAMtnuzOHnYOm4ZOa89pLYqYNH9dIPY
+http://ez/simulator
 
 # PreRequisite:
 * x86 server reachable from controller via fabric network
