@@ -12,6 +12,10 @@ import struct
 import random
 import time
 import os
+import hashlib
+import hmac
+import sys
+CONFDIR = '/etc/simulator'
 
 def watcher(filename, callback):
     wm = pyinotify.WatchManager()
@@ -21,6 +25,7 @@ def watcher(filename, callback):
         gevent.spawn(notifier.loop, callback=callback)
     except pyinotify.NotifierError, err:
         pass
+    return notifier
 
 def delete_file(filename):
     try:
@@ -32,7 +37,7 @@ def register_event(event, events, callback):
     events[event] = callback
 
 def get_prouter_index(prouter):
-    return re.findall("\d+", prouter.split("-")[-1])[0]
+    return int(re.findall("\d+", prouter.split("-")[-1])[0])
 
 def get_random_mac():
     return ':'.join(map(lambda x: "%02x" % x, [0x00, 0x16, 0x3E,
@@ -142,6 +147,24 @@ def elem2dict(node, alist=False):
             d[e.tag] = value
     return d
 
+def get_file(device, engine=None, ftype='sock'):
+    if ftype == 'sock':
+        name = engine+'.sock'
+    elif ftype == 'sflows':
+        name = device+'.flows'
+    elif ftype == 'oids':
+        name = 'snmp.oids'
+    elif ftype == 'conf':
+        name = device+'.conf'
+    else:
+        raise Exception('Unsupported file type')
+    return os.path.join(CONFDIR, device, name)
+
+def get_sha1(key, message):
+    message = bytes('message').encode('utf-8')
+    key = bytes('key').encode('utf-8')
+    return hmac.new(key, message, hashlib.sha1).hexdigest()
+
 class SafeList(list):
     def get(self, index, default=None):
         try:
@@ -182,3 +205,33 @@ class custom_dict(MutableMapping, dict):
 
     def __contains__(self, key):
         return dict.__contains__(self, key)
+
+def daemonize(pid_file, log_file, fn):
+    try:
+        pid = os.fork()
+        if pid > 0:
+            return pid
+#            pid = os.fork()
+#            if pid == 0:
+            # Exit first parent
+#            sys.exit(0)
+    except OSError as e:
+        sys.stderr.write("fork #1 failed: %d (%s)\n" % (e.errno, e.strerror))
+        sys.exit(1)
+#    os.chdir("/")
+    os.setsid()
+    os.umask(0)
+#    sys.stdout = open(log_file, 'a+')
+#    sys.stderr = open(log_file, 'a+')
+    try:
+        pid = os.fork()
+        if pid > 0:
+            with open(pid_file, 'w') as f:
+                f.write('%s\n'%pid)
+            sys.exit(0)
+    except OSError as e:
+        sys.stderr.write("fork #2 failed: %d (%s)\n" % (e.errno, e.strerror))
+        sys.exit(1)
+#    si = file(stdin, 'r')
+#    os.dup2(si.fileno(), sys.stdin.fileno())
+    fn()

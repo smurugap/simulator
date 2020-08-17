@@ -1,1 +1,1 @@
-import sflow.flows.inmon  # noqa
+import engines.sflow.flows.inmon  # noqa

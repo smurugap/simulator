@@ -8,8 +8,8 @@ from common.docker_api import docker_h
 SYSLOG_EVENTS = dict()
 
 class SyslogEngine(object):
-    def __init__(self, server, port=514, sockfile=None):
-        self.server, self.port, self.sockfile = server, port, sockfile
+    def __init__(self, server, port=514, socket=None):
+        self.server, self.port, self.socket = server, port, socket
         self.logger = logging.getLogger(str(docker_h.my_hostname))
         self.logger.setLevel(logging.DEBUG)
 
@@ -28,6 +28,6 @@ class SyslogEngine(object):
 
     def start(self):
         register_event('send_syslog', SYSLOG_EVENTS, self.send_syslog)
-        register_listener(self.sockfile, SYSLOG_EVENTS)
+        register_listener(self.socket, SYSLOG_EVENTS)
         while True:
             time.sleep(1)

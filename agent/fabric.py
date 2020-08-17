@@ -2,13 +2,13 @@ import ast
 from flask import jsonify
 from collections import defaultdict
 from common.docker_api import docker_h
+from common.ipc_api import send_event
 from netaddr import IPNetwork, IPAddress
 from common.util import get_available_ips, convert_template, \
-                        GeventLib, delete_file
+                        GeventLib, delete_file, CONFDIR, get_file
 from common.exceptions import InvalidUsage
 import os
 
-CONFDIR = '/etc/simulator'
 MYDIR = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE = os.path.join(MYDIR, 'simulator.conf.j2')
 ENV_SIMULATOR = {'MODE': 'simulator'}
@@ -40,85 +40,90 @@ class Fabric(object):
         docker_h.delete_network(network)
 
     @classmethod
-    def _delete(self, name):
-        docker_h.delete_container(self.containers[name]['id'])
-        delete_file(self.get_file(name, ftype='conf'))
-        delete_file(self.get_file(name, ftype='sflows'))
-        delete_file(self.get_file(name, ftype='oids'))
-        delete_file(self.get_file(name, engine='netconf'))
-        delete_file(self.get_file(name, engine='snmp'))
-        delete_file(self.get_file(name, engine='syslog'))
+    def _delete(self, device):
+        docker_h.delete_container(self.containers[device]['id'])
+        delete_file(self.get_file(device, ftype='conf'))
+        delete_file(self.get_file(device, ftype='sflows'))
+        delete_file(self.get_file(device, ftype='oids'))
+        delete_file(self.get_file(device, engine='netconf'))
+        delete_file(self.get_file(device, engine='snmp'))
+        delete_file(self.get_file(device, engine='syslog'))
+        try:
+            absname = os.path.join(CONFDIR, device)
+            os.rmdir(absname)
+        except OSError:
+            pass
  
     @classmethod
     def get_file(self, device, engine=None, ftype='sock'):
-        if ftype == 'sock':
-            suffix = '-'+engine+'.sock'
-        elif ftype == 'sflows':
-            suffix = '.flows'
-        elif ftype == 'oids':
-            suffix = '.oids'
-        elif ftype == 'conf':
-            suffix = '.conf'
-        else:
-            raise Exception('Unsupported file type')
-        return os.path.join(CONFDIR, device+suffix)
+        return get_file(device, engine, ftype)
 
     def launch_containers(self):
         for index in range(self.n_spines):
             name = '-'.join([self.fabric, 'Spine%s'%index])
-            peers = self.n_leafs + self.n_border_leafs
-            pifs = peers + self.n_pifs
-            self.launch_container(name, 'spine', peers, pifs)
+            pifs = self.n_leafs + self.n_pifs
+            self.launch_container(name, 'spine', pifs)
 
         for index in range(self.n_leafs):
             name = '-'.join([self.fabric, 'Leaf%s'%index])
-            self.launch_container(name, 'leaf', self.n_spines, self.n_pifs)
+            self.launch_container(name, 'leaf', self.n_pifs)
 
         for index in range(self.n_border_leafs):
             name = '-'.join([self.fabric, 'BLeaf%s'%index])
-            self.launch_container(name, 'bleaf', self.n_spines, self.n_pifs)
+            self.launch_container(name, 'bleaf', self.n_pifs)
 
-    def create_template(self, name, role, n_peers, n_pifs):
+        for index in range(self.n_super_spines):
+            name = '-'.join([self.fabric, 'SuperSpine%s'%index])
+            self.launch_container(name, 'super_spine', self.n_pifs)
+
+    def create_template(self, name, role, n_pifs):
         sflows_filename = self.get_file(name, ftype='sflows')
         snmp_oids = self.get_file(name, ftype='oids')
         nsock = self.get_file(name, engine='netconf')
         snmp_sock = self.get_file(name, engine='snmp')
         syslog_sock = self.get_file(name, engine='syslog')
         template = convert_template(TEMPLATE, fabric_name=self.fabric,
-                                    role=role, n_peers=n_peers, n_pifs=n_pifs,
-                                    netconf_socket=nsock, snmp_socket=snmp_sock,
+                                    role=role, n_pifs=n_pifs,
+                                    n_leafs=self.n_leafs,
+                                    n_spines=self.n_spines,
+                                    n_bleafs=self.n_border_leafs or 0,
+                                    n_super_spines=self.n_super_spines or 0,
+                                    netconf_socket=nsock,
+                                    snmp_socket=snmp_sock,
                                     syslog_socket=syslog_sock,
                                     collector=self.collector or '',
-                                    n_bleafs=self.n_border_leafs or 0,
                                     snmp_oids=snmp_oids,
                                     sflows_filename=sflows_filename)
         with open(self.get_file(name, ftype='conf'), 'w') as fd:
             fd.write(template)
 
-    def launch_container(self, name, role, n_peers, n_pifs,
+    def launch_container(self, name, role, n_pifs,
                          environment=ENV_SIMULATOR):
         label = {'fabric': self.fabric, 'role': role}
-        self.create_template(name, role, n_peers, n_pifs)
-        if name in self.containers:
-            if role == 'spine':
-                docker_h.restart_container(self.containers[name]['id'])
-        else:
+        try:
+            absname = os.path.join(CONFDIR, name)
+            os.mkdir(absname)
+        except OSError:
+            pass
+        self.create_template(name, role, n_pifs)
+        if name not in self.containers:
             ip = next(self.free_ips)
             docker_h.create_container(self.network, ip, name, label, environment)
 
     def post(self, fabric_name, interface, subnet, gateway, collector=None,
              address_pool=None, n_leafs=None, n_spines=None,
-             n_border_leafs=None, n_pifs=48):
+             n_super_spines=None, n_border_leafs=None, n_pifs=48):
         """ Create a fabric with the simulated spine and leaf servers """
         self.fabric = fabric_name
         self.network = '-'.join([self.fabric, 'Network'])
         network_detail = docker_h.get_network(self.network)
         if network_detail:
             return self.put(fabric_name, n_leafs, n_spines, n_border_leafs,
-                            n_pifs, address_pool, collector)
+                            n_super_spines, n_pifs, address_pool, collector)
         self.n_spines = n_spines
         self.n_leafs = n_leafs
         self.n_border_leafs = n_border_leafs or 0
+        self.n_super_spines = n_super_spines or 0
         self.n_pifs = n_pifs
         self.collector = collector
         self.containers = dict()
@@ -135,11 +140,12 @@ class Fabric(object):
         return self.get(self.fabric)
 
     def put(self, fabric_name, n_leafs=None, n_spines=None, n_border_leafs=None,
-            n_pifs=48, address_pool=None, collector=None):
+            n_super_spines=None, n_pifs=48, address_pool=None, collector=None):
         """ Update the number of leafs and spines in an existing fabric """
         self.fabric = fabric_name
         self.n_spines = n_spines
         self.n_border_leafs = n_border_leafs or 0
+        self.n_super_spines = n_super_spines or 0
         self.n_leafs = n_leafs
         self.n_pifs = n_pifs
         self.collector = collector
@@ -155,3 +161,8 @@ class Fabric(object):
         self.free_ips = iter(available_ips - docker_h.get_assigned_ips(self.network))
         self.launch_containers()
         return self.get(self.fabric)
+
+    def update_device(self, device_name, manager=None, secret=None, device_id=None):
+        sock_file = self.get_file(device_name, 'netconf', ftype='sock')
+        payload = {'manager': manager, 'secret': secret, 'device_id': device_id}
+        send_event(sock_file, 'dic', payload)

@@ -1,3 +1,4 @@
+import select
 import socket
 import os
 import json
@@ -109,3 +110,41 @@ class UdpServer(object):
                 pass
             else:
                 raise
+
+class TcpClient(object):
+    def __init__(self, server, port):
+        self.server = server
+        self.port = port
+        self.create()
+
+    def create(self):
+        family, socktype, proto, canonname, sockaddr = \
+            socket.getaddrinfo(self.server, self.port, 0,
+                               socket.SOCK_STREAM, 0, 0)[0]
+        self.socket = socket.socket(family, socktype)
+        self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.socket.connect(sockaddr)
+
+    def send(self, message):
+        while True:
+            try:
+                self.socket.send(message)
+                return
+            except socket.error as e:
+                if e.args[0] == errno.EAGAIN or e.args[0] == errno.EINTR:
+                    pass
+                else:
+                    raise
+
+    def recv(self):
+        while True:
+            try:
+                return self.socket.recv(1024)
+            except socket.error as e:
+                if e.args[0] == errno.EAGAIN or e.args[0] == errno.EINTR:
+                    pass
+                else:
+                    raise
+
+    def close(self):
+        self.socket.close()

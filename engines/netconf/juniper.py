@@ -30,6 +30,8 @@ class NetconfPlugin(NetconfPluginBase):
         self.templates = get_templates_abs_path()
         self.update_system_info()
         self.chassis_alarms = dict()
+        self.admin_status = dict()
+        self.oper_status = dict()
 
     def update_system_info(self):
         content = self._convert_template('system_info', rtype='raw')
@@ -81,6 +83,9 @@ class NetconfPlugin(NetconfPluginBase):
         print 'ToDo: rpc_file_show ', etree.tostring(rpc), args, kwargs
         reply = etree.Element('ok')
         return reply
+
+    def rpc_get_lldp_neighbors_information(self, *args, **kwargs):
+        return self._convert_template('lldp_info')
 
     def rpc_get_system_information(self, *args, **kwargs):
         return self._convert_template('system_info')

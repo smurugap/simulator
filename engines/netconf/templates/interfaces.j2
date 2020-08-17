@@ -1,14 +1,15 @@
 <interface-information style="normal">
 {% for n in range(0, n_interfaces) %}
+{% set interface = "et-0/0/" ~ n %}
     <physical-interface>
         <name>
-        et-0/0/{{n}}
+        {{ interface }}
         </name>
         <admin-status format="Enabled">
-        up
+        {{ admin_status.get(interface, 'up') }}
         </admin-status>
         <oper-status>
-        up
+        {{ oper_status.get(interface, 'up') }}
         </oper-status>
         <local-index>
         {{n}}
@@ -29,10 +30,10 @@
         9192
         </mtu>
         <current-physical-address>
-        9c:cc:83:e4:1:{{ '%02x'|format(n) }}
+        aa:bb:cc:dd:ee:{{ '%02x'|format(n) }}
         </current-physical-address>
         <hardware-physical-address>
-        9c:cc:83:e4:1:{{ '%02x'|format(n) }}
+        aa:bb:cc:dd:ee:{{ '%02x'|format(n) }}
         </hardware-physical-address>
     </physical-interface>
 {% endfor %}

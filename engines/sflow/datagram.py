@@ -1,8 +1,8 @@
-from sflow.base import Base, BaseStruct, BaseSampleFormat
-from sflow.base import BaseCounterData, BaseFlowData
-from sflow.types import Address, Array, DataFormat, UInt
-from sflow.flows.inmon import SampledHeader
-from sflow.constants import SAMPLING_RATE
+from engines.sflow.base import Base, BaseStruct, BaseSampleFormat
+from engines.sflow.base import BaseCounterData, BaseFlowData
+from engines.sflow.types import Address, Array, DataFormat, UInt
+from engines.sflow.flows.inmon import SampledHeader
+from engines.sflow.constants import SAMPLING_RATE
 from random import randint
 
 class FlowRecord(BaseStruct):

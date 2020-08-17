@@ -1,31 +1,36 @@
 [DEFAULTS]
 log_level = SYS_DEBUG
-fabric = {{fabric_name}}
-role = {{role}}
-n_peers = {{n_peers}}
-n_bleafs = {{n_bleafs}}
-n_pifs = {{n_pifs}}
+fabric = {{ fabric_name }}
+role = {{ role }}
+n_leafs = {{ n_leafs }}
+n_bleafs = {{ n_bleafs }}
+n_spines = {{ n_spines }}
+n_super_spines = {{ n_super_spines }}
+n_pifs = {{ n_pifs }}
 version = 20.2R2
-model = qfx10002-72q
+model = qfx10002-36q
 
 [Netconf]
 username = root
-password = c0ntrail123
-socket = {{netconf_socket}}
+password = Embe1mpls
+secret = 
+device_id = 
+manager = 
+socket = {{ netconf_socket }}
 port = 22
 
 [SNMP]
-socket = {{snmp_socket}}
-oids = {{snmp_oids}}
-collector = {{collector}}
+socket = {{ snmp_socket }}
+oids = {{ snmp_oids }}
+collector = {{ collector }}
 port = 161
 
 [sFlows]
-flows = {{sflows_filename}}
-collector = {{collector}}
+flows = {{ sflows_filename }}
+collector = {{ collector }}
 port = 6343
 
 [Syslog]
-socket = {{syslog_socket}}
-server = {{collector}}
+socket = {{ syslog_socket }}
+collector = {{ collector }}
 port = 514

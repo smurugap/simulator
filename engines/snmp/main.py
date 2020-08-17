@@ -733,11 +733,10 @@ def craft_response(version, community, request_id, error_status, error_index, oi
     return response
 
 class SNMPServer(object):
-    def __init__(self, peer_prefix=None, n_peers=2, n_interfaces=48,
+    def __init__(self, n_interfaces=48, peers=None,
                  socket=None, oid_file=None, collector=None):
-        self.n_peers = n_peers
+        self.peers = peers
         self.n_interfaces = n_interfaces
-        self.peer_prefix = peer_prefix
         self.hostname = str(docker_h.my_hostname)
         self.my_index = int(docker_h.my_index)
         self.server = UdpServer(port=161)
@@ -773,10 +772,11 @@ class SNMPServer(object):
                  'value': 6},
                 {'oid': '1.3.6.1.2.1.2.1.0', 'type': 'Integer',
                  'value': self.n_interfaces}]
-        remote_interface = "et-0/0/%s"%self.my_index
-        for index in range(self.n_peers):
+        for index, info in enumerate(self.peers):
             local_interface = "et-0/0/%s"%(index)
-            remote_hostname = "%s%s"%(self.peer_prefix, index)
+            remote_hostname = info['name']
+            remote_index = info['index']
+            remote_interface = info['interface']
             oids.append({'oid': '1.0.8802.1.1.2.1.3.7.1.3.%s'%index,
                 'type': 'String', 'value': str(index)})
             oids.append({'oid': '1.0.8802.1.1.2.1.3.7.1.4.%s'%index,
@@ -786,7 +786,7 @@ class SNMPServer(object):
             oids.append({'oid': '1.0.8802.1.1.2.1.4.1.1.8.1459.%s.9'%index,
                 'type': 'String', 'value': remote_interface})
             oids.append({'oid': '1.0.8802.1.1.2.1.4.1.1.7.1459.%s.9'%index,
-                'type': 'String', 'value': str(self.my_index)})
+                'type': 'String', 'value': str(remote_index)})
             oids.append({'oid': '1.3.6.1.2.1.2.2.1.1.%s'%index,
                 'type': 'Integer', 'value': index})
             oids.append({'oid': '1.3.6.1.2.1.2.2.1.2.%s'%index,
@@ -797,7 +797,7 @@ class SNMPServer(object):
                 'type': 'Integer', 'value': 1})
             oids.append({'oid': '1.3.6.1.2.1.2.2.1.8.%s'%index,
                 'type': 'Integer', 'value': 1})
-        for index in range(self.n_peers, self.n_interfaces):
+        for index in range(len(self.peers), self.n_interfaces):
             local_interface = "et-0/0/%s"%(index)
             oids.append({'oid': '1.0.8802.1.1.2.1.3.7.1.3.%s'%index,
                 'type': 'String', 'value': str(index)})

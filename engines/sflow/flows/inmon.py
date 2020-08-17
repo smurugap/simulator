@@ -1,6 +1,6 @@
-from sflow.base import BaseFlowData
-from sflow.types import UInt, HexOpaque
-from sflow.constants import PAYLOAD_SIZE
+from engines.sflow.base import BaseFlowData
+from engines.sflow.types import UInt, HexOpaque
+from engines.sflow.constants import PAYLOAD_SIZE
 
 class SampledHeader(BaseFlowData):
     __format__ = (0, 1)

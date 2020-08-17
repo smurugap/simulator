@@ -17,3 +17,5 @@ flask-swagger-ui==3.25.0
 zipp==1.2.0
 configparser==4.0.2
 pyinotify==0.9.6
+bcrypt==3.1.7
+remote_pdb

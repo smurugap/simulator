@@ -1,5 +1,5 @@
 from common.exceptions import InvalidUsage
-from agent.fabric import Fabric, CONFDIR
+from agent.fabric import Fabric
 from common.ipc_api import send_event
 from common.util import gevent
 from flask import jsonify

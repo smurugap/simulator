@@ -1,0 +1,57 @@
+diff --git a/server.py b/server.py
+index 88a943b..06b7eb5 100644
+--- a/server.py
++++ b/server.py
+@@ -178,9 +178,10 @@ class SSHUserPassController(ssh.ServerInterface):
+     :param password: The password to allow.
+     """
+ 
+-    def __init__(self, username=None, password=None):
++    def __init__(self, username=None, password=None, queue=None):
+         self.username = username
+         self.password = password
++        self.queue = queue
+         self.event = threading.Event()
+ 
+     def get_allowed_auths(self, username):
+@@ -222,7 +223,10 @@ class NetconfServerSession(base.NetconfSession):
+ 
+         self.methods = server.server_methods
+         super(NetconfServerSession, self).__init__(channel, debug, sid)
+-        super(NetconfServerSession, self)._open_session(True)
++        try:
++            data = self.server.queue.get(timeout=3)
++        except:
++            super(NetconfServerSession, self)._open_session(True)
+ 
+         if self.debug:
+             logger.debug("%s: Client session-id %s created", str(self), str(sid))
+@@ -302,7 +306,7 @@ class NetconfServerSession(base.NetconfSession):
+         # Any error with XML encoding here is going to cause a session close
+         # Technically we should be able to return malformed message I think.
+         try:
+-            tree = etree.parse(io.BytesIO(msg.encode('utf-8')))
++            tree = etree.parse(io.BytesIO(msg.encode('utf-8').strip()))
+             if not tree:
+                 raise ncerror.SessionError(msg, "Invalid XML from client.")
+         except etree.XMLSyntaxError:
+@@ -631,14 +635,17 @@ class NetconfSSHServer(sshutil.server.SSHServer):
+     :param debug: True to enable debug logging.
+     """
+ 
+-    def __init__(self, server_ctl=None, server_methods=None, port=830, host_key=None, debug=False):
+-        self.server_methods = server_methods if server_methods is not None else NetconfMethods()
++    def __init__(self, server_ctl=None, server_methods=None,
++                 port=830, host_key=None, debug=False, queue=None):
++        self.server_methods = server_methods \
++            if server_methods is not None else NetconfMethods()
+         self.session_id = 1
+         self.session_locks_lock = threading.Lock()
+         self.session_locks = {
+             "running": 0,
+             "candidate": 0,
+         }
++        self.queue = queue
+         super(NetconfSSHServer, self).__init__(
+             server_ctl,
+             server_session_class=NetconfServerSession,

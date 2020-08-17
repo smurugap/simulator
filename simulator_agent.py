@@ -29,6 +29,8 @@ fabric_put_schema = {
         description='No of spines in the fabric'),
     'n_border_leafs': fields.Integer(
         description='No of border leafs in the fabric'),
+    'n_super_spines': fields.Integer(
+        description='No of super spines in the fabric'),
     'n_pifs': fields.Integer(
         description='No of physical interfaces in each Leaf - eg: 48'),
     'collector': fields.String(
@@ -71,10 +73,14 @@ class FlaskFabricList(Resource):
 # Register sFlow engine apis
 ns_sflow = api.namespace('sflow', description='sFlow start/stop actions')
 sflow_schema = {
-    'action': fields.String(required=True, description='start or stop sflows'),
-    'direction': fields.String(description='ingress or egress direction for sflow collection'),
-    'bms_per_router': fields.String(description='No of BMS servers per Device (floor and not ceil)'),
-    'n_flows': fields.Integer(description='No of sampled flows if action is "start"')
+    'action': fields.String(required=True,
+        description='start or stop sflows'),
+    'direction': fields.String(required=True,
+        description='ingress or egress direction for sflow collection'),
+    'bms_per_router': fields.String(required=True,
+        description='No of BMS servers per Device (floor and not ceil)'),
+    'n_flows': fields.Integer(required=True,
+        description='No of sampled flows if action is "start"')
 }
 sflow_model = api.model('sflow_model', sflow_schema)
 @ns_sflow.route("/<string:fabric_name>")
@@ -83,6 +89,24 @@ class FlaskSFlow(Resource):
     def post(self, fabric_name):
         data = request.get_json(force=True)
         sFlow().post(fabric_name, **data)
+
+# Register device specific apis
+ns_device = api.namespace('device', description='Update a physical router simulator')
+device_schema = {
+    'manager': fields.String(required=True,
+        description='JFM Manager address'),
+    'secret': fields.String(required=True,
+        description='Secret key authenticating with manager'),
+    'device_id': fields.String(required=True,
+        description='Device id of the device in the manager')
+}
+device_model = api.model('device_model', device_schema)
+@ns_device.route("/<string:device_name>")
+class FlaskDevice(Resource):
+    @ns_device.expect(device_model)
+    def put(self, device_name):
+        data = request.get_json(force=True)
+        Fabric().update_device(device_name, **data)
 
 # Register netconf engine apis
 ns_netconf = api.namespace('netconf', description='Send events to netconf engine')

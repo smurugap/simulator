@@ -10,9 +10,7 @@ import json
 import logging
 import xdrlib
 
-import datagram
-
-import flows  # noqa
+from engines.sflow import datagram
 
 def encode(dct):
     """Decode a bytes object as an sFlow datagram"""
@@ -65,8 +63,6 @@ class sFlowEngine(object):
 
         for i in range(0, len(self.samples), SAMPLES_PER_PKT):
             samples = self.samples[i:i+SAMPLES_PER_PKT]
-            print samples
-            print docker_h.my_ip
             self.buffers.append(encode({'agent_address': docker_h.my_ip,
                 'samples': samples}).get_buffer())
 

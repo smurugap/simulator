@@ -2,7 +2,7 @@ from builtins import str
 import binascii
 import ipaddress
 
-from sflow.base import Base, BaseStruct
+from engines.sflow.base import Base, BaseStruct
 
 
 class Int(Base):

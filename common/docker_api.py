@@ -60,9 +60,6 @@ class DockerInterface(object):
             assigned_ips.add(str(value['IPv4Address'].split('/')[0]))
         return assigned_ips
 
-    def restart_container(self, container_id):
-        self._client.restart(container_id)
-
     def create_container(self, network, ip, name, labels=None,
                          environment=None):
         lc = LogConfig(type=LogConfig.types.JSON, config={'max-size': '1g'})
