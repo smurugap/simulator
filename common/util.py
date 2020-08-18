@@ -160,10 +160,10 @@ def get_file(device, engine=None, ftype='sock'):
         raise Exception('Unsupported file type')
     return os.path.join(CONFDIR, device, name)
 
-def get_sha1(key, message):
-    message = bytes('message').encode('utf-8')
-    key = bytes('key').encode('utf-8')
-    return hmac.new(key, message, hashlib.sha1).hexdigest()
+def get_sha1(secret, message):
+    message = bytes(message).encode('utf-8')
+    secret = bytes(secret).encode('utf-8')
+    return hmac.new(secret, message, hashlib.sha1).hexdigest()
 
 class SafeList(list):
     def get(self, index, default=None):

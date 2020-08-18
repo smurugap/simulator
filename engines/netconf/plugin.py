@@ -88,6 +88,10 @@ class NetconfPluginBase(object):
         reply = etree.Element('ok')
         return reply
 
+    def rpc_commit(self, *args, **kwargs):
+        reply = etree.Element('ok')
+        return reply
+
     def rpc_unlock_configuration(self, *args, **kwargs):
         reply = etree.Element('ok')
         return reply

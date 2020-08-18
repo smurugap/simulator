@@ -1,0 +1,7 @@
+<system-information>
+    <hardware-model>{{model}}</hardware-model>
+    <os-name>junos-qfx</os-name>
+    <os-version>{{version}}</os-version>
+    <serial-number>{{hostname}}</serial-number>
+    <host-name>{{hostname}}</host-name>
+</system-information>

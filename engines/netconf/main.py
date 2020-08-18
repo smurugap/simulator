@@ -17,6 +17,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 nsmap_add("sys", "urn:ietf:params:xml:ns:yang:ietf-system")
 MYDIR = os.path.dirname(os.path.abspath(__file__))
+TEMPLATE_DIR = os.path.join(MYDIR, 'templates')
 NETCONF_EVENTS = dict()
 
 class NetconfServer(object):
@@ -31,6 +32,7 @@ class NetconfServer(object):
             password=password, queue=self.queue)
         self.plugin = NetconfPlugin(version=version, peers=peers,
             n_interfaces=n_interfaces, model=model, socket=socket)
+        self.onboard_templates()
         self.manager = manager
         self.device_id = device_id
         self.secret = secret
@@ -91,11 +93,20 @@ class NetconfServer(object):
 
     def register(self, templates):
         for rpc_name, content in templates.items():
-            filename = os.path.join('/tmp', rpc_name)
+            rpc_name = rpc_name.replace("-", "_")
+            if not rpc_name.startswith('rpc_'):
+                rpc_name = "rpc_"+rpc_name
+            filename = os.path.join(TEMPLATE_DIR, rpc_name)
             with open(filename, 'w') as fd:
                 fd.write(content)
             self.plugin.templates[rpc_name] = filename
-            setattr(self.plugin, 'rpc_'+rpc_name, self.dynamic_rpc_fn(rpc_name))
+            setattr(self.plugin, rpc_name, self.dynamic_rpc_fn(rpc_name))
+
+    def onboard_templates(self):
+        for file in os.listdir(TEMPLATE_DIR):
+            if file.startswith('rpc_'):
+                self.plugin.templates[file] = os.path.join(TEMPLATE_DIR, file)
+                setattr(self.plugin, file, self.dynamic_rpc_fn(file))
 
 class SSHWrapper(SSHPlugin, server.SSHUserPassController):
     pass

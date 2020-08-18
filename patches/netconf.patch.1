@@ -55,3 +55,27 @@ index 88a943b..06b7eb5 100644
          super(NetconfSSHServer, self).__init__(
              server_ctl,
              server_session_class=NetconfServerSession,
+diff --git a/base.py b/base.py
+index 23f6228..8abe56e 100644
+--- a/base.py
++++ b/base.py
+@@ -18,6 +18,8 @@
+ # limitations under the License.
+ #
+ from __future__ import absolute_import, division, unicode_literals, print_function, nested_scopes
++from gevent import monkey
++monkey.patch_all()
+ import logging
+ import io
+ import socket
+@@ -183,6 +185,10 @@ class NetconfFramingTransport(NetconfPacketTransport):
+                 break
+             searchfrom = max(0, len(self.rbuffer) - 5)
+             buf = self.stream.recv(self.max_chunk)
++            if not buf:
++                if self.debug:
++                    logger.debug("Channel closed: Zero bytes read")
++                raise ChannelClosed(self)
+             self.rbuffer += buf
+
+         msg = self.rbuffer[:eomidx]

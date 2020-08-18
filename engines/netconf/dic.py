@@ -6,7 +6,7 @@ import argparse
 from common.ipc_api import TcpClient
 from common.util import get_sha1, daemonize
 
-key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/qMKn98s//RlFXs24idBnvKPuzZEphCHcX7H2LURltLWyWn7yUN/ylpS3wtcn0OAnE07uBasZUP4ViBynNzKx0n+JYyDLtbG0W4alknodGxl4y3kxYCuyTrHAkShiTBQIkMPZRzxskO0F2kopoSAE8TT8l40Az2ZDX08B4umMyEg4RSzI2enIaaNBKaowV5Pu7PqelTCpJd7HCfniEbPeYbv/3nqT40pWtDuu/5OCHoST4PeHgHnyO9kk/DLs778ikxyA+OmUUcKNppETFiCoZ8+GQHsoa54F+igT8lJ65exuNzbkgp7Sv6KTOrme9orJgs2co9C+N2XmTmIPc9wh"
+KEY = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/qMKn98s//RlFXs24idBnvKPuzZEphCHcX7H2LURltLWyWn7yUN/ylpS3wtcn0OAnE07uBasZUP4ViBynNzKx0n+JYyDLtbG0W4alknodGxl4y3kxYCuyTrHAkShiTBQIkMPZRzxskO0F2kopoSAE8TT8l40Az2ZDX08B4umMyEg4RSzI2enIaaNBKaowV5Pu7PqelTCpJd7HCfniEbPeYbv/3nqT40pWtDuu/5OCHoST4PeHgHnyO9kk/DLs778ikxyA+OmUUcKNppETFiCoZ8+GQHsoa54F+igT8lJ65exuNzbkgp7Sv6KTOrme9orJgs2co9C+N2XmTmIPc9wh"
 
 class DeviceInitiatedConnection(object):
     def __init__(self, jfm_addr, nc_addr, device_id, secret):
@@ -19,11 +19,11 @@ class DeviceInitiatedConnection(object):
         self.nc_socket = None
 
     def get_initial_payload(self):
-        sha1 = get_sha1(key, self.secret)
+        sha1 = get_sha1(self.secret, KEY)
         payload = "MSG-ID: DEVICE-CONN-INFO\r\n"
         payload = payload + "MSG-VER: V1\r\n"
         payload = payload + "DEVICE-ID: " + self.device_id + "\r\n"
-        payload = payload + "HOST-KEY: " + key + "\r\n"
+        payload = payload + "HOST-KEY: " + KEY + "\r\n"
         payload = payload + "HMAC: " + sha1 + "\r\n\r\n\r\n"
         return payload
 
