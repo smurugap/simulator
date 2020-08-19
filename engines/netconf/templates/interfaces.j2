@@ -1,88 +1,42 @@
 <interface-information style="normal">
 {% for n in range(0, n_interfaces) %}
 {% set interface = "et-0/0/" ~ n %}
-    <physical-interface>
-        <name>
-        {{ interface }}
-        </name>
-        <admin-status format="Enabled">
-        {{ admin_status.get(interface, 'up') }}
-        </admin-status>
-        <oper-status>
-        {{ oper_status.get(interface, 'up') }}
-        </oper-status>
-        <local-index>
-        {{n}}
-        </local-index>
-        <snmp-index>
-        {{n}}
-        </snmp-index>
-        <link-level-type>
-        Ethernet
-        </link-level-type>
-        <speed>
-        40000mbps
-        </speed>
-        <link-mode>
-        Full-duplex
-        </link-mode>
-        <mtu>
-        9192
-        </mtu>
-        <current-physical-address>
-        aa:bb:cc:dd:ee:{{ '%02x'|format(n) }}
-        </current-physical-address>
-        <hardware-physical-address>
-        aa:bb:cc:dd:ee:{{ '%02x'|format(n) }}
-        </hardware-physical-address>
-    </physical-interface>
+<physical-interface>
+    <name>{{ interface }}</name>
+    <admin-status>{{ admin_status.get(interface, 'up') }}</admin-status>
+    <oper-status>{{ oper_status.get(interface, 'up') }}</oper-status>
+    <local-index>{{n}}</local-index>
+    <snmp-index>{{n}}</snmp-index>
+    <link-level-type>Ethernet</link-level-type>
+    <speed>40000mbps</speed>
+    <link-mode>Full-duplex</link-mode>
+    <mtu>9192</mtu>
+    <current-physical-address>aa:bb:cc:dd:ee:{{ '%02x'|format(n) }}</current-physical-address>
+    <hardware-physical-address>aa:bb:cc:dd:ee:{{ '%02x'|format(n) }}</hardware-physical-address>
+</physical-interface>
 {% endfor %}
-    <physical-interface>
-        <name>
-        lo0
-        </name>
-        <admin-status format="Enabled">
-        up
-        </admin-status>
-        <oper-status>
-        up
-        </oper-status>
-        <local-index>
-        600
-        </local-index>
-        <snmp-index>
-        600
-        </snmp-index>
-        <if-type>
-        Loopback
-        </if-type>
-        <mtu>
-        Unlimited
-        </mtu>
-        <logical-interface>
-            <name>
-            lo0.0
-            </name>
-            <local-index>
-            601
-            </local-index>
-            <snmp-index>
-            601
-            </snmp-index>
-            <address-family>
-                <address-family-name>
-                inet
-                </address-family-name>
-                <interface-address>
-                    <ifa-flags>
-                        <ifaf-current-default/>
-                        <ifaf-current-primary/>
-                    </ifa-flags>
-                    <ifa-local>
-                    {{ tunnel_ip }}
-                    </ifa-local>
-                </interface-address>
-            </address-family>
-        </logical-interface>
-    </physical-interface>
+<physical-interface>
+    <name>lo0</name>
+    <admin-status format="Enabled">up</admin-status>
+    <oper-status>up</oper-status>
+    <local-index>600</local-index>
+    <snmp-index>600</snmp-index>
+    <if-type>Loopback</if-type>
+    <mtu>Unlimited</mtu>
+    <logical-interface>
+    <name>lo0.0</name>
+    <local-index>601</local-index>
+    <snmp-index>601</snmp-index>
+    <address-family>
+        <address-family-name>inet</address-family-name>
+        <interface-address>
+            <ifa-flags>
+                    <ifaf-current-default/>
+                    <ifaf-current-primary/>
+            </ifa-flags>
+            <ifa-local>{{ tunnel_ip }}</ifa-local>
+        </interface-address>
+        </address-family>
+    </logical-interface>
+</physical-interface>
 </interface-information>

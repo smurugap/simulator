@@ -68,13 +68,19 @@ index 23f6228..8abe56e 100644
  import logging
  import io
  import socket
-@@ -183,6 +185,10 @@ class NetconfFramingTransport(NetconfPacketTransport):
+@@ -178,11 +178,16 @@ class NetconfFramingTransport(NetconfPacketTransport):
+     def _receive_10(self):
+         searchfrom = 0
+         while True:
++            self.rbuffer = self.rbuffer.strip()
+             eomidx = self.rbuffer.find(b"]]>]]>", searchfrom)
+             if eomidx != -1:
                  break
              searchfrom = max(0, len(self.rbuffer) - 5)
              buf = self.stream.recv(self.max_chunk)
-+            if not buf:
++            if self.stream.closed:
 +                if self.debug:
-+                    logger.debug("Channel closed: Zero bytes read")
++                    logger.debug("MSENTHIL - Channel closed")
 +                raise ChannelClosed(self)
              self.rbuffer += buf
 
