@@ -1,4 +1,4 @@
-<interface-information style="normal">
+<interface-information>
 {% for n in range(0, n_interfaces) %}
 {% set interface = "et-0/0/" ~ n %}
 <physical-interface>
@@ -17,7 +17,7 @@
 {% endfor %}
 <physical-interface>
     <name>lo0</name>
-    <admin-status format="Enabled">up</admin-status>
+    <admin-status>up</admin-status>
     <oper-status>up</oper-status>
     <local-index>600</local-index>
     <snmp-index>600</snmp-index>
@@ -34,7 +34,7 @@
                     <ifaf-current-default/>
                     <ifaf-current-primary/>
             </ifa-flags>
-            <ifa-local>{{ tunnel_ip }}</ifa-local>
+            <ifa-local>128.0.0.1/2</ifa-local>
         </interface-address>
         </address-family>
     </logical-interface>

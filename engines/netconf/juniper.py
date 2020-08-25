@@ -19,6 +19,7 @@ TEMPLATES = {'version': 'version.j2',
              'lldp_info': 'lldp_info.j2',
              'chassis_alarms': 'chassis_alarms.j2',
              're_info': 're_info.j2',
+             'interface_ri_juniper_private1': 'interface_ri_juniper_private1.j2'
             }
 
 def get_templates_abs_path():
@@ -80,8 +81,19 @@ class NetconfPlugin(NetconfPluginBase):
         return self._convert_template(template)
 
     def rpc_file_show(self, session, rpc, *args, **kwargs):
-        print 'ToDo: rpc_file_show ', etree.tostring(rpc), args, kwargs
-        reply = etree.Element('ok')
+        FILES_DIR=os.path.join(MYDIR, 'files')
+        fullfilename = rpc.xpath('./file-show/filename')[0].text
+        filename = os.path.basename(fullfilename)
+        if filename in os.listdir(FILES_DIR):
+            with open(os.path.join(FILES_DIR, filename)) as fd:
+                content = fd.read()
+            reply_str = '<file-content encoding="text" ' +\
+                'filename="%s" filesize="%s">'%(filename, len(content)) +\
+                content + "</file-content>"
+            reply = etree.fromstring(reply_str)
+        else:
+            print 'ToDo: rpc_file_show ', etree.tostring(rpc), args, kwargs
+            reply = None
         return reply
 
     def rpc_get_lldp_neighbors_information(self, *args, **kwargs):
@@ -90,7 +102,11 @@ class NetconfPlugin(NetconfPluginBase):
     def rpc_get_system_information(self, *args, **kwargs):
         return self._convert_template('system_info')
 
-    def rpc_get_interface_information(self, *args, **kwargs):
+    def rpc_get_interface_information(self, session, rpc, *args, **kwargs):
+        ri = rpc.xpath('./routing-instance')
+        if ri:
+            if "__juniper_private1__" in ri[0].text:
+                return self._convert_template('interface_ri_juniper_private1')
         return self._convert_template('interfaces')
 
     def rpc_get_software_information(self, *args, **kwargs):

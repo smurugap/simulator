@@ -1,5 +1,5 @@
 <chassis-inventory>
-<chassis style="inventory">
+<chassis>
 <name>Chassis</name>
 <serial-number>{{hostname}}</serial-number>
 <description>{{model}}</description>
