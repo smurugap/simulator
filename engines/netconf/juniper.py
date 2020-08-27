@@ -31,8 +31,7 @@ class NetconfPlugin(NetconfPluginBase):
         self.templates = get_templates_abs_path()
         self.update_system_info()
         self.chassis_alarms = dict()
-        self.admin_status = dict()
-        self.oper_status = dict()
+        self.interfaces = dict()
 
     def update_system_info(self):
         content = self._convert_template('system_info', rtype='raw')

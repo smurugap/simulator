@@ -1,19 +1,192 @@
 <interface-information>
 {% for n in range(0, n_interfaces) %}
-{% set interface = "et-0/0/" ~ n %}
-<physical-interface>
-    <name>{{ interface }}</name>
-    <admin-status>{{ admin_status.get(interface, 'up') }}</admin-status>
-    <oper-status>{{ oper_status.get(interface, 'up') }}</oper-status>
-    <local-index>{{n}}</local-index>
-    <snmp-index>{{n}}</snmp-index>
-    <link-level-type>Ethernet</link-level-type>
-    <speed>40000mbps</speed>
-    <link-mode>Full-duplex</link-mode>
-    <mtu>9192</mtu>
-    <current-physical-address>aa:bb:cc:dd:ee:{{ '%02x'|format(n) }}</current-physical-address>
-    <hardware-physical-address>aa:bb:cc:dd:ee:{{ '%02x'|format(n) }}</hardware-physical-address>
-</physical-interface>
+{% set interface = 'et-0/0/' ~ n %}
+{% set intf_dict = (interfaces is defined and interfaces.get('et-0/0/' ~ n, {}))|default({}) %}
+        <physical-interface>
+            <name>{{interface}}</name>
+            <admin-status>{{ intf_dict.get('admin_status', 'up') }}</admin-status>
+            <oper-status>{{ intf_dict.get('oper_status', 'up') }}</oper-status>
+            <local-index>{{n}}</local-index>
+            <snmp-index>{{n}}</snmp-index>
+            <generation>150</generation>
+            <link-level-type>Ethernet</link-level-type>
+            <mtu>9192</mtu>
+            <sonet-mode>LAN-PHY</sonet-mode>
+            <source-filtering>disabled</source-filtering>
+            <speed>10Gbps</speed>
+            <eth-switch-error>none</eth-switch-error>
+            <bpdu-error>{{ intf_dict.get('bpdu_error', 'none') }}</bpdu-error>
+            <ld-pdu-error>{{ intf_dict.get('ld_pdu_error', 'none') }}</ld-pdu-error>
+            <l2pt-error>{{ intf_dict.get('l2pt_error', 'none') }}</l2pt-error>
+            <loopback>disabled</loopback>
+            <if-flow-control>disabled</if-flow-control>
+            <if-media-type>Fiber</if-media-type>
+
+            <if-device-flags>
+                <ifdf-present/>
+                <ifdf-running/>
+            </if-device-flags>
+            <ifd-specific-config-flags>
+            </ifd-specific-config-flags>
+            <if-config-flags>
+                <iff-snmp-traps/>
+                <internal-flags>0x4000</internal-flags>
+            </if-config-flags>
+            <if-media-flags>
+                <ifmf-none/>
+            </if-media-flags>
+            <up-hold-time>0</up-hold-time>
+            <down-hold-time>0</down-hold-time>
+            <current-physical-address>64:c3:d6:7a:ad:11</current-physical-address>
+            <hardware-physical-address>64:c3:d6:7a:ad:11</hardware-physical-address>
+            <interface-flapped>2020-08-21 21:19:52 UTC (4d 21:43 ago)</interface-flapped>
+            <statistics-cleared>Never</statistics-cleared>
+            <traffic-statistics>
+                    <input-bytes>{{ intf_dict.get('traffic_input_bytes', 1000) }}</input-bytes>
+                    <output-bytes>{{ intf_dict.get('traffic_output_bytes', 1000) }}</output-bytes>
+                    <input-packets>{{ intf_dict.get('traffic_input_packets', 10) }}</input-packets>
+                    <output-packets>{{ intf_dict.get('traffic_output_packets', 10) }}</output-packets>
+                <input-bps>{{ intf_dict.get('traffic_input_bps', 100) }}</input-bps>
+                <output-bps>{{ intf_dict.get('traffic_output_bps', 100) }}</output-bps>
+                <input-pps>{{ intf_dict.get('traffic_input_pps', 1) }}</input-pps>
+                <output-pps>{{ intf_dict.get('traffic_output_pps', 1) }}</output-pps>
+                <ipv6-transit-statistics>
+                    <input-bytes>0</input-bytes>
+                    <output-bytes>0</output-bytes>
+                    <input-packets>0</input-packets>
+                    <output-packets>0</output-packets>
+                </ipv6-transit-statistics>
+            </traffic-statistics>
+            <input-error-list>
+                <input-errors>{{ intf_dict.get('input_errors', 0) }}</input-errors>
+                <input-drops>0</input-drops>
+                <framing-errors>0</framing-errors>
+                <input-runts>0</input-runts>
+                <input-discards>0</input-discards>
+                <input-l3-incompletes>0</input-l3-incompletes>
+                <input-l2-channel-errors>0</input-l2-channel-errors>
+                <input-l2-mismatch-timeouts>0</input-l2-mismatch-timeouts>
+                <input-fifo-errors>0</input-fifo-errors>
+                <input-resource-errors>0</input-resource-errors>
+            </input-error-list>
+            <output-error-list>
+                <carrier-transitions>{{ intf_dict.get('carrier_trans', 3) }}</carrier-transitions>
+                <output-errors>{{ intf_dict.get('output_errors', 0) }}</output-errors>
+                <output-collisions>0</output-collisions>
+                <output-drops>0</output-drops>
+                <aged-packets>0</aged-packets>
+                <mtu-errors>0</mtu-errors>
+                <hs-link-crc-errors>0</hs-link-crc-errors>
+                <output-fifo-errors>0</output-fifo-errors>
+                <output-resource-errors>0</output-resource-errors>
+            </output-error-list>
+            <active-alarms>
+                <interface-alarms>
+                    <alarm-not-present/>
+                </interface-alarms>
+            </active-alarms>
+            <active-defects>
+                <interface-alarms>
+                    <alarm-not-present/>
+                </interface-alarms>
+            </active-defects>
+            <ethernet-pcs-statistics>
+                <bit-error-seconds>0</bit-error-seconds>
+                <errored-blocks-seconds>0</errored-blocks-seconds>
+            </ethernet-pcs-statistics>
+            <ethernet-fec-mode>
+                <enabled_fec_mode></enabled_fec_mode>
+            </ethernet-fec-mode>
+            <ethernet-fec-statistics>
+                <fec_ccw_count>0</fec_ccw_count>
+                <fec_nccw_count>0</fec_nccw_count>
+                <fec_ccw_error_rate>0</fec_ccw_error_rate>
+                <fec_nccw_error_rate>0</fec_nccw_error_rate>
+            </ethernet-fec-statistics>
+            <ethernet-mac-statistics>
+                <input-bytes>243464401</input-bytes>
+                <output-bytes>938739934</output-bytes>
+                <input-packets>2047676</input-packets>
+                <output-packets>2680983</output-packets>
+                <input-unicasts>1955900</input-unicasts>
+                <output-unicasts>2589226</output-unicasts>
+                <input-broadcasts>202</input-broadcasts>
+                <output-broadcasts>187</output-broadcasts>
+                <input-multicasts>91574</input-multicasts>
+                <output-multicasts>91570</output-multicasts>
+                <input-crc-errors>0</input-crc-errors>
+                <output-crc-errors>0</output-crc-errors>
+                <input-fifo-errors>0</input-fifo-errors>
+                <output-fifo-errors>0</output-fifo-errors>
+                <input-mac-control-frames>0</input-mac-control-frames>
+                <output-mac-control-frames>0</output-mac-control-frames>
+                <input-mac-pause-frames>0</input-mac-pause-frames>
+                <output-mac-pause-frames>0</output-mac-pause-frames>
+                <input-oversized-frames>0</input-oversized-frames>
+                <input-jabber-frames>0</input-jabber-frames>
+                <input-fragment-frames>0</input-fragment-frames>
+                <input-vlan-tagged-frames>0</input-vlan-tagged-frames>
+                <input-code-violations>0</input-code-violations>
+            </ethernet-mac-statistics>
+            <ethernet-mac-pfc-statistics>
+                <mac-pfc-dot1p>0</mac-pfc-dot1p>
+                <input-mac-pfc-frames>0</input-mac-pfc-frames>
+                <output-mac-pfc-frames>0</output-mac-pfc-frames>
+            </ethernet-mac-pfc-statistics>
+            <ethernet-mac-pfc-statistics>
+                <mac-pfc-dot1p>1</mac-pfc-dot1p>
+                <input-mac-pfc-frames>0</input-mac-pfc-frames>
+                <output-mac-pfc-frames>0</output-mac-pfc-frames>
+            </ethernet-mac-pfc-statistics>
+            <ethernet-mac-pfc-statistics>
+                <mac-pfc-dot1p>2</mac-pfc-dot1p>
+                <input-mac-pfc-frames>0</input-mac-pfc-frames>
+                <output-mac-pfc-frames>0</output-mac-pfc-frames>
+            </ethernet-mac-pfc-statistics>
+            <ethernet-mac-pfc-statistics>
+                <mac-pfc-dot1p>3</mac-pfc-dot1p>
+                <input-mac-pfc-frames>0</input-mac-pfc-frames>
+                <output-mac-pfc-frames>0</output-mac-pfc-frames>
+            </ethernet-mac-pfc-statistics>
+            <ethernet-mac-pfc-statistics>
+                <mac-pfc-dot1p>4</mac-pfc-dot1p>
+                <input-mac-pfc-frames>0</input-mac-pfc-frames>
+                <output-mac-pfc-frames>0</output-mac-pfc-frames>
+            </ethernet-mac-pfc-statistics>
+            <ethernet-mac-pfc-statistics>
+                <mac-pfc-dot1p>5</mac-pfc-dot1p>
+                <input-mac-pfc-frames>0</input-mac-pfc-frames>
+                <output-mac-pfc-frames>0</output-mac-pfc-frames>
+            </ethernet-mac-pfc-statistics>
+            <ethernet-mac-pfc-statistics>
+                <mac-pfc-dot1p>6</mac-pfc-dot1p>
+                <input-mac-pfc-frames>0</input-mac-pfc-frames>
+                <output-mac-pfc-frames>0</output-mac-pfc-frames>
+            </ethernet-mac-pfc-statistics>
+            <ethernet-mac-pfc-statistics>
+                <mac-pfc-dot1p>7</mac-pfc-dot1p>
+                <input-mac-pfc-frames>0</input-mac-pfc-frames>
+                <output-mac-pfc-frames>0</output-mac-pfc-frames>
+            </ethernet-mac-pfc-statistics>
+            <ethernet-prbs-mode>
+                <prbs_mode>Disabled</prbs_mode>
+            </ethernet-prbs-mode>
+            <pfe-information>
+                <destination-slot>0</destination-slot>
+                <destination-mask>0x00</destination-mask>
+            </pfe-information>
+            <cos-header/>
+            <interface-transmit-statistics>Disabled</interface-transmit-statistics>
+            <macsec-statistics>
+                <macsec-tx-sc-protected>0</macsec-tx-sc-protected>
+                <macsec-tx-sc-encrypted>0</macsec-tx-sc-encrypted>
+                <macsec-tx-sc-protectedbytes>0</macsec-tx-sc-protectedbytes>
+                <macsec-tx-sc-encryptedbytes>0</macsec-tx-sc-encryptedbytes>
+                <macsec-rx-sc-ok>0</macsec-rx-sc-ok>
+                <macsec-rx-sc-validatedbytes>0</macsec-rx-sc-validatedbytes>
+                <macsec-rx-sc-decryptedbytes>0</macsec-rx-sc-decryptedbytes>
+            </macsec-statistics>
+        </physical-interface>
 {% endfor %}
 <physical-interface>
     <name>lo0</name>

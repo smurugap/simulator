@@ -89,6 +89,9 @@ class NetconfServer(object):
 
     def update(self, kv_pairs):
         for k,v in kv_pairs.items():
+            if type(getattr(self.plugin, k, None)) is dict:
+                getattr(self.plugin, k).update(v)
+                continue
             setattr(self.plugin, k, v)
 
     def register(self, templates):
