@@ -20,6 +20,13 @@ keystone:
     domain: Default
     server: 10.87.70.10
 
+resource_monitor:
+    - 10.87.70.10
+    - 10.87.70.11
+    - 10.87.70.12
+    - 192.168.13.3
+    - spyder.juniper.net
+
 fabrics:
     SimulatedFabric:
         interface: enp129s0f1

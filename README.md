@@ -20,9 +20,15 @@ $ mkdir -p /etc/simulator
 $ docker run -itd --privileged -v /var/run:/var/run -v /etc/simulator:/etc/simulator --net host --name simulator-agent smurugap/simulator:latest
 ```
 
-# Execution:
+# Scale Test Execution:
 ## Create fabric yaml:
 * Login to the container and update the [fabric.yaml](https://github.com/smurugap/simulator/blob/master/fabric.yaml) file
+
+## Resource Monitoring (optional):
+* Launch resource monitoring service (glances) on controllers (Appformix, Contrail, JFM, JFM-Edge etal)
+```sh
+$ docker run -d --restart="always" -p 61208-61209:61208-61209 -e GLANCES_OPT="-w" -v /var/run/docker.sock:/var/run/docker.sock:ro --pid host nicolargo/glances
+```
 
 ## Onboard devices:
 ```sh

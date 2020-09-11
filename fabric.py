@@ -3,7 +3,9 @@ from scripts.agent_api import SimulatorAgentApi
 from collections import deque, defaultdict
 from common.constants import *
 from common.orderedset import OrderedSet
+from common.rest_api import RestServer
 from common.util import GeventLib, get_random_cidr, custom_dict, get_random_ip
+from datetime import datetime
 import argparse
 import yaml
 import sys
@@ -11,10 +13,86 @@ import time
 import random
 import warnings
 warnings.filterwarnings("ignore")
+import json
+import gevent
+import requests
+from gevent import monkey
+monkey.patch_all()
 
 advertise_route = False
 
 IP_PROTO_FILTER = ['TCP', 'UDP', 'ICMP', 'ANY']
+MONITOR_INTERVAL = 60
+MONITOR_PORT = 61208
+
+class CalculateUsage(object):
+    def __init__(self, monitor_hosts, interval):
+        self.hosts = {}
+        self.containers = {}
+        self.monitor_hosts = monitor_hosts
+        self.interval = interval
+
+    def start_monitor(self):
+        self.greenlets = [gevent.spawn(self.get_usage, host)
+            for host in self.monitor_hosts]
+
+    def stop_monitor(self):
+        gevent.killall(self.greenlets)
+        gevent.joinall(self.greenlets)
+
+    def get_usage(self, host):
+        server = RestServer(host, MONITOR_PORT)
+        while True:
+            cpu_info = server.get('api/3/cpu')['total']
+            mem_info = server.get('api/3/mem')['used']
+            self.update_usage(self.hosts, host, cpu_info, mem_info)
+            containers_info = server.get('api/3/docker')['containers']
+            for container in containers_info:
+                self.update_usage(self.containers, container['name'],
+                    container['cpu_percent'], container['memory_usage'])
+            gevent.sleep(self.interval)
+
+    def update_usage(self, usages, name, cpu_per, mem_usage):
+        if cpu_per != '' and cpu_per != None \
+           and mem_usage != '' and mem_usage != None:
+            cpu = float(cpu_per)
+            mem = float(mem_usage)
+            if name not in usages.keys():
+                usages[name] = [cpu, mem]
+            else:
+                usages[name][0] = max(cpu, usages[name][0])
+                usages[name][1] = max(mem, usages[name][1])
+
+    def print_usage(self, event):
+        result = "\n\nResource Usage for " + event
+        result += "\nCurrent time: " + str(datetime.now())
+        result += "\nHost Usage:"
+        for resource, usage in self.hosts.items():
+            result += "\n{}:\n CPU: {}%\n Memory: {}".format(
+                resource, usage[0], usage[1])
+        result += "\nContainer Usage:"
+        for resource, usage in self.containers.items():
+            result += "\n{}:\n CPU: {:0.2f}%\n Memory: {}".format(
+                resource, usage[0], usage[1])
+        print(result)
+        fout = "resource_usage.txt"
+        with open(fout, 'w') as outfile:
+            outfile.write(result)
+        fout = "resource_usage_%s.txt"%event
+        with open(fout, 'a') as outfile:
+            outfile.write(result)
+
+def calculate_usage(f):
+    def wrapper(self, *args, **kwargs):
+        if self.monitor_hosts:
+            if not getattr(self, 'usage_stats', None):
+                self.usage_stats = CalculateUsage(self.monitor_hosts,
+                                                  MONITOR_INTERVAL)
+            self.usage_stats.start_monitor()
+            f(self, *args, **kwargs)
+            self.usage_stats.stop_monitor()
+            self.usage_stats.print_usage(f.__name__)
+    return wrapper
 
 def generate_expected(f):
     def wrapper(self, *args, **kwargs):
@@ -32,13 +110,14 @@ def generate_expected(f):
 class Scale(object):
     def __init__ (self, username, password, project_name='admin',
                   domain_name='Default', auth_host=None, contrail_args=None,
-                  fabric_args=None, sflow_args=None, threads=1):
+                  fabric_args=None, sflow_args=None, monitor_hosts=None, threads=1):
         if contrail_args:
             self.client_h = ConfigApi(username, password, project_name,
                 domain_name, auth_host=auth_host, contrail_args=contrail_args)
         self.sflow_args = sflow_args
         self.collector = sflow_args.get('server')
         self.fabrics = fabric_args
+        self.monitor_hosts = monitor_hosts
         self.threads = threads
         self.prouters = custom_dict(self.get_simulators)
         self.physical_interfaces = custom_dict(self.get_physical_interfaces)
@@ -109,6 +188,7 @@ class Scale(object):
     def stop_sflows(self, fabric=None):
         self.agent_h.stop_sflows(fabric)
 
+    @calculate_usage
     def stage1(self):
         self.create_simulators()
         print 'Sleeping for 60 seconds before onboarding'
@@ -152,6 +232,7 @@ class Scale(object):
             args_list.append([(name,), kwargs])
         self.gpool.spawn(self.client_h.create_workload, args_list)
 
+    @calculate_usage
     def stage2(self):
         self.create_networks()
         self.create_workloads()
@@ -186,6 +267,7 @@ class Scale(object):
             args_list.append([(name,), kwargs])
         self.gpool.spawn(self.client_h.create_router, args_list)
 
+    @calculate_usage
     def stage3(self):
         self.create_routers()
 
@@ -236,6 +318,7 @@ class Scale(object):
             args_list.append([(name,), kwargs])
         self.gpool.spawn(self.client_h.delete_server_profile, args_list)
 
+    @calculate_usage
     def stage4(self):
         self.create_firewall_filters()
         self.create_server_profiles()
@@ -267,6 +350,7 @@ class Scale(object):
             args_list.append([(name,), kwargs])
         self.gpool.spawn(self.client_h.delete_unmanaged_instance, args_list)
 
+    @calculate_usage
     def stage5(self):
         self.create_unmanaged_instances()
 
@@ -570,7 +654,7 @@ def main(template, oper, custom_args, threads):
     auth_host = keystone_args.get('server')
     obj = Scale(username, password, project, domain, auth_host,
                 yargs.get('contrail'), yargs.get('fabrics'),
-                yargs.get('sflow'), threads)
+                yargs.get('sflow'), yargs.get('resource_monitor'), threads)
     if oper.lower() == 'del':
         obj.delete()
     elif oper.lower() == 'add':
