@@ -5,7 +5,7 @@ class BaseStruct(Base):
     @classmethod
     def encode(cls, dct, packer):
         for name, encoder, default in cls.__struct__:
-            value = dct.get(name) or default
+            value = dct.get(name, default)
             if value is not None:
                 encoder.encode(value, packer)
 

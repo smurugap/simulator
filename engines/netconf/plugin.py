@@ -111,7 +111,7 @@ class NetconfPluginBase(object):
         length = len(config.text)
         if length > 500000:
             seconds = (length/500000)*15 + 10
-        time.sleep(seconds)
+        time.sleep(min(90, seconds))
         reply = etree.Element('ok')
         return reply
 

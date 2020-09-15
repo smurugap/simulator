@@ -20,6 +20,8 @@ class RestServer(object):
             verify=False, timeout=timeout)
         if resp.status_code == 200:
             return json.loads(resp.text)
+        else:
+            raise Exception("%s: %s"%(resp.status_code, resp.text))
 
     def post(self, path, payload_dict, timeout=DEFAULT_TIMEOUT):
         payload = json.dumps(payload_dict)
@@ -27,6 +29,8 @@ class RestServer(object):
             headers=self._headers, verify=False, timeout=timeout)
         if resp.status_code == 200:
             return json.loads(resp.text)
+        else:
+            raise Exception("%s: %s"%(resp.status_code, resp.text))
 
     def put(self, path, payload_dict, timeout=DEFAULT_TIMEOUT):
         payload = json.dumps(payload_dict)
@@ -34,9 +38,13 @@ class RestServer(object):
             headers=self._headers, verify=False, timeout=timeout)
         if resp.status_code == 200:
             return json.loads(resp.text)
+        else:
+            raise Exception("%s: %s"%(resp.status_code, resp.text))
 
     def delete(self, path, timeout=DEFAULT_TIMEOUT):
         resp = requests.delete(self._get_url(path), headers=self._headers,
             verify=False, timeout=timeout)
         if resp.status_code == 200:
             return json.loads(resp.text)
+        else:
+            raise Exception("%s: %s"%(resp.status_code, resp.text))

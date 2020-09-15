@@ -1,18 +1,19 @@
 from agent.fabric import Fabric
 from collections import defaultdict
-from common.util import get_random_cidr, get_random_ip, get_prouter_index
+from common.util import get_prouter_index
 from common.constants import SFLOW_OVERLAY_IP_PROTOCOLS
 import random
 import os
 import json
-from flask_restx import fields
+import socket
+import struct
 
-sflow_schema = {
-    'action': fields.String(required=True, description='start or stop sflows'),
-    'direction': fields.String(description='ingress or egress direction for sflow collection'),
-    'bms_per_router': fields.String(description='No of BMS servers per Device (floor and not ceil)'),
-    'n_flows': fields.Integer(description='No of sampled flows if action is "start"')
-}
+def get_random_ip(mask=28):
+    ''' Generate random non-overlapping cidr '''
+    address = socket.inet_ntop(socket.AF_INET,
+                               struct.pack('>I',
+                               random.randint(2**31, 2**32 - 2**29 - 1)))
+    return address
 
 class sFlow(object):
     def update_flows(self, prouter):
@@ -38,7 +39,6 @@ class sFlow(object):
             self.update_flows(prouter)
 
     def add_sflow(self):
-        cidr = get_random_cidr()
         src_ip = get_random_ip(cidr)
         dst_ip = get_random_ip(cidr)
         leafs = random.sample(self.leafs, 2)
