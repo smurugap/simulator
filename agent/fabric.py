@@ -46,6 +46,7 @@ class Fabric(object):
         delete_file(self.get_file(device, ftype='sflows'))
         delete_file(self.get_file(device, ftype='oids'))
         delete_file(self.get_file(device, engine='netconf'))
+        delete_file(self.get_file(device, engine='openconfig'))
         delete_file(self.get_file(device, engine='snmp'))
         delete_file(self.get_file(device, engine='syslog'))
         try:
@@ -80,6 +81,7 @@ class Fabric(object):
         sflows_filename = self.get_file(name, ftype='sflows')
         snmp_oids = self.get_file(name, ftype='oids')
         nsock = self.get_file(name, engine='netconf')
+        oc_sock = self.get_file(name, engine='openconfig')
         snmp_sock = self.get_file(name, engine='snmp')
         syslog_sock = self.get_file(name, engine='syslog')
         template = convert_template(TEMPLATE, fabric_name=self.fabric,
@@ -89,6 +91,7 @@ class Fabric(object):
                                     n_bleafs=self.n_border_leafs or 0,
                                     n_super_spines=self.n_super_spines or 0,
                                     netconf_socket=nsock,
+                                    oc_socket=oc_sock,
                                     snmp_socket=snmp_sock,
                                     syslog_socket=syslog_sock,
                                     collector=self.collector or '',
@@ -111,8 +114,8 @@ class Fabric(object):
             docker_h.create_container(self.network, ip, name, label, environment)
 
     def post(self, fabric_name, interface, subnet, gateway, collector=None,
-             address_pool=None, n_leafs=None, n_spines=None,
-             n_super_spines=None, n_border_leafs=None, n_pifs=48):
+             address_pool=None, n_leafs=0, n_spines=0,
+             n_super_spines=0, n_border_leafs=0, n_pifs=48):
         """ Create a fabric with the simulated spine and leaf servers """
         self.fabric = fabric_name
         self.network = '-'.join([self.fabric, 'Network'])
@@ -122,8 +125,8 @@ class Fabric(object):
                             n_super_spines, n_pifs, address_pool, collector)
         self.n_spines = n_spines
         self.n_leafs = n_leafs
-        self.n_border_leafs = n_border_leafs or 0
-        self.n_super_spines = n_super_spines or 0
+        self.n_border_leafs = n_border_leafs
+        self.n_super_spines = n_super_spines
         self.n_pifs = n_pifs
         self.collector = collector
         self.containers = dict()
@@ -139,13 +142,13 @@ class Fabric(object):
             raise
         return self.get(self.fabric)
 
-    def put(self, fabric_name, n_leafs=None, n_spines=None, n_border_leafs=None,
-            n_super_spines=None, n_pifs=48, address_pool=None, collector=None):
+    def put(self, fabric_name, n_leafs=0, n_spines=0, n_border_leafs=0,
+            n_super_spines=0, n_pifs=48, address_pool=None, collector=None):
         """ Update the number of leafs and spines in an existing fabric """
         self.fabric = fabric_name
         self.n_spines = n_spines
-        self.n_border_leafs = n_border_leafs or 0
-        self.n_super_spines = n_super_spines or 0
+        self.n_border_leafs = n_border_leafs
+        self.n_super_spines = n_super_spines
         self.n_leafs = n_leafs
         self.n_pifs = n_pifs
         self.collector = collector

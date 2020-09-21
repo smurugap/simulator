@@ -6,9 +6,10 @@ import time
 import hashlib
 import subprocess
 from ConfigParser import SafeConfigParser
-from gevent import monkey
-monkey.patch_all()
+#from gevent import monkey
+#monkey.patch_all()
 from engines.netconf import NetconfServer
+from engines.openconfig import OpenConfig
 from engines.snmp import SNMPServer
 from engines.sflow import sFlowEngine
 from engines.syslog import SyslogEngine
@@ -161,12 +162,19 @@ class Services(object):
                 syslog = SyslogEngine(server, port, socket=socket)
                 self.syslog = Daemonize('syslog', syslog.start)
                 self.syslog.start()
+        elif service == "OpenConfig":
+            port = service_config.get('port', 50051)
+            program = "python engines/openconfig/main.py"
+            self.openconfig = Daemonize('openconfig', None)
+            subprocess.call("%s --socket %s --port %s --n_interfaces %d --pid %s &"%(
+                program, socket, port, n_pifs, self.openconfig.pid_file), shell=True)
 
     def start(self):
         self.start_service("Netconf")
         self.start_service("SNMP")
         self.start_service("sFlows")
         self.start_service("Syslog")
+        self.start_service("OpenConfig")
         notifier = watcher(config_file, self.monitor)
 
     def monitor(self, notifier):
@@ -185,12 +193,13 @@ class Services(object):
             self.sflow.stop()
         if getattr(self, 'syslog', None):
             self.syslog.stop()
+        self.openconfig.stop()
 
 def main():
     services = Services()
     services.start()
     while True:
-        time.sleep(60)
+        gevent.sleep(60)
 
 if __name__ == '__main__':
     signal.signal(signal.SIGCHLD, signal.SIG_IGN)

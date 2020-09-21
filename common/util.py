@@ -1,5 +1,4 @@
-from gevent import monkey, pool
-monkey.patch_all()
+from gevent import pool
 from collections import MutableMapping
 from netaddr import IPNetwork, IPAddress
 from jinja2 import Template

@@ -14,6 +14,8 @@ import sys
 import types
 import json
 import random
+from gevent import monkey
+monkey.patch_all()
 
 from collections import Iterable
 

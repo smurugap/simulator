@@ -1,3 +1,5 @@
+from gevent import monkey
+monkey.patch_all()
 from common.docker_api import docker_h
 from common.ipc_api import UdpClient
 from common.constants import SAMPLES_PER_PKT

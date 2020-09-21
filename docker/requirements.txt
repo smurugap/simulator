@@ -19,3 +19,7 @@ configparser==4.0.2
 pyinotify==0.9.6
 bcrypt==3.1.7
 remote_pdb
+grpcio==1.32.0
+futures==3.3.0
+grpcio-tools==1.32.0
+protobuf==3.13.0

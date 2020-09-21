@@ -1,0 +1,272 @@
+[
+    {
+        "sensor_1004_1_1:/junos/system/linecard/interface/queue/:/interfaces/interface/state/:PFE": [
+{% for n in range(0, n_interfaces) %}
+{% set interface = 'et-0/0/' ~ n %}
+{% set intf_dict = (interfaces is defined and interfaces.get('et-0/0/' ~ n, {}))|default({}) %}
+            {
+                "__prefix__": {
+                    "str_value": "/interfaces/interface[name='{{ interface }}']"
+                }
+            },
+            {
+                "init_time": {
+                    "uint_value": {{ intf_dict.get('init_time', 1599288641) }}
+                }
+            },
+            {
+                "state/parent_ae_name": {
+                    "str_value": "{{ intf_dict.get('state/parent_ae_name', '') }}"
+                }
+            },
+            {
+                "state/counters/out-queue[queue-number='0']/pkts": {
+                    "uint_value": {{ intf_dict.get("state/counters/out-queue[queue-number='0']/pkts", 3001319) }}
+                }
+            },
+            {
+                "state/counters/out-queue[queue-number='0']/bytes": {
+                    "uint_value": {{ intf_dict.get("state/counters/out-queue[queue-number='0']/bytes", 678387809) }}
+                }
+            },
+            {
+                "state/counters/out-queue[queue-number='7']/pkts": {
+                    "uint_value": {{ intf_dict.get("state/counters/out-queue[queue-number='7']/pkts", 3001319) }}
+                }
+            },
+            {
+                "state/counters/out-queue[queue-number='7']/bytes": {
+                    "uint_value": {{ intf_dict.get("state/counters/out-queue[queue-number='7']/bytes", 678387809) }}
+                }
+{% if not loop.last %}
+            },
+{% else %}
+            }
+{% endif %}
+{% endfor %}
+        ]
+    },
+    {
+        "sensor_1004_1_2:/junos/system/linecard/interface/traffic/:/interfaces/interface/state/:PFE": [
+{% for n in range(0, n_interfaces) %}
+{% set interface = 'et-0/0/' ~ n %}
+{% set intf_dict = (interfaces is defined and interfaces.get('et-0/0/' ~ n, {}))|default({}) %}
+            {
+                "__prefix__": {
+                    "str_value": "/interfaces/interface[name='{{ interface }}']/"
+                }
+            },
+            {
+                "init_time": {
+                    "uint_value": {{ intf_dict.get('init_time', 1599288641) }}
+                }
+            },
+            {
+                "state/parent_ae_name": {
+                    "str_value": "{{ intf_dict.get('state/parent_ae_name', '') }}"
+                }
+            },
+            {
+                "state/high-speed": {
+                    "int_value": 40000
+                }
+            },
+            {
+                "state/counters/in-pkts": {
+                    "uint_value": {{ intf_dict.get("state/counters/in-pkts", 2428589) }}
+                }
+            },
+            {
+                "state/counters/in-octets": {
+                    "uint_value": {{ intf_dict.get("state/counters/in-octets", 182755461) }}
+                }
+            },
+            {
+                "state/counters/in-unicast-pkts": {
+                    "uint_value": {{ intf_dict.get("state/counters/in-unicast-pkts", 2388103) }}
+                }
+            },
+            {
+                "state/counters/in-multicast-pkts": {
+                    "uint_value": {{ intf_dict.get("state/counters/in-multicast-pkts", 39891) }}
+                }
+            },
+            {
+                "state/counters/in-broadcast-pkts": {
+                    "uint_value": {{ intf_dict.get("state/counters/in-broadcast-pkts", 595) }}
+                }
+            },
+            {
+                "state/counters/out-pkts": {
+                    "uint_value": {{ intf_dict.get("state/counters/out-pkts", 5187344) }}
+                }
+            },
+            {
+                "state/counters/out-octets": {
+                    "uint_value": {{ intf_dict.get("state/counters/out-octets", 780656766) }}
+                }
+            },
+            {
+                "state/counters/out-unicast-pkts": {
+                    "uint_value": {{ intf_dict.get("state/counters/out-unicast-pkts", 5146992) }}
+                }
+            },
+            {
+                "state/counters/out-multicast-pkts": {
+                    "uint_value": {{ intf_dict.get("state/counters/out-multicast-pkts", 39848) }}
+                }
+            },
+            {
+                "state/counters/out-broadcast-pkts": {
+                    "uint_value": {{ intf_dict.get("state/counters/out-broadcast-pkts", 504) }}
+                }
+            },
+            {
+                "state/counters/carrier-transitions": {
+                    "uint_value": {{ intf_dict.get("state/counters/carrier-transitions", 43) }}
+                }
+            },
+            {
+                "state/counters/out-errors": {
+                    "uint_value": {{ intf_dict.get("state/counters/out-errors", 43) }}
+                }
+{% if not loop.last %}
+            },
+{% else %}
+            }
+{% endif %}
+{% endfor %}
+        ]
+    },
+    {
+        "sensor_1004_3_1:/interfaces/interface/state/:/interfaces/interface/state/:mib2d": [
+{% for n in range(0, n_interfaces) %}
+{% set interface = 'et-0/0/' ~ n %}
+{% set intf_dict = (interfaces is defined and interfaces.get('et-0/0/' ~ n, {}))|default({}) %}
+            {
+                "__prefix__": {
+                    "str_value": "/interfaces/interface[name='{{ interface }}']/"
+                }
+            },
+            {
+                "state/name": {
+                    "str_value": "{{ interface }}"
+                }
+            },
+            {
+                "state/type": {
+                    "str_value": "ethernetCsmacd"
+                }
+            },
+            {
+                "state/mtu": {
+                    "uint_value": {{ intf_dict.get('state/mtu', 9192) }}
+                }
+            },
+            {
+                "state/loopback-mode": {
+                    "bool_value": {{ intf_dict.get('state/loopback-mode', 'false') }}
+                }
+            },
+            {
+                "state/description": {
+                    "str_value": ""
+                }
+            },
+            {
+                "state/enabled": {
+                    "bool_value": {{ intf_dict.get('state/enabled', 'true') }}
+                }
+            },
+            {
+                "state/ifindex": {
+                    "uint_value": {{ n }}
+                }
+            },
+            {
+                "state/admin-status": {
+                    "str_value": "{{ intf_dict.get('state/admin-status', 'UP') }}"
+                }
+            },
+            {
+                "state/oper-status": {
+                    "str_value": "{{ intf_dict.get('state/oper-status', 'UP') }}"
+                }
+            },
+            {
+                "state/last-change": {
+                    "uint_value": 1.600296698634576e+18
+                }
+            },
+            {
+                "state/logical": {
+                    "bool_value": false
+                }
+            },
+            {
+                "state/high-speed": {
+                    "uint_value": 40000
+                }
+{% if not loop.last %}
+            },
+{% else %}
+            }
+{% endif %}
+{% endfor %}
+        ]
+    },
+    {
+        "sensor_1004_4_1:/interfaces/interface/state/:/interfaces/interface/state/:xmlproxyd": [
+            {
+                "__prefix__": {
+                    "str_value": "/interfaces/interface[name='em0']/"
+                }
+            },
+            {
+                "state/counters/in-octets": {
+                    "uint_value": 69939241
+                }
+            },
+            {
+                "state/counters/in-pkts": {
+                    "uint_value": 735977
+                }
+            },
+            {
+                "state/counters/out-octets": {
+                    "uint_value": 107338997
+                }
+            },
+            {
+                "state/counters/out-pkts": {
+                    "uint_value": 817300
+                }
+            },
+            {
+                "__prefix__": {
+                    "str_value": "/interfaces/interface[name='lo0']/"
+                }
+            },
+            {
+                "state/counters/in-octets": {
+                    "uint_value": 4412442106
+                }
+            },
+            {
+                "state/counters/in-pkts": {
+                    "uint_value": 3258400
+                }
+            },
+            {
+                "state/counters/out-octets": {
+                    "uint_value": 4412442106
+                }
+            },
+            {
+                "state/counters/out-pkts": {
+                    "uint_value": 3258400
+                }
+            }
+        ]
+    }
+]

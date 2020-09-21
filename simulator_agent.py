@@ -4,6 +4,7 @@ from agent.fabric import Fabric
 from agent.sflow import sFlow
 from agent.syslog import Syslog
 from agent.netconf import Netconf
+from agent.openconfig import OpenConfig
 from common.exceptions import InvalidUsage
 from agent.snmp import SNMP
 
@@ -166,5 +167,14 @@ class FlaskSyslog(Resource):
         data = request.get_json(force=True)
         Syslog().post(fabric_name, **data)
 
+ns_openconfig = api.namespace('openconfig', description='Send events to openconfig engine')
+@ns_openconfig.route("/<string:fabric_name>")
+class FlaskOpenconfig(Resource):
+    def post(self, fabric_name):
+        data = request.get_json(force=True)
+        OpenConfig().post(fabric_name, data)
+
+
+ns_snmp = api.namespace('snmp', description='Send events to snmp engine')
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True, port=8989)

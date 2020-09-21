@@ -1,6 +1,4 @@
 import gevent
-from gevent import monkey
-monkey.patch_all()
 from plugin import NetconfPluginBase
 import os
 from lxml import etree

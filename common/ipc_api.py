@@ -1,10 +1,10 @@
 import select
-import socket
 import os
 import json
 import logging
 import errno
 from common.util import gevent
+from gevent import socket
 
 def register_listener(sockfile, events):
     ''' Server would register the unix domain socket .sock file '''
@@ -16,6 +16,7 @@ def register_listener(sockfile, events):
     sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     sock.bind(sockfile)
     gevent.spawn(wait_for_events, sock, events)
+    gevent.sleep(1)
 
 def wait_for_events(sock, events):
     ''' Server would listen for any events on the socket '''

@@ -1,0 +1,154 @@
+[
+    {
+        "sensor_1005_1_1:/junos/system/linecard/interface/logical/usage/:/interfaces/interface/subinterfaces/subinterface/state/:PFE": [
+{% for n in range(0, n_interfaces) %}
+{% set interface = 'et-0/0/' ~ n %}
+{% set intf_dict = (interfaces is defined and interfaces.get('et-0/0/' ~ n, {}))|default({}) %}
+{% set outer_loop = loop %}
+{% set n_subinterfaces = intf_dict.get('n_subinterfaces', 1) %}
+{% for s in range(0, n_subinterfaces) %}
+{% set subinterface = interface ~ '.' ~ s %}
+{% set subintf_dict = (sub_interfaces is defined and sub_interfaces.get(subinterface, {}))|default({}) %}
+            {
+                "__prefix__": {
+                    "str_value": "/interfaces/interface[name='{{ interface }}']/subinterfaces/subinterface[index='{{ s }}']/"
+                }
+            },
+            {
+                "init-time": {
+                    "uint_value": 1599288642
+                }
+            },
+            {
+                "state/counters/out-octets": {
+                    "uint_value": {{ subintf_dict.get('state/counters/out-octets', 659976756) }}
+                }
+            },
+            {
+                "state/counters/out-pkts": {
+                    "uint_value": {{ subintf_dict.get('state/counters/out-pkts', 4917004) }}
+                }
+            },
+            {
+                "state/counters/in-octets": {
+                    "uint_value": {{ subintf_dict.get('state/counters/in-octets', 127712462) }}
+                }
+            },
+            {
+                "state/counters/in-pkts": {
+                    "uint_value": {{ subintf_dict.get('state/counters/in-pkts', 2394773) }}
+                }
+{% if loop.last and outer_loop.last %}
+            }
+{% else %}
+            },
+{% endif %}
+{% endfor %}
+{% endfor %}
+        ]
+    },
+    {
+        "sensor_1005_3_1:/interfaces/interface/subinterfaces/subinterface/state/:/interfaces/interface/subinterfaces/subinterface/state/:xmlproxyd": [
+            {
+                "__prefix__": {
+                    "str_value": "/interfaces/interface[name='bme0']/subinterfaces/subinterface[index='0']/"
+                }
+            },
+            {
+                "state/counters/in-octets": {
+                    "uint_value": 3135670546
+                }
+            },
+            {
+                "state/counters/in-pkts": {
+                    "uint_value": 5260079
+                }
+            },
+            {
+                "state/counters/out-octets": {
+                    "uint_value": 424036017
+                }
+            },
+            {
+                "state/counters/out-pkts": {
+                    "uint_value": 4689202
+                }
+            },
+            {
+                "__prefix__": {
+                    "str_value": "/interfaces/interface[name='em0']/subinterfaces/subinterface[index='0']/"
+                }
+            },
+            {
+                "state/counters/in-octets": {
+                    "uint_value": 72206306
+                }
+            },
+            {
+                "state/counters/in-pkts": {
+                    "uint_value": 759890
+                }
+            },
+            {
+                "state/counters/out-octets": {
+                    "uint_value": 108124109
+                }
+            },
+            {
+                "state/counters/out-pkts": {
+                    "uint_value": 820403
+                }
+            },
+            {
+                "__prefix__": {
+                    "str_value": "/interfaces/interface[name='em2']/subinterfaces/subinterface[index='32768']/"
+                }
+            },
+            {
+                "state/counters/in-octets": {
+                    "uint_value": 128401546
+                }
+            },
+            {
+                "state/counters/in-pkts": {
+                    "uint_value": 681888
+                }
+            },
+            {
+                "state/counters/out-octets": {
+                    "uint_value": 34567518
+                }
+            },
+            {
+                "state/counters/out-pkts": {
+                    "uint_value": 539369
+                }
+            },
+            {
+                "__prefix__": {
+                    "str_value": "/interfaces/interface[name='lo0']/subinterfaces/subinterface[index='16385']/"
+                }
+            },
+            {
+                "state/counters/in-octets": {
+                    "uint_value": 6395452104
+                }
+            },
+            {
+                "state/counters/in-pkts": {
+                    "uint_value": 4703097
+                }
+            },
+            {
+                "state/counters/out-octets": {
+                    "uint_value": 6395452104
+                }
+            },
+            {
+                "state/counters/out-pkts": {
+                    "uint_value": 4703097
+                }
+            }
+        ]
+    }
+]
