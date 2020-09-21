@@ -7,6 +7,7 @@ ENV PYTHONPATH /opt/simulator
 RUN yum install -y yum-plugin-priorities
 RUN yum install -y epel-release gcc python-devel git vim libffi-devel
 RUN yum install -y python-pip libxml2-devel nc iproute openssh-clients net-tools
+RUN pip install pip==20.1.1 setuptools==44.1.1
 
 # pip install python packages
 COPY docker/requirements.txt docker/entrypoint.sh /
