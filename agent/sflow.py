@@ -39,8 +39,8 @@ class sFlow(object):
             self.update_flows(prouter)
 
     def add_sflow(self):
-        src_ip = get_random_ip(cidr)
-        dst_ip = get_random_ip(cidr)
+        src_ip = get_random_ip()
+        dst_ip = get_random_ip()
         leafs = random.sample(self.leafs, 2)
         spine = random.choice(self.spines)
         sport = random.randint(30000, 65535)

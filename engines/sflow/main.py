@@ -6,7 +6,7 @@ from common.constants import SAMPLES_PER_PKT
 from common.util import watcher, touch
 from scapy.all import IP, Ether, ICMP, raw, TCP, UDP
 import argparse
-import time
+import gevent
 import sys
 import json
 import logging
@@ -67,13 +67,14 @@ class sFlowEngine(object):
             samples = self.samples[i:i+SAMPLES_PER_PKT]
             self.buffers.append(encode({'agent_address': docker_h.my_ip,
                 'samples': samples}).get_buffer())
+        gevent.sleep(0.1)
 
     def start(self):
         watcher(self.sflows_file, self.callback)
         while True:
             for buf in self.buffers:
                 self.server.send(buf)
-            time.sleep(1)
+            gevent.sleep(1)
 
 def parse_cli(args):
     '''Define and Parse arguments for the script'''

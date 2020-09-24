@@ -753,6 +753,7 @@ class SNMPServer(object):
 
     def callback(self, notifier):
         self.read_snmp_oids()
+        gevent.sleep(1)
 
     def initialize_oids(self):
         # ToDo: Fix peer_prefix to take care of Border Leaf scenarios
@@ -860,6 +861,7 @@ class SNMPServer(object):
     def start(self):
         self.register()
         while True:
+            gevent.sleep(0.1)
             request_data, address = self.server.recv()
             logger.debug('Received %d bytes from %s', len(request_data), address)
             request_stream = StringIO(request_data.decode('latin'))

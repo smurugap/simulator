@@ -7,7 +7,7 @@ from common.docker_api import docker_h
 from common.util import register_event, get_file
 from common.ipc_api import register_listener
 from gevent import queue
-from sensors import Interfaces, SubInterfaces
+from sensors import Interfaces, SubInterfaces, Components
 import gevent
 import json
 import grpc
@@ -18,19 +18,40 @@ import sys
 
 OPENCONFIG_EVENTS = dict()
 PATHS = {'/interfaces/interface/state/': Interfaces,
-         '/interfaces/interface/subinterfaces/subinterface/state/': SubInterfaces}
+         '/interfaces/interface/subinterfaces/subinterface/state/': SubInterfaces,
+         '/components/': Components}
+
+def merge_dicts(a, b):
+    "http://stackoverflow.com/questions/7204805/python-dictionaries-of-dictionaries-merge"
+    "merges b into a"
+    for key in b:
+        if key in a:
+            if isinstance(a[key], dict) and isinstance(b[key], dict):
+                merge(a[key], b[key])
+            elif a[key] == b[key]:
+                pass # same leaf value
+            elif isinstance(a[key], list) and isinstance(b[key], list):
+                for idx, val in enumerate(b[key]):
+                    a[key][idx] = merge(a[key][idx], b[key][idx])
+            else:
+                a[key] = b[key]
+        else:
+            a[key] = b[key]
+    return a
 
 class Telemetry(telemetry_pb2_grpc.OpenConfigTelemetryServicer):
     def __init__(self, socket, n_interfaces=10, *args, **kwargs):
         super(Telemetry, self).__init__(*args, **kwargs)
         self.interfaces = defaultdict(dict)
         self.sub_interfaces = defaultdict(dict)
+        self.components = defaultdict(dict)
         self.n_interfaces = n_interfaces
         self.socket = socket
 
     def update(self, sensor_kv_pairs):
         # self.interfaces['et-0/0/0']['admin-status'] = 'down'
         # {'interfaces': {'et-0/0/0': {'admin-status': 'down'}}}
+        # {'components': {'Routing Engine0': {'cpu-utilization-idle': {'state/value': 23}}}}
         for sensor, kv_pairs in sensor_kv_pairs.items():
             dct = getattr(self, sensor)
             for k, v in kv_pairs.items():
@@ -52,7 +73,8 @@ class Telemetry(telemetry_pb2_grpc.OpenConfigTelemetryServicer):
                      interval=interval, context=context,
                      n_interfaces=self.n_interfaces,
                      interfaces=self.interfaces,
-                     sub_interfaces=self.sub_interfaces)
+                     sub_interfaces=self.sub_interfaces,
+                     components=self.components)
                  gevent.spawn(obj.run)
         while True:
             try:

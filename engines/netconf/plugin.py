@@ -96,6 +96,14 @@ class NetconfPluginBase(object):
         reply = etree.Element('ok')
         return reply
 
+    def rpc_discard_changes(self, *args, **kwargs):
+        reply = etree.Element('ok')
+        return reply
+
+    def rpc_edit_config(self, *args, **kwargs):
+        reply = etree.Element('ok')
+        return reply
+
     def rpc_load_configuration(self, session, rpc, config, *args, **kwargs):
         epoch = time.time()
         filename = os.path.join('/tmp', str(epoch))

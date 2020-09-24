@@ -47,6 +47,7 @@ class BaseSensor(object):
         self.queue = my_queue
         self.context = context
         self.n_interfaces = n_interfaces
+        self.hostname = docker_h.my_hostname
 
     def run(self):
         count = 0
@@ -56,7 +57,7 @@ class BaseSensor(object):
             for path_kv_pairs in self.get_kv_pairs():
                 path, kv_pairs = path_kv_pairs
                 data = telemetry_pb2.OpenConfigData(
-                    system_id=docker_h.my_hostname,
+                    system_id=self.hostname,
                     component_id=1,
                     sequence_number=count,
                     timestamp=int(time.time()),
@@ -99,3 +100,10 @@ class SubInterfaces(BaseSensor):
         self.interfaces = interfaces
         self.sub_interfaces = sub_interfaces
         super(SubInterfaces, self).__init__(*args, **kwargs)
+
+class Components(BaseSensor):
+    SENSOR = "/components/"
+    TEMPLATE = "components.json.j2"
+    def __init__(self, components=None, *args, **kwargs):
+        self.components = components
+        super(Components, self).__init__(*args, **kwargs)
