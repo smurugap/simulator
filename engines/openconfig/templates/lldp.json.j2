@@ -1,0 +1,57 @@
+[
+{% set dct = lldp|default({}) %}
+{"sensor_1005:/lldp/:/lldp/:l2cpd":     [
+    {"__prefix__": {"str_value": "/lldp/"}},
+        {"state/enabled":    {"bool_value": {{ dct.get('state/enabled', 'true') }} } },
+        {"state/hello-timer":    {"uint_value": {{ dct.get('state/hello-timer', 30.000000) }} } },
+        {"state/system-name":    {"str_value": "{{ dct.get('state/system-name', '{{ hostname }}') }}" } },
+        {"state/system-description":    {"str_value": "{{ dct.get('state/system-description', 'Juniper Networks, Inc. qfx10002-36q Ethernet Switch, kernel JUNOS 20.2R2.4, Build date: 2020-09-24 12:42:54 UTC Copyright (c) 1996-2020 Juniper Networks, Inc.') }}" } },
+        {"state/chassis-id":    {"str_value": "{{ dct.get('state/chassis-id', 'f4:a7:39:7d:83:1e') }}" } },
+        {"state/chassis-id-type":    {"str_value": "{{ dct.get('state/chassis-id-type', 'MAC_ADDRESS') }}" } },
+        {"state/counters/frame-in":    {"uint_value": {{ dct.get('state/counters/frame-in', 62.000000) }} } },
+        {"state/counters/frame-out":    {"uint_value": {{ dct.get('state/counters/frame-out', 70.000000) }} } },
+        {"state/counters/last-clear":    {"str_value": "{{ dct.get('state/counters/last-clear', '2020-09-30T11:31:42Z') }}" } },
+        {"state/counters/tlv-accepted":    {"uint_value": {{ dct.get('state/counters/tlv-accepted', 1594653.000000) }} } },
+        {"state/loc-port-id-type":    {"str_value": "{{ dct.get('state/loc-port-id-type', 'LOCAL') }}" } },
+{% for n in range(0, 1) %}
+{% set interface = 'et-0/0/' ~ n %}
+{% set dct = (lldp is defined and lldp.get('et-0/0/' ~ n, {}))|default({}) %}
+    {"__prefix__": {"str_value": "/lldp/interfaces/interface[name='{{ interface }}']/"}},
+        {"state/name":    {"str_value": "{{ dct.get('state/name', '{{ interface }}') }}" } },
+        {"state/enabled":    {"bool_value": {{ dct.get('state/enabled', 'true') }} } },
+        {"state/counters/frame-in":    {"uint_value": {{ dct.get('state/counters/frame-in', 15373.000000) }} } },
+        {"state/counters/frame-out":    {"uint_value": {{ dct.get('state/counters/frame-out', 15367.000000) }} } },
+        {"state/counters/last-clear":    {"str_value": "{{ dct.get('state/counters/last-clear', '2020-09-25T13:04:10Z') }}" } },
+        {"state/loc-port-id":    {"str_value": "{{ dct.get('state/loc-port-id', '{{ n }}') }}" } },
+        {"state/loc-port-description":    {"str_value": "{{ dct.get('state/loc-port-description', '{{ interface }}') }}" } },
+{% set intf_dct = dct %}
+{% set dct = intf_dct.get('neighbor', {}) %}
+    {"__prefix__": {"str_value": "/lldp/interfaces/interface[name='{{ interface }}']/neighbors/neighbor[id='84:b5:9c:c8:00:00-540']/"}},
+        {"state/system-name":    {"str_value": "{{ dct.get('state/system-name', '5b11-qfx1') }}" } },
+        {"state/system-description":    {"str_value": "{{ dct.get('state/system-description', 'Juniper Networks, Inc. qfx5100-48s-6q Ethernet Switch, kernel JUNOS 14.1X53-D40.61, Build date: 2016-10-12 19:26:49 UTC Copyright (c) 1996-2016 Juniper Networks, Inc.') }}" } },
+        {"state/chassis-id":    {"str_value": "{{ dct.get('state/chassis-id', '84:b5:9c:c8:00:00') }}" } },
+        {"state/chassis-id-type":    {"str_value": "{{ dct.get('state/chassis-id-type', 'MAC_ADDRESS') }}" } },
+        {"state/id":    {"str_value": "{{ dct.get('state/id', '84:b5:9c:c8:00:00-540') }}" } },
+        {"state/age":    {"uint_value": {{ dct.get('state/age', 426651.000000) }} } },
+        {"state/last-update":    {"int_value": {{ dct.get('state/last-update', 5.000000) }} } },
+        {"state/ttl":    {"uint_value": {{ dct.get('state/ttl', 120.000000) }} } },
+        {"state/port-id":    {"str_value": "{{ dct.get('state/port-id', '540') }}" } },
+        {"state/port-id-type":    {"str_value": "{{ dct.get('state/port-id-type', 'LOCAL') }}" } },
+        {"state/port-description":    {"str_value": "{{ dct.get('state/port-description', 'ge-0/0/39') }}" } },
+        {"state/management-address":    {"str_value": "{{ dct.get('state/management-address', '10.87.69.125') }}" } },
+        {"state/management-address-type":    {"str_value": "{{ dct.get('state/management-address-type', 'IPv4') }}" } },
+    {"__prefix__": {"str_value": "/lldp/interfaces/interface[name='{{ interface }}']/neighbors/neighbor[id='84:b5:9c:c8:00:00-540']/capabilities/capability[name='MAC_BRIDGE']/"}},
+        {"state/name":    {"str_value": "{{ dct.get('state/name', 'MAC_BRIDGE') }}" } },
+        {"state/enabled":    {"bool_value": {{ dct.get('state/enabled', 'true') }} } },
+    {"__prefix__": {"str_value": "/lldp/interfaces/interface[name='{{ interface }}']/neighbors/neighbor[id='84:b5:9c:c8:00:00-540']/capabilities/capability[name='ROUTER']/"}},
+        {"state/name":    {"str_value": "{{ dct.get('state/name', 'ROUTER') }}" } },
+        {"state/enabled":    {"bool_value": {{ dct.get('state/enabled', 'true') }} }
+{% if not loop.last %}
+            },
+{% else %}
+            }
+{% endif %}
+{% endfor %}
+]
+}
+]

@@ -7,7 +7,7 @@ from common.docker_api import docker_h
 from common.util import register_event, get_file
 from common.ipc_api import register_listener
 from gevent import queue
-from sensors import Interfaces, SubInterfaces, Components
+from sensors import Interfaces, SubInterfaces, Components, BGP, LLDP
 import gevent
 import json
 import grpc
@@ -19,20 +19,26 @@ import sys
 OPENCONFIG_EVENTS = dict()
 PATHS = {'/interfaces/interface/state/': Interfaces,
          '/interfaces/interface/subinterfaces/subinterface/state/': SubInterfaces,
-         '/components/': Components}
+         '/components/': Components,
+         '/network-instances/network-instance/protocols/protocol/bgp/neighbors/': BGP,
+         '/lldp/': LLDP
+        }
 
 def merge_dicts(a, b):
-    "http://stackoverflow.com/questions/7204805/python-dictionaries-of-dictionaries-merge"
-    "merges b into a"
+    '''http://stackoverflow.com/questions/7204805/python-dictionaries-of-dictionaries-merge
+       merges dictionary b into a'''
     for key in b:
         if key in a:
             if isinstance(a[key], dict) and isinstance(b[key], dict):
-                merge(a[key], b[key])
+                merge_dicts(a[key], b[key])
             elif a[key] == b[key]:
                 pass # same leaf value
             elif isinstance(a[key], list) and isinstance(b[key], list):
+                if isinstance(a[key][0], (unicode, str)):
+                    a[key] = b[key]
+                    continue
                 for idx, val in enumerate(b[key]):
-                    a[key][idx] = merge(a[key][idx], b[key][idx])
+                    a[key][idx] = merge_dicts(a[key][idx], b[key][idx])
             else:
                 a[key] = b[key]
         else:
@@ -45,6 +51,8 @@ class Telemetry(telemetry_pb2_grpc.OpenConfigTelemetryServicer):
         self.interfaces = defaultdict(dict)
         self.sub_interfaces = defaultdict(dict)
         self.components = defaultdict(dict)
+        self.bgp = defaultdict()
+        self.lldp = defaultdict()
         self.n_interfaces = n_interfaces
         self.socket = socket
 
@@ -54,11 +62,12 @@ class Telemetry(telemetry_pb2_grpc.OpenConfigTelemetryServicer):
         # {'components': {'Routing Engine0': {'cpu-utilization-idle': {'state/value': 23}}}}
         for sensor, kv_pairs in sensor_kv_pairs.items():
             dct = getattr(self, sensor)
-            for k, v in kv_pairs.items():
-                if type(dct[k]) is dict:
-                    dct[k].update(v)
-                else:
-                    dct[k] = v
+            merge_dicts(dct, kv_pairs)
+#            for k, v in kv_pairs.items():
+#                if type(dct[k]) is dict:
+#                    dct[k].update(v)
+#                else:
+#                    dct[k] = v
 
     def telemetrySubscribe(self, request, context):
         register_event('update', OPENCONFIG_EVENTS, self.update)
@@ -74,6 +83,8 @@ class Telemetry(telemetry_pb2_grpc.OpenConfigTelemetryServicer):
                      n_interfaces=self.n_interfaces,
                      interfaces=self.interfaces,
                      sub_interfaces=self.sub_interfaces,
+                     bgp=self.bgp,
+                     lldp=self.lldp,
                      components=self.components)
                  gevent.spawn(obj.run)
         while True:

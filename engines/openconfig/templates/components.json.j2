@@ -134,6 +134,22 @@
                 "state/allocated-power": {
                     "uint_value": {{ dct.get('state/allocated-power', 0) }}
                 }
+            },
+            {
+{% set prop_dct = dct.get('temperature-ambient', {}) %}
+                "__prefix__": {
+                    "str_value": "/components/component[name='{{name}}']/properties/property[name='temperature-ambient']/"
+                }
+            },
+            {
+                "state/value": {
+                    "uint_value": "{{ prop_dct.get('state/value', 20) }}"
+                }
+            },
+            {
+                "state/configurable": {
+                    "bool_value": false
+                }
             }
         ]
     },

@@ -107,3 +107,17 @@ class Components(BaseSensor):
     def __init__(self, components=None, *args, **kwargs):
         self.components = components
         super(Components, self).__init__(*args, **kwargs)
+
+class BGP(BaseSensor):
+    SENSOR = "/network-instances/network-instance/protocols/protocol/bgp/"
+    TEMPLATE = "bgp_neighbors.json.j2"
+    def __init__(self, bgp=None, *args, **kwargs):
+        self.bgp = bgp
+        super(BGP, self).__init__(*args, **kwargs)
+
+class LLDP(BaseSensor):
+    SENSOR = "/lldp/"
+    TEMPLATE = "lldp.json.j2"
+    def __init__(self, lldp=None, *args, **kwargs):
+        self.lldp = lldp
+        super(LLDP, self).__init__(*args, **kwargs)
