@@ -64,7 +64,9 @@ class NetconfPluginBase(object):
         for attr in attrs:
             if attr in IGNORE_KEYWORDS:
                 continue
-            kwargs[attr] = getattr(self, attr)
+            val = getattr(self, attr, None)
+            if val is not None:
+                kwargs[attr] = val
         template = Template(content)
         rendered = template.render(**kwargs)
         if rtype.lower() == 'xml':
@@ -72,37 +74,16 @@ class NetconfPluginBase(object):
         elif rtype.lower() == 'raw':
             return rendered
 
-    def rpc_open_configuration(self, *args, **kwargs):
-        reply = etree.Element('ok')
-        return reply
-
-    def rpc_close_configuration(self, *args, **kwargs):
-        reply = etree.Element('ok')
-        return reply
-
-    def rpc_lock_configuration(self, *args, **kwargs):
-        reply = etree.Element('ok')
-        return reply
-
-    def rpc_commit_configuration(self, *args, **kwargs):
-        reply = etree.Element('ok')
-        return reply
-
-    def rpc_commit(self, *args, **kwargs):
-        reply = etree.Element('ok')
-        return reply
-
-    def rpc_unlock_configuration(self, *args, **kwargs):
-        reply = etree.Element('ok')
-        return reply
-
-    def rpc_discard_changes(self, *args, **kwargs):
-        reply = etree.Element('ok')
-        return reply
-
-    def rpc_edit_config(self, *args, **kwargs):
-        reply = etree.Element('ok')
-        return reply
+    def _ok(self, *args, **kwargs):
+        return etree.Element('ok')
+    rpc_open_configuration = _ok
+    rpc_close_configuration = _ok
+    rpc_lock_configuration = _ok
+    rpc_commit_configuration = _ok
+    rpc_commit = _ok
+    rpc_unlock_configuration = _ok
+    rpc_discard_changes = _ok
+    rpc_edit_config = _ok
 
     def rpc_load_configuration(self, session, rpc, config, *args, **kwargs):
         epoch = time.time()

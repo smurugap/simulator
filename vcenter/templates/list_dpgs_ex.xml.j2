@@ -1,0 +1,13 @@
+<returnval>
+  <objects>
+    <obj type="ContainerView">session[{{ login_id }}]{{ view_id }}</obj>
+    <propSet>
+      <name>view</name>
+      <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="ArrayOfManagedObjectReference">
+{% for dpg in dpgs %}
+        <ManagedObjectReference type="DistributedVirtualPortgroup">{{ dpg }}</ManagedObjectReference>
+{% endfor %}
+      </val>
+    </propSet>
+  </objects>
+</returnval>

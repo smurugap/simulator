@@ -42,14 +42,14 @@
             <interface-flapped>2020-08-21 21:19:52 UTC (4d 21:43 ago)</interface-flapped>
             <statistics-cleared>Never</statistics-cleared>
             <traffic-statistics>
-                    <input-bytes>{{ intf_dict.get('traffic_input_bytes', 1000) }}</input-bytes>
-                    <output-bytes>{{ intf_dict.get('traffic_output_bytes', 1000) }}</output-bytes>
-                    <input-packets>{{ intf_dict.get('traffic_input_packets', 10) }}</input-packets>
-                    <output-packets>{{ intf_dict.get('traffic_output_packets', 10) }}</output-packets>
-                <input-bps>{{ intf_dict.get('traffic_input_bps', 100) }}</input-bps>
-                <output-bps>{{ intf_dict.get('traffic_output_bps', 100) }}</output-bps>
-                <input-pps>{{ intf_dict.get('traffic_input_pps', 1) }}</input-pps>
-                <output-pps>{{ intf_dict.get('traffic_output_pps', 1) }}</output-pps>
+                    <input-bytes>{{ intf_dict.get('input_bytes', 1000) }}</input-bytes>
+                    <output-bytes>{{ intf_dict.get('output_bytes', 1000) }}</output-bytes>
+                    <input-packets>{{ intf_dict.get('input_packets', 10) }}</input-packets>
+                    <output-packets>{{ intf_dict.get('output_packets', 10) }}</output-packets>
+                <input-bps>{{ intf_dict.get('input_bps', 100) }}</input-bps>
+                <output-bps>{{ intf_dict.get('output_bps', 100) }}</output-bps>
+                <input-pps>{{ intf_dict.get('input_pps', 1) }}</input-pps>
+                <output-pps>{{ intf_dict.get('output_pps', 1) }}</output-pps>
                 <ipv6-transit-statistics>
                     <input-bytes>0</input-bytes>
                     <output-bytes>0</output-bytes>
@@ -70,7 +70,7 @@
                 <input-resource-errors>0</input-resource-errors>
             </input-error-list>
             <output-error-list>
-                <carrier-transitions>{{ intf_dict.get('carrier_trans', 3) }}</carrier-transitions>
+                <carrier-transitions>{{ intf_dict.get('carrier_transitions', 3) }}</carrier-transitions>
                 <output-errors>{{ intf_dict.get('output_errors', 0) }}</output-errors>
                 <output-collisions>0</output-collisions>
                 <output-drops>0</output-drops>
@@ -120,8 +120,8 @@
                 <output-fifo-errors>0</output-fifo-errors>
                 <input-mac-control-frames>0</input-mac-control-frames>
                 <output-mac-control-frames>0</output-mac-control-frames>
-                <input-mac-pause-frames>0</input-mac-pause-frames>
-                <output-mac-pause-frames>0</output-mac-pause-frames>
+                <input-mac-pause-frames>{{ intf_dict.get('input_mac_pause_frames', 0) }}</input-mac-pause-frames>
+                <output-mac-pause-frames>{{ intf_dict.get('output_mac_pause_frames', 0) }}</output-mac-pause-frames>
                 <input-oversized-frames>0</input-oversized-frames>
                 <input-jabber-frames>0</input-jabber-frames>
                 <input-fragment-frames>0</input-fragment-frames>

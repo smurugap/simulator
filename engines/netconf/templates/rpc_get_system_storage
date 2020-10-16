@@ -1,0 +1,309 @@
+<multi-routing-engine-results>
+
+<multi-routing-engine-item>
+
+<re-name>fpc0</re-name>
+
+<system-storage-information style="brief">
+{% set storage_dct = storage|default({}) %}
+<filesystem>
+<filesystem-name>/dev/ad0s1a</filesystem-name>
+<total-blocks format="1.8G">{{ storage_dct.get('total-blocks', 3713276) }}</total-blocks>
+<used-blocks format="1.3G">{{ storage_dct.get('used-blocks', 2629764) }}</used-blocks>
+<available-blocks format="384M">{{ storage_dct.get('available-blocks', 786452) }}</available-blocks>
+<used-percent>{{ storage_dct.get('used-percent', 77) }}</used-percent>
+<mounted-on>/</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>devfs</filesystem-name>
+<total-blocks format="1.0K">2</total-blocks>
+<used-blocks format="1.0K">2</used-blocks>
+<available-blocks format="0B">0</available-blocks>
+<used-percent>100</used-percent>
+<mounted-on>/dev</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/md0</filesystem-name>
+<total-blocks format="114M">233012</total-blocks>
+<used-blocks format="114M">233012</used-blocks>
+<available-blocks format="0B">0</available-blocks>
+<used-percent>100</used-percent>
+<mounted-on>/packages/mnt/jbase</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/md1</filesystem-name>
+<total-blocks format="666M">1363984</total-blocks>
+<used-blocks format="666M">1363984</used-blocks>
+<available-blocks format="0B">0</available-blocks>
+<used-percent>100</used-percent>
+<mounted-on>/packages/mnt/jkernel-qfx-ex-x86-32-19.4R2.6</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/md2</filesystem-name>
+<total-blocks format="74M">152028</total-blocks>
+<used-blocks format="74M">152028</used-blocks>
+<available-blocks format="0B">0</available-blocks>
+<used-percent>100</used-percent>
+<mounted-on>/packages/mnt/jpfe-qfx-ex-x86-32-19.4R2.6</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/md3</filesystem-name>
+<total-blocks format="13M">25732</total-blocks>
+<used-blocks format="13M">25732</used-blocks>
+<available-blocks format="0B">0</available-blocks>
+<used-percent>100</used-percent>
+<mounted-on>/packages/mnt/jdocs-dc-re-19.4R2.6</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/md4</filesystem-name>
+<total-blocks format="291M">595812</total-blocks>
+<used-blocks format="291M">595812</used-blocks>
+<available-blocks format="0B">0</available-blocks>
+<used-percent>100</used-percent>
+<mounted-on>/packages/mnt/jroute-qfx-ex-x86-32-19.4R2.6</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/md5</filesystem-name>
+<total-blocks format="30M">62248</total-blocks>
+<used-blocks format="30M">62248</used-blocks>
+<available-blocks format="0B">0</available-blocks>
+<used-percent>100</used-percent>
+<mounted-on>/packages/mnt/jcrypto-dc-re-19.4R2.6</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/md6</filesystem-name>
+<total-blocks format="23M">46340</total-blocks>
+<used-blocks format="23M">46340</used-blocks>
+<available-blocks format="0B">0</available-blocks>
+<used-percent>100</used-percent>
+<mounted-on>/packages/mnt/jcrypto-qfx-5-19.4R2.6</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/md7</filesystem-name>
+<total-blocks format="10M">21340</total-blocks>
+<used-blocks format="10M">21340</used-blocks>
+<available-blocks format="0B">0</available-blocks>
+<used-percent>100</used-percent>
+<mounted-on>/packages/mnt/jsd-i386-19.4R2.6-jet-1</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/md8</filesystem-name>
+<total-blocks format="15M">31072</total-blocks>
+<used-blocks format="15M">31072</used-blocks>
+<available-blocks format="0B">0</available-blocks>
+<used-percent>100</used-percent>
+<mounted-on>/packages/mnt/jsdn-i386-19.4R2.6</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/md9</filesystem-name>
+<total-blocks format="78M">159244</total-blocks>
+<used-blocks format="78M">159244</used-blocks>
+<available-blocks format="0B">0</available-blocks>
+<used-percent>100</used-percent>
+<mounted-on>/packages/mnt/jswitch-qfx-ex-x86-32-19.4R2.6</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/md10</filesystem-name>
+<total-blocks format="35M">71432</total-blocks>
+<used-blocks format="35M">71432</used-blocks>
+<available-blocks format="0B">0</available-blocks>
+<used-percent>100</used-percent>
+<mounted-on>/packages/mnt/jweb-ex-19.4R2.6</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/md11</filesystem-name>
+<total-blocks format="18M">36156</total-blocks>
+<used-blocks format="18M">36156</used-blocks>
+<available-blocks format="0B">0</available-blocks>
+<used-percent>100</used-percent>
+<mounted-on>/packages/mnt/py-base-i386-19.4R2.6</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/md12</filesystem-name>
+<total-blocks format="14M">29164</total-blocks>
+<used-blocks format="14M">29164</used-blocks>
+<available-blocks format="0B">0</available-blocks>
+<used-percent>100</used-percent>
+<mounted-on>/packages/mnt/py-base2-i386-19.4R2.6</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/md13</filesystem-name>
+<total-blocks format="13M">26156</total-blocks>
+<used-blocks format="13M">26156</used-blocks>
+<available-blocks format="0B">0</available-blocks>
+<used-percent>100</used-percent>
+<mounted-on>/packages/mnt/py-extensions-i386-19.4R2.6</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/md14</filesystem-name>
+<total-blocks format="16M">32300</total-blocks>
+<used-blocks format="16M">32300</used-blocks>
+<available-blocks format="0B">0</available-blocks>
+<used-percent>100</used-percent>
+<mounted-on>/packages/mnt/py-extensions2-i386-19.4R2.6</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/md15</filesystem-name>
+<total-blocks format="605M">1238264</total-blocks>
+<used-blocks format="72K">144</used-blocks>
+<available-blocks format="556M">1139060</available-blocks>
+<used-percent>  0</used-percent>
+<mounted-on>/tmp</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/ad2s1e</filesystem-name>
+<total-blocks format="504M">1031564</total-blocks>
+<used-blocks format="374K">748</used-blocks>
+<available-blocks format="463M">948292</available-blocks>
+<used-percent>  0</used-percent>
+<mounted-on>/config</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>procfs</filesystem-name>
+<total-blocks format="4.0K">8</total-blocks>
+<used-blocks format="4.0K">8</used-blocks>
+<available-blocks format="0B">0</available-blocks>
+<used-percent>100</used-percent>
+<mounted-on>/proc</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/ad1s1f</filesystem-name>
+<total-blocks format="484M">990580</total-blocks>
+<used-blocks format="2.2M">4468</used-blocks>
+<available-blocks format="443M">906868</available-blocks>
+<used-percent>  0</used-percent>
+<mounted-on>/var</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/ad1s1d</filesystem-name>
+<total-blocks format="1.9G">4044872</total-blocks>
+<used-blocks format="66K">132</used-blocks>
+<available-blocks format="1.8G">3721152</available-blocks>
+<used-percent>  0</used-percent>
+<mounted-on>/var/tmp</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/ad1s1a</filesystem-name>
+<total-blocks format="242M">495080</total-blocks>
+<used-blocks format="10M">21028</used-blocks>
+<available-blocks format="212M">434448</available-blocks>
+<used-percent>  5</used-percent>
+<mounted-on>/var/log</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/ad1s1e</filesystem-name>
+<total-blocks format="484M">990580</total-blocks>
+<used-blocks format="10.0K">20</used-blocks>
+<available-blocks format="445M">911316</available-blocks>
+<used-percent>  0</used-percent>
+<mounted-on>/altconfig</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/ad3s1</filesystem-name>
+<total-blocks format="1006M">2060828</total-blocks>
+<used-blocks format="4.0K">8</used-blocks>
+<available-blocks format="926M">1895956</available-blocks>
+<used-percent>  0</used-percent>
+<mounted-on>/user</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/md16</filesystem-name>
+<total-blocks format="98M">201304</total-blocks>
+<used-blocks format="202K">404</used-blocks>
+<available-blocks format="90M">184796</available-blocks>
+<used-percent>  0</used-percent>
+<mounted-on>/var/mfs/var/run</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/var/jails/rest-api</filesystem-name>
+<total-blocks format="484M">990580</total-blocks>
+<used-blocks format="2.2M">4468</used-blocks>
+<available-blocks format="443M">906868</available-blocks>
+<used-percent>  0</used-percent>
+<mounted-on>/packages/mnt/jroute-qfx-ex-x86-32-19.4R2.6/web-api/var</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>devfs</filesystem-name>
+<total-blocks format="1.0K">2</total-blocks>
+<used-blocks format="1.0K">2</used-blocks>
+<available-blocks format="0B">0</available-blocks>
+<used-percent>100</used-percent>
+<mounted-on>/packages/mnt/jroute-qfx-ex-x86-32-19.4R2.6/web-api/dev</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/var/jail/etc</filesystem-name>
+<total-blocks format="484M">990580</total-blocks>
+<used-blocks format="2.2M">4468</used-blocks>
+<available-blocks format="443M">906868</available-blocks>
+<used-percent>  0</used-percent>
+<mounted-on>/packages/mnt/jweb-ex-19.4R2.6/jail/var/etc</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/var/jail/run</filesystem-name>
+<total-blocks format="484M">990580</total-blocks>
+<used-blocks format="2.2M">4468</used-blocks>
+<available-blocks format="443M">906868</available-blocks>
+<used-percent>  0</used-percent>
+<mounted-on>/packages/mnt/jweb-ex-19.4R2.6/jail/var/run</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/var/jail/tmp</filesystem-name>
+<total-blocks format="484M">990580</total-blocks>
+<used-blocks format="2.2M">4468</used-blocks>
+<available-blocks format="443M">906868</available-blocks>
+<used-percent>  0</used-percent>
+<mounted-on>/packages/mnt/jweb-ex-19.4R2.6/jail/var/tmp</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/var/tmp</filesystem-name>
+<total-blocks format="1.9G">4044872</total-blocks>
+<used-blocks format="66K">132</used-blocks>
+<available-blocks format="1.8G">3721152</available-blocks>
+<used-percent>  0</used-percent>
+<mounted-on>/packages/mnt/jweb-ex-19.4R2.6/jail/var/tmp/uploads</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/var/jail/sess</filesystem-name>
+<total-blocks format="484M">990580</total-blocks>
+<used-blocks format="2.2M">4468</used-blocks>
+<available-blocks format="443M">906868</available-blocks>
+<used-percent>  0</used-percent>
+<mounted-on>/packages/mnt/jweb-ex-19.4R2.6/jail/var/sess</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>devfs</filesystem-name>
+<total-blocks format="1.0K">2</total-blocks>
+<used-blocks format="1.0K">2</used-blocks>
+<available-blocks format="0B">0</available-blocks>
+<used-percent>100</used-percent>
+<mounted-on>/packages/mnt/jweb-ex-19.4R2.6/jail/dev</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/var/jail/jweb-app</filesystem-name>
+<total-blocks format="484M">990580</total-blocks>
+<used-blocks format="2.2M">4468</used-blocks>
+<available-blocks format="443M">906868</available-blocks>
+<used-percent>  0</used-percent>
+<mounted-on>/packages/mnt/jweb-ex-19.4R2.6/jail/var/jweb-app</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/md17</filesystem-name>
+<total-blocks format="12M">24144</total-blocks>
+<used-blocks format="12M">24144</used-blocks>
+<available-blocks format="0B">0</available-blocks>
+<used-percent>100</used-percent>
+<mounted-on>/packages/mnt/junos-openconfig-19.4R2.6</mounted-on>
+</filesystem>
+<filesystem>
+<filesystem-name>/dev/md18</filesystem-name>
+<total-blocks format="504M">1031896</total-blocks>
+<used-blocks format="85M">174812</used-blocks>
+<available-blocks format="378M">774536</available-blocks>
+<used-percent> 18</used-percent>
+<mounted-on>/var/rundb</mounted-on>
+</filesystem>
+</system-storage-information>
+</multi-routing-engine-item>
+
+</multi-routing-engine-results>
+

@@ -1,0 +1,20 @@
+<fpc-information xmlns="http://xml.juniper.net/junos/20.2R0/junos-chassis" style="brief">
+{% set no_of_fpcs = n_fpcs|default(1) %}
+{% for fpc in range(no_of_fpcs) %}
+{% set fpcs_dct = fpcs|default({}) %}
+{% set fpc_dct = fpcs_dct.get(fpc, {}) %}
+<fpc>
+<slot>{{ fpc }}</slot>
+<state>Online</state>
+<temperature celsius="35">{{ fpc_dct.get('temperature', 35) }}</temperature>
+<cpu-total>4</cpu-total>
+<cpu-interrupt>0</cpu-interrupt>
+<cpu-1min-avg>3</cpu-1min-avg>
+<cpu-5min-avg>3</cpu-5min-avg>
+<cpu-15min-avg>3</cpu-15min-avg>
+<memory-dram-size>16384</memory-dram-size>
+<memory-heap-utilization>14</memory-heap-utilization>
+<memory-buffer-utilization>56</memory-buffer-utilization>
+</fpc>
+{% endfor %}
+</fpc-information>

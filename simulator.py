@@ -198,6 +198,8 @@ class Services(object):
 def main():
     services = Services()
     services.start()
+    # Forward port 830 to port 22
+    subprocess.call("socat TCP-LISTEN:830,fork TCP:127.0.0.1:22 &", shell=True)
     while True:
         gevent.sleep(60)
 

@@ -3,6 +3,7 @@ from collections import MutableMapping
 from netaddr import IPNetwork, IPAddress
 from jinja2 import Template
 from datetime import datetime
+from lxml import etree
 import gevent
 import re
 import pyinotify
@@ -63,7 +64,7 @@ def convert_template(filename, rtype='raw', **kwargs):
         template = Template(fd.read())
     content = template.render(**kwargs)
     if rtype.lower() == 'xml':
-        return etree.fromstring(content)
+        return etree.fromstring(content.strip())
     elif rtype.lower() == 'raw':
         return content
 
@@ -163,6 +164,14 @@ def get_sha1(secret, message):
     message = bytes(message).encode('utf-8')
     secret = bytes(secret).encode('utf-8')
     return hmac.new(secret, message, hashlib.sha1).hexdigest()
+
+class Singleton(type):
+    _instances = {}
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances[cls] = super(
+                Singleton, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]
 
 class SafeList(list):
     def get(self, index, default=None):

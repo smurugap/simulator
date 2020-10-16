@@ -1,0 +1,103 @@
+      <returnval>
+        <obj type="Datacenter">{{ dc }}</obj>
+        <propSet>
+          <name>value</name>
+          <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="ArrayOfCustomFieldValue"/>
+        </propSet>
+        <propSet>
+          <name>availableField</name>
+          <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="ArrayOfCustomFieldDef"/>
+        </propSet>
+        <propSet>
+          <name>parent</name>
+          <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="ManagedObjectReference" type="Folder">group-{{ dc }}</val>
+        </propSet>
+        <propSet>
+          <name>customValue</name>
+          <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="ArrayOfCustomFieldValue"/>
+        </propSet>
+        <propSet>
+          <name>overallStatus</name>
+          <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="ManagedEntityStatus">green</val>
+        </propSet>
+        <propSet>
+          <name>configStatus</name>
+          <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="ManagedEntityStatus">green</val>
+        </propSet>
+        <propSet>
+          <name>configIssue</name>
+          <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="ArrayOfEvent"/>
+        </propSet>
+        <propSet>
+          <name>effectiveRole</name>
+          <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="ArrayOfInt">
+            <int>-1</int>
+          </val>
+        </propSet>
+        <propSet>
+          <name>permission</name>
+          <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="ArrayOfPermission"/>
+        </propSet>
+        <propSet>
+          <name>name</name>
+          <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="xsd:string">{{ dc }}</val>
+        </propSet>
+        <propSet>
+          <name>disabledMethod</name>
+          <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="ArrayOfString"/>
+        </propSet>
+        <propSet>
+          <name>recentTask</name>
+          <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="ArrayOfManagedObjectReference"/>
+        </propSet>
+        <propSet>
+          <name>declaredAlarmState</name>
+          <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="ArrayOfAlarmState"/>
+        </propSet>
+        <propSet>
+          <name>triggeredAlarmState</name>
+          <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="ArrayOfAlarmState"/>
+        </propSet>
+        <propSet>
+          <name>tag</name>
+          <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="ArrayOfTag"/>
+        </propSet>
+        <propSet>
+          <name>vmFolder</name>
+          <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="ManagedObjectReference" type="Folder">folder-3</val>
+        </propSet>
+        <propSet>
+          <name>hostFolder</name>
+          <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="ManagedObjectReference" type="Folder">folder-4</val>
+        </propSet>
+        <propSet>
+          <name>datastoreFolder</name>
+          <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="ManagedObjectReference" type="Folder">folder-5</val>
+        </propSet>
+        <propSet>
+          <name>networkFolder</name>
+          <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="ManagedObjectReference" type="Folder">folder-6</val>
+        </propSet>
+        <propSet>
+          <name>datastore</name>
+          <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="ArrayOfManagedObjectReference">
+            <ManagedObjectReference type="Datastore">/tmp/govcsim-DC0-LocalDS_0-605806735@folder-5</ManagedObjectReference>
+            <ManagedObjectReference type="Datastore">/tmp/govcsim-DC0-LocalDS_1-457790626@folder-5</ManagedObjectReference>
+            <ManagedObjectReference type="Datastore">/tmp/govcsim-DC0-LocalDS_2-447925145@folder-5</ManagedObjectReference>
+            <ManagedObjectReference type="Datastore">/tmp/govcsim-DC0-LocalDS_3-063103524@folder-5</ManagedObjectReference>
+          </val>
+        </propSet>
+        <propSet>
+          <name>network</name>
+          <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="ArrayOfManagedObjectReference">
+            <ManagedObjectReference type="Network">network-7</ManagedObjectReference>
+            <ManagedObjectReference type="DistributedVirtualPortgroup">dvportgroup-12</ManagedObjectReference>
+            <ManagedObjectReference type="DistributedVirtualPortgroup">dvportgroup-14</ManagedObjectReference>
+            <ManagedObjectReference type="DistributedVirtualPortgroup">dvportgroup-14</ManagedObjectReference>
+          </val>
+        </propSet>
+        <propSet>
+          <name>configuration</name>
+          <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="DatacenterConfigInfo"/>
+        </propSet>
+      </returnval>

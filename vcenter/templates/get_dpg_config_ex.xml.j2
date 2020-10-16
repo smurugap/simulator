@@ -1,0 +1,53 @@
+      <returnval>
+        <objects>
+          <obj type="DistributedVirtualPortgroup">{{ dpg }}</obj>
+          <propSet>
+            <name>config</name>
+            <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="DVPortgroupConfigInfo">
+              <key>{{ dpg }}</key>
+              <name>{{ dpg }}</name>
+              <numPorts>0</numPorts>
+              <distributedVirtualSwitch type="DistributedVirtualSwitch">{{ dvs }}</distributedVirtualSwitch>
+              <defaultPortConfig XMLSchema-instance:type="VMwareDVSPortSetting">
+                <vlan XMLSchema-instance:type="VmwareDistributedVirtualSwitchVlanIdSpec">
+                  <inherited>false</inherited>
+                  <vlanId>{{ vlan_id }}</vlanId>
+                </vlan>
+                <uplinkTeamingPolicy>
+                  <inherited>false</inherited>
+                  <policy>
+                    <inherited>false</inherited>
+                    <value>loadbalance_srcid</value>
+                  </policy>
+                  <reversePolicy>
+                    <inherited>false</inherited>
+                    <value>true</value>
+                  </reversePolicy>
+                  <notifySwitches>
+                    <inherited>false</inherited>
+                    <value>true</value>
+                  </notifySwitches>
+                  <rollingOrder>
+                    <inherited>false</inherited>
+                    <value>true</value>
+                  </rollingOrder>
+                </uplinkTeamingPolicy>
+              </defaultPortConfig>
+              <type/>
+              <policy XMLSchema-instance:type="VMwareDVSPortgroupPolicy">
+                <blockOverrideAllowed>true</blockOverrideAllowed>
+                <shapingOverrideAllowed>false</shapingOverrideAllowed>
+                <vendorConfigOverrideAllowed>false</vendorConfigOverrideAllowed>
+                <livePortMovingAllowed>false</livePortMovingAllowed>
+                <portConfigResetAtDisconnect>true</portConfigResetAtDisconnect>
+                <networkResourcePoolOverrideAllowed>false</networkResourcePoolOverrideAllowed>
+                <trafficFilterOverrideAllowed>false</trafficFilterOverrideAllowed>
+                <vlanOverrideAllowed>false</vlanOverrideAllowed>
+                <uplinkTeamingOverrideAllowed>false</uplinkTeamingOverrideAllowed>
+                <securityPolicyOverrideAllowed>false</securityPolicyOverrideAllowed>
+                <ipfixOverrideAllowed>false</ipfixOverrideAllowed>
+              </policy>
+            </val>
+          </propSet>
+        </objects>
+      </returnval>

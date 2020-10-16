@@ -21,3 +21,6 @@ grpcio==1.32.0
 futures==3.3.0
 grpcio-tools==1.32.0
 protobuf==3.13.0
+pyopenssl==19.1.0
+spyne==2.13.15
+cherrypy==17.4.2

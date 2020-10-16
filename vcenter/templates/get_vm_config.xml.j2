@@ -1,0 +1,224 @@
+      <returnval>
+        <objects>
+          <obj type="VirtualMachine">{{ vm }}</obj>
+          <propSet>
+            <name>config</name>
+            <val xmlns:XMLSchema-instance="http://www.w3.org/2001/XMLSchema-instance" XMLSchema-instance:type="VirtualMachineConfigInfo">
+              <changeVersion/>
+              <modified>2020-10-11T01:20:09.435700016Z</modified>
+              <name>{{ vm }}</name>
+              <guestFullName>otherGuest</guestFullName>
+              <version>vmx-13</version>
+              <uuid>{{ uuid }}</uuid>
+              <instanceUuid>{{ uuid }}</instanceUuid>
+              <template>false</template>
+              <guestId>otherGuest</guestId>
+              <alternateGuestName/>
+              <files>
+                <vmPathName>[LocalDS_0] DC0_H0_VM0/DC0_H0_VM0.vmx</vmPathName>
+                <snapshotDirectory>[LocalDS_0] DC0_H0_VM0</snapshotDirectory>
+                <suspendDirectory>[LocalDS_0] DC0_H0_VM0</suspendDirectory>
+                <logDirectory>[LocalDS_0] DC0_H0_VM0</logDirectory>
+              </files>
+              <tools/>
+              <flags/>
+              <defaultPowerOps/>
+              <hardware>
+                <numCPU>1</numCPU>
+                <numCoresPerSocket>1</numCoresPerSocket>
+                <memoryMB>32</memoryMB>
+                <device XMLSchema-instance:type="VirtualIDEController">
+                  <key>200</key>
+                  <deviceInfo XMLSchema-instance:type="Description">
+                    <label>IDE 0</label>
+                    <summary>IDE 0</summary>
+                  </deviceInfo>
+                  <busNumber>0</busNumber>
+                </device>
+                <device XMLSchema-instance:type="VirtualIDEController">
+                  <key>201</key>
+                  <deviceInfo XMLSchema-instance:type="Description">
+                    <label>IDE 1</label>
+                    <summary>IDE 1</summary>
+                  </deviceInfo>
+                  <busNumber>1</busNumber>
+                </device>
+                <device XMLSchema-instance:type="VirtualPS2Controller">
+                  <key>300</key>
+                  <deviceInfo XMLSchema-instance:type="Description">
+                    <label>PS2 controller 0</label>
+                    <summary>PS2 controller 0</summary>
+                  </deviceInfo>
+                  <busNumber>0</busNumber>
+                  <device>600</device>
+                  <device>700</device>
+                </device>
+                <device XMLSchema-instance:type="VirtualPCIController">
+                  <key>100</key>
+                  <deviceInfo XMLSchema-instance:type="Description">
+                    <label>PCI controller 0</label>
+                    <summary>PCI controller 0</summary>
+                  </deviceInfo>
+                  <busNumber>0</busNumber>
+                  <device>500</device>
+                  <device>12000</device>
+                </device>
+                <device XMLSchema-instance:type="VirtualSIOController">
+                  <key>400</key>
+                  <deviceInfo XMLSchema-instance:type="Description">
+                    <label>SIO controller 0</label>
+                    <summary>SIO controller 0</summary>
+                  </deviceInfo>
+                  <busNumber>0</busNumber>
+                </device>
+                <device XMLSchema-instance:type="VirtualKeyboard">
+                  <key>600</key>
+                  <deviceInfo XMLSchema-instance:type="Description">
+                    <label>Keyboard </label>
+                    <summary>Keyboard</summary>
+                  </deviceInfo>
+                  <controllerKey>300</controllerKey>
+                  <unitNumber>0</unitNumber>
+                </device>
+                <device XMLSchema-instance:type="VirtualPointingDevice">
+                  <key>700</key>
+                  <deviceInfo XMLSchema-instance:type="Description">
+                    <label>Pointing device</label>
+                    <summary>Pointing device; Device</summary>
+                  </deviceInfo>
+                  <backing XMLSchema-instance:type="VirtualPointingDeviceDeviceBackingInfo">
+                    <deviceName/>
+                    <useAutoDetect>false</useAutoDetect>
+                    <hostPointingDevice>autodetect</hostPointingDevice>
+                  </backing>
+                  <controllerKey>300</controllerKey>
+                  <unitNumber>1</unitNumber>
+                </device>
+                <device XMLSchema-instance:type="VirtualMachineVideoCard">
+                  <key>500</key>
+                  <deviceInfo XMLSchema-instance:type="Description">
+                    <label>Video card </label>
+                    <summary>Video card</summary>
+                  </deviceInfo>
+                  <controllerKey>100</controllerKey>
+                  <unitNumber>0</unitNumber>
+                  <videoRamSizeInKB>4096</videoRamSizeInKB>
+                  <numDisplays>1</numDisplays>
+                  <useAutoDetect>false</useAutoDetect>
+                  <enable3DSupport>false</enable3DSupport>
+                  <use3dRenderer>automatic</use3dRenderer>
+                  <graphicsMemorySizeInKB>262144</graphicsMemorySizeInKB>
+                </device>
+                <device XMLSchema-instance:type="VirtualMachineVMCIDevice">
+                  <key>12000</key>
+                  <deviceInfo XMLSchema-instance:type="Description">
+                    <label>VMCI device</label>
+                    <summary>Device on the virtual machine PCI bus that provides support for the virtual machine communication interface</summary>
+                  </deviceInfo>
+                  <controllerKey>100</controllerKey>
+                  <unitNumber>17</unitNumber>
+                  <id>-1</id>
+                  <allowUnrestrictedCommunication>false</allowUnrestrictedCommunication>
+                  <filterEnable>true</filterEnable>
+                </device>
+                <device XMLSchema-instance:type="ParaVirtualSCSIController">
+                  <key>202</key>
+                  <deviceInfo XMLSchema-instance:type="Description">
+                    <label>pvscsi-202</label>
+                    <summary>pvscsi-202</summary>
+                  </deviceInfo>
+                  <busNumber>0</busNumber>
+                  <sharedBus>noSharing</sharedBus>
+                  <scsiCtlrUnitNumber>7</scsiCtlrUnitNumber>
+                </device>
+                <device XMLSchema-instance:type="VirtualCdrom">
+                  <key>203</key>
+                  <deviceInfo XMLSchema-instance:type="Description">
+                    <label>cdrom-203</label>
+                    <summary>cdrom-203</summary>
+                  </deviceInfo>
+                  <backing XMLSchema-instance:type="VirtualCdromAtapiBackingInfo">
+                    <deviceName>cdrom--201-824638102144</deviceName>
+                    <useAutoDetect>false</useAutoDetect>
+                  </backing>
+                  <connectable>
+                    <startConnected>true</startConnected>
+                    <allowGuestControl>true</allowGuestControl>
+                    <connected>true</connected>
+                  </connectable>
+                  <controllerKey>202</controllerKey>
+                  <unitNumber>0</unitNumber>
+                </device>
+                <device XMLSchema-instance:type="VirtualDisk">
+                  <key>204</key>
+                  <deviceInfo XMLSchema-instance:type="Description">
+                    <label>disk-202-0</label>
+                    <summary>1,024 KB</summary>
+                  </deviceInfo>
+                  <backing XMLSchema-instance:type="VirtualDiskFlatVer2BackingInfo">
+                    <fileName>[LocalDS_0] DC0_H0_VM0/disk1.vmdk</fileName>
+                    <datastore type="Datastore">/tmp/govcsim-DC0-LocalDS_0-160065578@folder-5</datastore>
+                    <diskMode>persistent</diskMode>
+                    <thinProvisioned>true</thinProvisioned>
+                  </backing>
+                  <controllerKey>202</controllerKey>
+                  <unitNumber>0</unitNumber>
+                  <capacityInKB>1024</capacityInKB>
+                </device>
+                <device XMLSchema-instance:type="VirtualE1000">
+                  <key>4000</key>
+                  <deviceInfo XMLSchema-instance:type="Description">
+                    <label>ethernet-0</label>
+                    <summary>DVSwitch: fea97929-4b2d-5972-b146-930c6d0b4014</summary>
+                  </deviceInfo>
+                  <backing XMLSchema-instance:type="VirtualEthernetCardDistributedVirtualPortBackingInfo">
+                    <port>
+                      <switchUuid>fea97929-4b2d-5972-b146-930c6d0b4014</switchUuid>
+                      <portgroupKey>{{ dpg }}</portgroupKey>
+                    </port>
+                  </backing>
+                  <connectable>
+                    <startConnected>true</startConnected>
+                    <allowGuestControl>true</allowGuestControl>
+                    <connected>false</connected>
+                    <status>untried</status>
+                  </connectable>
+                  <slotInfo XMLSchema-instance:type="VirtualDevicePciBusSlotInfo">
+                    <pciSlotNumber>32</pciSlotNumber>
+                  </slotInfo>
+                  <controllerKey>100</controllerKey>
+                  <unitNumber>7</unitNumber>
+                  <addressType>generated</addressType>
+                  <macAddress>00:0c:29:36:63:62</macAddress>
+                  <wakeOnLanEnabled>true</wakeOnLanEnabled>
+                </device>
+              </hardware>
+              <cpuAllocation>
+                <reservation>0</reservation>
+                <expandableReservation>true</expandableReservation>
+                <limit>-1</limit>
+                <shares>
+                  <shares>0</shares>
+                  <level>normal</level>
+                </shares>
+              </cpuAllocation>
+              <memoryAllocation>
+                <reservation>0</reservation>
+                <expandableReservation>true</expandableReservation>
+                <limit>-1</limit>
+                <shares>
+                  <shares>0</shares>
+                  <level>normal</level>
+                </shares>
+              </memoryAllocation>
+              <latencySensitivity>
+                <level>normal</level>
+              </latencySensitivity>
+              <extraConfig XMLSchema-instance:type="OptionValue">
+                <key>govcsim</key>
+                <value XMLSchema-instance:type="xsd:string">TRUE</value>
+              </extraConfig>
+            </val>
+          </propSet>
+        </objects>
+      </returnval>
