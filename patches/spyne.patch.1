@@ -1,0 +1,83 @@
+diff --git a/protocol/xml.py b/protocol/xml.py
+index d208743..83207c2 100644
+--- a/protocol/xml.py
++++ b/protocol/xml.py
+@@ -491,9 +491,9 @@ class XmlDocument(SubXmlBase):
+                 if newclass is None:
+                     logger.error("xsi:type '%s' interpreted as class key '%s' "
+                                         "is not recognized", xsi_type, classkey)
+-                    raise ValidationError(xsi_type)
+-
+-                cls = newclass
++                    #raise ValidationError(xsi_type)
++                else:
++                    cls = newclass
+                 logger.debug("xsi:type '%s' overrides %r to %r", xsi_type,
+                                                                   cls, newclass)
+ 
+@@ -940,7 +940,10 @@ class XmlDocument(SubXmlBase):
+         if isinstance(inst, STR_TYPES):
+             inst = etree.fromstring(inst)
+ 
+-        _append(parent, E(_gen_tagname(ns, name), inst))
++        if name == 'CustomList':
++            _append(parent, inst)
++        else:
++            _append(parent, E(_gen_tagname(ns, name), inst))
+ 
+     def any_to_parent(self, ctx, cls, inst, parent, ns, name, **_):
+         _append(parent, E(_gen_tagname(ns, name), inst))
+@@ -1023,7 +1026,8 @@ class XmlDocument(SubXmlBase):
+                         value = []
+ 
+                     value.append(self.from_unicode(submember.type, value_str))
+-
++                elif issubclass(submember, Unicode):
++                    continue
+                 else:
+                     value = self.from_unicode(submember.type, value_str)
+ 
+diff --git a/server/wsgi.py b/server/wsgi.py
+index 8261af7..1d055a9 100644
+--- a/server/wsgi.py
++++ b/server/wsgi.py
+@@ -300,7 +300,8 @@ class WsgiApplication(HttpBase):
+             # Format the url for location
+             url = url.split('?')[0].split('.wsdl')[0]
+             return self.handle_wsdl_request(req_env, start_response, url)
+-
++        elif self.is_versions_request(req_env):
++            return self.handle_versions_request(req_env, start_response, url)
+         else:
+             return self.handle_rpc(req_env, start_response)
+ 
+@@ -320,6 +321,29 @@ class WsgiApplication(HttpBase):
+             )
+         )
+ 
++    def is_versions_request(self, req_env):
++        # https://127.0.0.1:443/sdk/vimServiceVersions.xml
++        return (
++            req_env['REQUEST_METHOD'].upper() == 'GET' and
++                'sdk/vimServiceVersions.xml' in req_env['PATH_INFO']
++            )
++
++    def handle_versions_request(self, req_env, start_response, url):
++        ctx = WsgiMethodContext(self, req_env, 'text/xml; charset=utf-8')
++        data = '''<?xml version="1.0" encoding="UTF-8"?>
++<namespaces version="1.0">
++ <namespace>
++  <name>urn:vim25</name>
++  <version>6.5</version>
++  <priorVersions>
++   <version>6.0</version>
++   <version>5.5</version>
++  </priorVersions>
++ </namespace>
++</namespaces>'''
++        start_response(HTTP_200, _gen_http_headers(ctx.transport.resp_headers))
++        return [data]
++
+     def handle_wsdl_request(self, req_env, start_response, url):
+         ctx = WsgiMethodContext(self, req_env, 'text/xml; charset=utf-8')
+ 
