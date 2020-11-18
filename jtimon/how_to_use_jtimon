@@ -1,0 +1,25 @@
+root@5c1s11-node3:~/go/src/github.com/nileshsimaria/jtimon# cat /root/device.conf
+{
+
+    "cid": "test-bgpl",
+    "host": "10.87.69.121",
+    "user": "root",
+    "password": "Contrail123!",
+    "eos": false,
+
+    "port": 32767,
+    "paths": [
+        {
+            "freq": 60000,
+            "path": "/lldp/"
+        }
+        ],
+    "log": {
+        "verbose": true
+    }
+}
+
+rm /tmp/response.json.j2
+./jtimon --config /root/device.conf --print --json
+
+The generated template would be at /tmp/response.json.j2

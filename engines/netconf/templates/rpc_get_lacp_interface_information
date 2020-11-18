@@ -1,0 +1,43 @@
+<lacp-interface-information-list xmlns="http://xml.juniper.net/junos/19.4R0/junos-lacpd">
+{% set lacp_dct = lacp|default({}) %}
+{% set sessions = lacp_dct.get('sessions', []) %}
+{% for session in sessions %}
+<lacp-interface-information>
+<lag-lacp-header>
+<aggregate-name>{{session.get('name', 'ae0')}}</aggregate-name>
+</lag-lacp-header>
+<lag-lacp-state>
+{% for interface in interfaces %}
+<name>{{ interface.get('name', 'xe-0/0/0') }}</name>
+<lacp-role>Actor</lacp-role>
+<lacp-expired>No</lacp-expired>
+<lacp-defaulted>Yes</lacp-defaulted>
+<lacp-distributing>{{ interface.get('distributing', 'Yes') }}</lacp-distributing>
+<lacp-collecting>{{ interface.get('collecting', 'Yes') }}</lacp-collecting>
+<lacp-synchronization>Yes</lacp-synchronization>
+<lacp-aggregation>Yes</lacp-aggregation>
+<lacp-timeout>Fast</lacp-timeout>
+<lacp-activity>Active</lacp-activity>
+</lag-lacp-state>
+<lag-lacp-state>
+<name>{{ interface.get('name', 'xe-0/0/0') }}</name>
+<lacp-role>Partner</lacp-role>
+<lacp-expired>No</lacp-expired>
+<lacp-defaulted>Yes</lacp-defaulted>
+<lacp-distributing>{{ interface.get('distributing', 'Yes') }}</lacp-distributing>
+<lacp-collecting>{{ interface.get('collecting', 'Yes') }}</lacp-collecting>
+<lacp-synchronization>Yes</lacp-synchronization>
+<lacp-aggregation>Yes</lacp-aggregation>
+<lacp-timeout>Fast</lacp-timeout>
+<lacp-activity>Passive</lacp-activity>
+</lag-lacp-state>
+<lag-lacp-protocol>
+<name>{{ interface.get('name', 'xe-0/0/0') }}</name>
+<lacp-receive-state>{{ interface.get('recv_state', 'Current') }}</lacp-receive-state>
+<lacp-transmit-state>{{ interface.get('transmit_state', 'Fast periodic') }}</lacp-transmit-state>
+<lacp-mux-state>{{ interface.get('mux_state', 'Collecting distributing')}}</lacp-mux-state>
+</lag-lacp-protocol>
+{% endfor %}
+</lacp-interface-information>
+{% endfor %}
+</lacp-interface-information-list>

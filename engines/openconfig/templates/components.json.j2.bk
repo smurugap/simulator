@@ -1,0 +1,518 @@
+[
+    {
+        "sensor_1004_2_1:/components/:/components/:jkdsd": [
+{% for n in range(0, 2) %}
+{% set name = 'CPU0:CORE' ~ n %}
+{% set dct = (components is defined and components.get(name, {}))|default({}) %}
+            {
+                "__prefix__": {
+                    "str_value": "/components/component[name='{{name}}']/"
+                }
+            },
+            {
+                "cpu/utilization/state/name": {
+                    "str_value": "{{name}}"
+                }
+            },
+            {
+                "cpu/utilization/state/instant": {
+                    "uint_value": {{ dct.get("cpu/utilization/state/instant", 4) }}
+                }
+            },
+            {
+                "cpu/utilization/state/avg": {
+                    "uint_value": {{ dct.get("cpu/utilization/state/avg", 4) }}
+                }
+            },
+            {
+                "cpu/utilization/state/min": {
+                    "uint_value": {{ dct.get("cpu/utilization/state/min", 0) }}
+                }
+            },
+            {
+                "cpu/utilization/state/max": {
+                    "uint_value": {{ dct.get("cpu/utilization/state/max", 4) }}
+                }
+            },
+            {
+                "cpu/utilization/state/interval": {
+                    "uint_value": {{ dct.get("cpu/utilization/state/interval", 111111) }}
+                }
+            },
+            {
+                "cpu/utilization/state/min-time": {
+                    "uint_value": {{ dct.get("cpu/utilization/state/min-time", 0) }}
+                }
+            },
+            {
+                "cpu/utilization/state/max-time": {
+                    "uint_value": {{ dct.get("cpu/utilization/state/max-time", 1600912910400933) }}
+                }
+{% if not loop.last %}
+            },
+{% else %}
+            }
+{% endif %}
+{% endfor %}
+        ]
+    },
+    {
+        "sensor_1004_1_1:/components/:/components/:chassisd": [
+{% set name = 'Chassis' %}
+{% set dct = (components is defined and components.get(name, {}))|default({}) %}
+            {
+                "__prefix__": {
+                    "str_value": "/components/component[name='{{name}}']/"
+                }
+            },
+            {
+                "state/name": {
+                    "str_value": "Chassis"
+                }
+            },
+            {
+                "state/type": {
+                    "str_value": "CHASSIS"
+                }
+            },
+            {
+                "state/id": {
+                    "str_value": "{{ hostname }}"
+                }
+            },
+            {
+                "state/location": {
+                    "str_value": "Chassis"
+                }
+            },
+            {
+                "state/description": {
+                    "str_value": "{{ dct.get('model', 'QFX10002-36Q') }}"
+                }
+            },
+            {
+                "state/mfg-date": {
+                    "str_value": "00-00-0000"
+                }
+            },
+            {
+                "state/serial-no": {
+                    "str_value": "{{ hostname }}"
+                }
+            },
+            {
+                "state/removable": {
+                    "bool_value": false
+                }
+            },
+            {
+                "state/oper-status": {
+                    "str_value": "{{ dct.get('state/oper-status', "INACTIVE") }}"
+                }
+            },
+            {
+                "state/empty": {
+                    "bool_value": {{ dct.get('state/empty', 'false') }}
+                }
+            },
+            {
+                "state/temperature/instant": {
+                    "str_value": "{{ dct.get('state/temperature/instant', 0) }}"
+                }
+            },
+            {
+                "state/memory/available": {
+                    "uint_value": {{ dct.get('state/memory/available', 0) }}
+                }
+            },
+            {
+                "state/memory/utilized": {
+                    "uint_value": {{ dct.get('state/memory/utilized', 0) }}
+                }
+            },
+            {
+                "state/allocated-power": {
+                    "uint_value": {{ dct.get('state/allocated-power', 0) }}
+                }
+            },
+            {
+{% set prop_dct = dct.get('temperature-ambient', {}) %}
+                "__prefix__": {
+                    "str_value": "/components/component[name='{{name}}']/properties/property[name='temperature-ambient']/"
+                }
+            },
+            {
+                "state/value": {
+                    "uint_value": "{{ prop_dct.get('state/value', 20) }}"
+                }
+            },
+            {
+                "state/configurable": {
+                    "bool_value": false
+                }
+            }
+        ]
+    },
+    {
+        "sensor_1004_1_1:/components/:/components/:chassisd": [
+{% set name = 'Routing Engine0' %}
+{% set dct = (components is defined and components.get(name, {}))|default({}) %}
+            {
+                "__prefix__": {
+                    "str_value": "/components/component[name='{{name}}']/"
+                }
+            },
+            {
+                "state/name": {
+                    "str_value": "{{name}}"
+                }
+            },
+            {
+                "state/type": {
+                    "str_value": "MODULE"
+                }
+            },
+            {
+                "state/id": {
+                    "str_value": "BUILTIN"
+                }
+            },
+            {
+                "state/location": {
+                    "str_value": "{{name}}"
+                }
+            },
+            {
+                "state/description": {
+                    "str_value": "RE-QFX10002-36Q"
+                }
+            },
+            {
+                "state/mfg-date": {
+                    "str_value": "01-18-2017"
+                }
+            },
+            {
+                "state/serial-no": {
+                    "str_value": "BUILTIN"
+                }
+            },
+            {
+                "state/part-no": {
+                    "str_value": "BUILTIN"
+                }
+            },
+            {
+                "state/removable": {
+                    "bool_value": false
+                }
+            },
+            {
+                "state/oper-status": {
+                    "str_value": "{{ dct.get('state/oper-status', 'ACTIVE') }}"
+                }
+            },
+            {
+                "state/empty": {
+                    "bool_value": {{ dct.get('state/empty', 'false') }}
+                }
+            },
+            {
+                "state/temperature/instant": {
+                    "str_value": "{{ dct.get('state/temperature/instant', 35) }}"
+                }
+            },
+            {
+                "state/memory/available": {
+                    "uint_value": {{ dct.get('state/memory/available', 8192) }}
+                }
+            },
+            {
+                "state/memory/utilized": {
+                    "uint_value": {{ dct.get('state/memory/utilized', 737) }}
+                }
+            },
+            {
+                "state/allocated-power": {
+                    "uint_value": {{ dct.get('state/allocated-power', 0) }}
+                }
+            },
+            {
+{% set prop_dct = dct.get('state', {}) %}
+                "__prefix__": {
+                    "str_value": "/components/component[name='{{name}}']/properties/property[name='state']/"
+                }
+            },
+            {
+                "state/value": {
+                    "str_value": "{{ prop_dct.get('state/value', 'Online Master') }}"
+                }
+            },
+            {
+                "state/configurable": {
+                    "bool_value": true
+                }
+            }
+        ]
+    },
+    {
+        "sensor_1004_1_1:/components/:/components/:chassisd": [
+            {
+{% set prop_dct = dct.get('mastership-state', {}) %}
+                "__prefix__": {
+                    "str_value": "/components/component[name='{{name}}']/properties/property[name='mastership-state']/"
+                }
+            },
+            {
+                "state/value": {
+                    "str_value": "{{ prop_dct.get('state/value', 'Master') }}"
+                }
+            },
+            {
+                "state/configurable": {
+                    "bool_value": false
+                }
+            }
+        ]
+    },
+    {
+        "sensor_1004_1_1:/components/:/components/:chassisd": [
+            {
+{% set prop_dct = dct.get('temperature', {}) %}
+                "__prefix__": {
+                    "str_value": "/components/component[name='{{name}}']/properties/property[name='temperature']/"
+                }
+            },
+            {
+                "state/value": {
+                    "str_value": "{{ prop_dct.get('state/value', 35) }}"
+                }
+            },
+            {
+                "state/configurable": {
+                    "bool_value": false
+                }
+            }
+        ]
+    },
+    {
+        "sensor_1004_1_1:/components/:/components/:chassisd": [
+            {
+{% set prop_dct = dct.get('temperature-cpu', {}) %}
+                "__prefix__": {
+                    "str_value": "/components/component[name='{{name}}']/properties/property[name='temperature-cpu']/"
+                }
+            },
+            {
+                "state/value": {
+                    "str_value": "{{ prop_dct.get('state/value', 35) }}"
+                }
+            },
+            {
+                "state/configurable": {
+                    "bool_value": false
+                }
+            }
+        ]
+    },
+    {
+        "sensor_1004_1_1:/components/:/components/:chassisd": [
+{% set prop_dct = dct.get('cpu-utilization-user', {}) %}
+            {
+                "__prefix__": {
+                    "str_value": "/components/component[name='{{name}}']/properties/property[name='cpu-utilization-user']/"
+                }
+            },
+            {
+                "state/value": {
+                    "str_value": "{{ prop_dct.get('state/value', 2) }}"
+                }
+            },
+            {
+                "state/configurable": {
+                    "bool_value": false
+                }
+            }
+        ]
+    },
+    {
+        "sensor_1004_1_1:/components/:/components/:chassisd": [
+{% set prop_dct = dct.get('cpu-utilization-background', {}) %}
+            {
+                "__prefix__": {
+                    "str_value": "/components/component[name='{{name}}']/properties/property[name='cpu-utilization-background']/"
+                }
+            },
+            {
+                "state/value": {
+                    "str_value": "{{ prop_dct.get('state/value', 0) }}"
+                }
+            },
+            {
+                "state/configurable": {
+                    "bool_value": false
+                }
+            }
+        ]
+    },
+    {
+        "sensor_1004_1_1:/components/:/components/:chassisd": [
+            {
+{% set prop_dct = dct.get('cpu-utilization-kernel', {}) %}
+                "__prefix__": {
+                    "str_value": "/components/component[name='{{name}}']/properties/property[name='cpu-utilization-kernel']/"
+                }
+            },
+            {
+                "state/value": {
+                    "str_value": "{{ prop_dct.get('state/value', 1) }}"
+                }
+            },
+            {
+                "state/configurable": {
+                    "bool_value": false
+                }
+            }
+        ]
+    },
+    {
+        "sensor_1004_1_1:/components/:/components/:chassisd": [
+            {
+{% set prop_dct = dct.get('cpu-utilization-interrupt', {}) %}
+                "__prefix__": {
+                    "str_value": "/components/component[name='{{name}}']/properties/property[name='cpu-utilization-interrupt']/"
+                }
+            },
+            {
+                "state/value": {
+                    "str_value": "{{ prop_dct.get('state/value', 0) }}"
+                }
+            },
+            {
+                "state/configurable": {
+                    "bool_value": false
+                }
+            }
+        ]
+    },
+    {
+        "sensor_1004_1_1:/components/:/components/:chassisd": [
+            {
+{% set prop_dct = dct.get('cpu-utilization-idle', {}) %}
+                "__prefix__": {
+                    "str_value": "/components/component[name='{{name}}']/properties/property[name='cpu-utilization-idle']/"
+                }
+            },
+            {
+                "state/value": {
+                    "str_value": "{{ prop_dct.get('state/value', 97) }}"
+                }
+            },
+            {
+                "state/configurable": {
+                    "bool_value": false
+                }
+            }
+        ]
+    },
+    {
+        "sensor_1004_1_1:/components/:/components/:chassisd": [
+            {
+{% set prop_dct = dct.get('memory-dram-used', {}) %}
+                "__prefix__": {
+                    "str_value": "/components/component[name='{{name}}']/properties/property[name='memory-dram-used']/"
+                }
+            },
+            {
+                "state/value": {
+                    "str_value": "{{ prop_dct.get('state/value', 7765) }}"
+                }
+            },
+            {
+                "state/configurable": {
+                    "bool_value": false
+                }
+            }
+        ]
+    },
+    {
+        "sensor_1004_1_1:/components/:/components/:chassisd": [
+            {
+{% set prop_dct = dct.get('memory-dram-installed', {}) %}
+                "__prefix__": {
+                    "str_value": "/components/component[name='{{name}}']/properties/property[name='memory-dram-installed']/"
+                }
+            },
+            {
+                "state/value": {
+                    "str_value": "{{ prop_dct.get('state/value', 8192) }}"
+                }
+            },
+            {
+                "state/configurable": {
+                    "bool_value": false
+                }
+            }
+        ]
+    },
+    {
+        "sensor_1004_1_1:/components/:/components/:chassisd": [
+            {
+{% set prop_dct = dct.get('memory-utilization-buffer', {}) %}
+                "__prefix__": {
+                    "str_value": "/components/component[name='{{name}}']/properties/property[name='memory-utilization-buffer']/"
+                }
+            },
+            {
+                "state/value": {
+                    "str_value": "{{ prop_dct.get('state/value', 9) }}"
+                }
+            },
+            {
+                "state/configurable": {
+                    "bool_value": false
+                }
+            }
+        ]
+    },
+    {
+        "sensor_1004_1_1:/components/:/components/:chassisd": [
+            {
+{% set prop_dct = dct.get('uptime', {}) %}
+                "__prefix__": {
+                    "str_value": "/components/component[name='{{name}}']/properties/property[name='uptime']/"
+                }
+            },
+            {
+                "state/value": {
+                    "str_value": "{{ prop_dct.get('state/value', 24362) }}"
+                }
+            },
+            {
+                "state/configurable": {
+                    "bool_value": false
+                }
+            }
+        ]
+    },
+    {
+        "sensor_1004_1_1:/components/:/components/:chassisd": [
+            {
+{% set prop_dct = dct.get('reboot-reason', {}) %}
+                "__prefix__": {
+                    "str_value": "/components/component[name='{{name}}']/properties/property[name='reboot-reason']/"
+                }
+            },
+            {
+                "state/value": {
+                    "str_value": "{{ prop_dct.get('state/value', '0x1:power cycle/failure') }}"
+                }
+            },
+            {
+                "state/configurable": {
+                    "bool_value": false
+                }
+            }
+        ]
+    }
+]

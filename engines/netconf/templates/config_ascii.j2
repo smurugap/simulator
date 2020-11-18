@@ -1,0 +1,38 @@
+<configuration-text format='ascii' xmlns="http://xml.juniper.net/xnm/1.1/xnm">
+system {
+    host-name {{ hostname }};
+    root-authentication {
+        encrypted-password "$6$JWLKlAzK$zz0Zq86IitSJobDzS1W7dz8pfcouNsbPwiiDRr44Kz0fyjzGXmFLHYeT40rOwzsOuRLDGzJzn/z1lMwTEIeg5/";
+    }
+    services {
+        ssh {
+            root-login allow;
+        }
+        telnet;
+        netconf {
+            ssh;
+            rfc-compliant;
+            traceoptions {
+                file nc;
+                flag all;
+            }
+        }
+    }
+    domain-search [ contrail.juniper.net juniper.net jnpr.net englab.juniper.net spglab.juniper.net ];
+    time-zone America/Los_Angeles;
+    syslog {
+        user * {
+            any emergency;
+        }
+        file messages {
+            any notice;
+            authorization info;
+        }
+        file default-log-messages {
+            any any;
+            match "(UI_COMMIT_COMPLETED)|ifAdminStatus|ifOperStatus|(FRU power)|(FRU removal)|(FRU insertion)|(link UP)|(vc add)|(vc delete)|transitioned|Transferred|transfer-file|QFABRIC_NETWORK_NODE_GROUP|QFABRIC_SERVER_NODE_GROUP|QFABRIC_NODE|(license add)|(license delete)";
+            structured-data;
+        }
+    }
+}
+</configuration-text>

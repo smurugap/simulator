@@ -1,0 +1,18 @@
+<alarm-information>
+{% set count = 0 %}
+{% for alarm in chassis_alarms %}
+    <alarm-detail>
+        <alarm-time>
+            {{ alarm['time'] }}
+        </alarm-time>
+        <alarm-class>{{ alarm['class'] }}</alarm-class>
+        <alarm-description>{{ alarm['description'] }}</alarm-description>
+        <alarm-short-description>{{ alarm['description'] }}</alarm-short-description>
+        <alarm-type>{{ alarm['type'] }}</alarm-type>
+    </alarm-detail>
+{% set count = count + 1 %}
+{% endfor %}
+    <alarm-summary>
+        <active-alarm-count>{{ count }}</active-alarm-count>
+    </alarm-summary>
+</alarm-information>

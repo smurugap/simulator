@@ -1,0 +1,226 @@
+diff --git a/influx.go b/influx.go
+index 8260681..47fb167 100644
+--- a/influx.go
++++ b/influx.go
+@@ -2,12 +2,15 @@ package main
+ 
+ import (
+ 	"fmt"
++	"os"
++	"bufio"
+ 	"log"
+ 	"reflect"
+ 	"regexp"
+ 	"strings"
+ 	"sync"
+ 	"time"
++//      "math/rand"
+ 
+ 	"github.com/influxdata/influxdb/client/v2"
+ 	na_pb "github.com/nileshsimaria/jtimon/telemetry"
+@@ -405,20 +408,35 @@ func newRow(tags map[string]string, fields map[string]interface{}) (*row, error)
+ 	}, nil
+ }
+ 
++func check(err error) {
++    if err != nil {
++        panic(err)
++    }
++}
++
+ // A go routine to add one telemetry packet in to InfluxDB
+ func addIDB(ocData *na_pb.OpenConfigData, jctx *JCtx, rtime time.Time) {
+ 	cfg := jctx.config
+ 
+ 	prefix := ""
++	orig_key := ""
+ 	prefixXmlpath := ""
+ 	var prefixTags map[string]string
+ 	var tags map[string]string
+ 	var xmlpath string
+ 	prefixTags = nil
++        count := 0
+ 
+ 	points := make([]*client.Point, 0)
+ 	rows := make([]*row, 0)
+ 
++        //filename := fmt.Sprintf("/tmp/response%v.json", rand.Intn(1000))
++        filename := fmt.Sprintf("/tmp/response.json.j2")
++        f, err := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0666)
++        check(err)
++        w := bufio.NewWriter(f)
++        fmt.Fprintf(w, "{\"%v\": ", ocData.Path)
++        fmt.Fprintf(w, "    [\n")
+ 	for _, v := range ocData.Kv {
+ 		kv := make(map[string]interface{})
+ 
+@@ -426,23 +444,33 @@ func addIDB(ocData *na_pb.OpenConfigData, jctx *JCtx, rtime time.Time) {
+ 		case v.Key == "__prefix__":
+ 			prefix = v.GetStrValue()
+ 			prefixXmlpath, prefixTags = spitTagsNPath(jctx, prefix)
++                        if count != 0 {
++                            fmt.Fprintf(w, ",\n")
++                        }
++                        fmt.Fprintf(w, "    {\"%s\": {\"str_value\": \"%s\"}}", v.Key, prefix)
++                        count = count + 1
+ 			continue
+ 		case strings.HasPrefix(v.Key, "__"):
+ 			continue
+ 		}
+ 
++                fmt.Fprintf(w, ",\n")
++                fmt.Fprintf(w, "        {\"%s\":    {", v.Key)
+ 		key := v.Key
+ 		if key[0] != '/' {
+ 			if strings.Contains(key, "[") {
+ 				key = prefix + v.Key
+ 				xmlpath, tags = spitTagsNPath(jctx, key)
++                                orig_key = key
+ 			} else {
+ 				xmlpath = prefixXmlpath + key
++                                orig_key = key
+ 				tags = prefixTags
+ 				xmlpath = getAlias(jctx.alias, xmlpath)
+ 			}
+ 		} else {
+ 			xmlpath, tags = spitTagsNPath(jctx, key)
++                        orig_key = key
+ 		}
+ 
+ 		tags["device"] = cfg.Host
+@@ -451,18 +479,29 @@ func addIDB(ocData *na_pb.OpenConfigData, jctx *JCtx, rtime time.Time) {
+ 		switch v.Value.(type) {
+ 		case *na_pb.KeyValue_StrValue:
+ 			kv[xmlpath] = v.GetStrValue()
++                        out_string := ""
++                        if (kv[xmlpath] != "") && (kv[xmlpath] != nil) {
++                            out_string = fmt.Sprintf("%v", kv[xmlpath])
++                        }
++                        fmt.Fprintf(w, "\"str_value\": \"{{ dct.get('%v', '%s') }}\" } }", orig_key, out_string)
+ 		case *na_pb.KeyValue_DoubleValue:
+ 			kv[xmlpath] = v.GetDoubleValue()
++                        fmt.Fprintf(w, "\"double_value\": {{ dct.get('%v', %v) }} } }", orig_key, kv[xmlpath])
+ 		case *na_pb.KeyValue_IntValue:
+ 			kv[xmlpath] = float64(v.GetIntValue())
++                        fmt.Fprintf(w, "\"int_value\": {{ dct.get('%v', %f) }} } }", orig_key, kv[xmlpath])
+ 		case *na_pb.KeyValue_UintValue:
+ 			kv[xmlpath] = float64(v.GetUintValue())
++                        fmt.Fprintf(w, "\"uint_value\": {{ dct.get('%v', %f) }} } }", orig_key, kv[xmlpath])
+ 		case *na_pb.KeyValue_SintValue:
+ 			kv[xmlpath] = float64(v.GetSintValue())
++                        fmt.Fprintf(w, "\"sint_value\": {{ dct.get('%v', %f) }} } }", orig_key, kv[xmlpath])
+ 		case *na_pb.KeyValue_BoolValue:
+ 			kv[xmlpath] = v.GetBoolValue()
++                        fmt.Fprintf(w, "\"bool_value\": {{ dct.get('%v', '%v') }} } }", orig_key, kv[xmlpath])
+ 		case *na_pb.KeyValue_BytesValue:
+ 			kv[xmlpath] = v.GetBytesValue()
++                        fmt.Fprintf(w, "\"bytes_value\": \"{{ dct.get('%v', '%s') }}\" } }", orig_key, kv[xmlpath])
+ 		default:
+ 		}
+ 
+@@ -506,6 +545,9 @@ func addIDB(ocData *na_pb.OpenConfigData, jctx *JCtx, rtime time.Time) {
+ 			}
+ 		}
+ 	}
++        fmt.Fprintf(w, "    ]\n}")
++        w.Flush()
++        f.Close()
+ 	if len(rows) > 0 {
+ 		for _, row := range rows {
+ 			pt, err := client.NewPoint(mName(ocData, jctx.config), row.tags, row.fields, rtime)
+diff --git a/subscribe_juniper_junos.go b/subscribe_juniper_junos.go
+index bc22daf..cccc297 100644
+--- a/subscribe_juniper_junos.go
++++ b/subscribe_juniper_junos.go
+@@ -3,12 +3,14 @@ package main
+ import (
+ 	"fmt"
+ 	"io"
++	"bufio"
+ 	"strings"
+ 	"time"
+ 
+ 	"encoding/json"
+ 	"os"
+ 	"syscall"
++        "os/signal"
+ 
+ 	"github.com/golang/protobuf/proto"
+ 	auth_pb "github.com/nileshsimaria/jtimon/authentication"
+@@ -93,6 +95,22 @@ func handleOnePacket(ocData *na_pb.OpenConfigData, jctx *JCtx) {
+ 	}
+ }
+ 
++func SetupCloseHandler() {
++    c := make(chan os.Signal)
++    signal.Notify(c, os.Interrupt, syscall.SIGTERM)
++    go func() {
++        <-c
++        fmt.Println("\r- Ctrl+C pressed in Terminal")
++        filename := fmt.Sprintf("/tmp/response.json.j2")
++        f, _ := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0666)
++        w := bufio.NewWriter(f)
++        fmt.Fprintf(w, "\n]")
++        w.Flush()
++        f.Close()
++        os.Exit(0)
++    }()
++}
++
+ // subSendAndReceive handles the following
+ // 		- Opens up a stream for receiving the telemetry data
+ //		- Handles SIGHUP by terminating the current stream and requests the
+@@ -103,6 +121,7 @@ func subSendAndReceive(conn *grpc.ClientConn, jctx *JCtx,
+ 	subReqM na_pb.SubscriptionRequest) SubErrorCode {
+ 
+ 	var ctx context.Context
++        SetupCloseHandler()
+ 	c := na_pb.NewOpenConfigTelemetryClient(conn)
+ 	if jctx.config.Meta {
+ 		md := metadata.New(map[string]string{"username": jctx.config.User, "password": jctx.config.Password})
+@@ -130,8 +149,15 @@ func subSendAndReceive(conn *grpc.ClientConn, jctx *JCtx,
+ 
+ 	go func() {
+ 		// Go Routine which actually starts the streaming connection and receives the data
++                count := 0
+ 		jLog(jctx, fmt.Sprintf("Receiving telemetry data from %s:%d\n", jctx.config.Host, jctx.config.Port))
+ 
++                filename := fmt.Sprintf("/tmp/response.json.j2")
++                f, _ := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0666)
++                w := bufio.NewWriter(f)
++                fmt.Fprintf(w, "[\n")
++                w.Flush()
++                f.Close()
+ 		for {
+ 			ocData, err := stream.Recv()
+ 			if err == io.EOF {
+@@ -163,7 +189,15 @@ func subSendAndReceive(conn *grpc.ClientConn, jctx *JCtx,
+ 			if *print || *stateHandler || IsVerboseLogging(jctx) {
+ 				handleOnePacket(ocData, jctx)
+ 			}
+-
++                        if count != 0 {
++                            filename := fmt.Sprintf("/tmp/response.json.j2")
++                            f, _ := os.OpenFile(filename, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0666)
++                            w := bufio.NewWriter(f)
++                            fmt.Fprintf(w, ",\n")
++                            w.Flush()
++                            f.Close()
++                        }
++                        count = count + 1
+ 			// to influxdb
+ 			if *noppgoroutines {
+ 				addIDB(ocData, jctx, rtime)
+@@ -180,6 +214,12 @@ func subSendAndReceive(conn *grpc.ClientConn, jctx *JCtx,
+ 				}
+ 			}
+ 		}
++                filename = fmt.Sprintf("/tmp/response.json.j2")
++                f, _ = os.OpenFile(filename, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0666)
++                w = bufio.NewWriter(f)
++                fmt.Fprintf(w, "[\n")
++                w.Flush()
++                f.Close()
+ 	}()
+ 	for {
+ 		select {

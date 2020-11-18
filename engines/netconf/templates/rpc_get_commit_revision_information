@@ -1,0 +1,7 @@
+<commit-revision-information>
+        <revision>re0-1605310897-{{ commit_revision }}</revision>
+        <user>root</user>
+        <client>netconf</client>
+        <date-time seconds="1605310899">{{ commit_timestamp }}</date-time>
+        <log>Config template deploy commit EMS_REQ_ID:{{ commit_id }}</log>
+</commit-revision-information>

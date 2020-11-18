@@ -1,12 +1,14 @@
 from common.docker_api import docker_h
 from common.ipc_api import send_event
-from common.util import get_random_mac
+from common.util import get_random_mac, nc_elem2dict
 from netconf import util, NSMAP
 from datetime import datetime
 from jinja2 import Template, Environment, meta
 from lxml import etree
 from engines.netconf import summarize
 import time
+import uuid
+import json
 import re
 
 IGNORE_KEYWORDS = ['range']
@@ -73,6 +75,8 @@ class NetconfPluginBase(object):
             return etree.fromstring(rendered)
         elif rtype.lower() == 'raw':
             return rendered
+        elif rtype.lower() == 'json':
+            return json.dumps(nc_elem2dict(etree.fromstring(rendered), True))
 
     def _ok(self, *args, **kwargs):
         return etree.Element('ok')
@@ -87,6 +91,9 @@ class NetconfPluginBase(object):
 
     def rpc_load_configuration(self, session, rpc, config, *args, **kwargs):
         epoch = time.time()
+        self.commit_timestamp = time.strftime("%Y-%m-%d %H:%M:%S %Z")
+        self.commit_revision = self.commit_revision + 1
+        self.commit_id = str(uuid.uuid4())
         filename = os.path.join('/tmp', str(epoch))
         self._config_files.append(filename)
         if 'outbound-ssh' in config.text:

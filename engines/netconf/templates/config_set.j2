@@ -1,0 +1,31 @@
+<configuration-set format='set' xmlns="http://xml.juniper.net/xnm/1.1/xnm">
+set system host-name {{ hostname }}
+set system root-authentication encrypted-password "$6$JWLKlAzK$zz0Zq86IitSJobDzS1W7dz8pfcouNsbPwiiDRr44Kz0fyjzGXmFLHYeT40rOwzsOuRLDGzJzn/z1lMwTEIeg5/"
+set system services ssh root-login allow
+set system services telnet
+set system services extension-service request-response grpc clear-text port 32767
+set system services extension-service request-response grpc skip-authentication
+set system services netconf ssh
+set system services netconf rfc-compliant
+set system services netconf traceoptions file nc
+set system services netconf traceoptions flag all
+set system services outbound-ssh client EMS-624748be-5496-464e-bc2b-d22ab24c8a62 device-id 624748be-5496-464e-bc2b-d22ab24c8a62.JUNOS
+set system services outbound-ssh client EMS-624748be-5496-464e-bc2b-d22ab24c8a62 secret "$9$oBJjH5QFAtOzFcyleW8jHkmz3IRhyrvfThSrK8L4aJZHqmPQzn/5T0B1Eyr4aJZk.zF/uO1UjmTQ39C8XxNwYJGDi.PLxGDHqQz369CBI"
+set system services outbound-ssh client EMS-624748be-5496-464e-bc2b-d22ab24c8a62 keep-alive
+set system services outbound-ssh client EMS-624748be-5496-464e-bc2b-d22ab24c8a62 services netconf
+set system services outbound-ssh client EMS-624748be-5496-464e-bc2b-d22ab24c8a62 10.102.90.51 port 7804
+set system domain-search contrail.juniper.net
+set system domain-search juniper.net
+set system domain-search jnpr.net
+set system domain-search englab.juniper.net
+set system domain-search spglab.juniper.net
+set system time-zone America/Los_Angeles
+set system schema openconfig unhide
+set system syslog user * any emergency
+set system syslog file messages any notice
+set system syslog file messages authorization info
+set system syslog file default-log-messages any any
+set system syslog file default-log-messages match "(UI_COMMIT_COMPLETED)|ifAdminStatus|ifOperStatus|(FRU power)|(FRU removal)|(FRU insertion)|(link UP)|(vc add)|(vc delete)|transitioned|Transferred|transfer-file|QFABRIC_NETWORK_NODE_GROUP|QFABRIC_SERVER_NODE_GROUP|QFABRIC_NODE|(license add)|(license delete)"
+set system syslog file default-log-messages structured-data
+set system ntp server 10.84.5.100
+</configuration-set>

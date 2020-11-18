@@ -2,6 +2,8 @@ import gevent
 from plugin import NetconfPluginBase
 import os
 from lxml import etree
+import time
+import uuid
 
 MYDIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -16,7 +18,9 @@ TEMPLATES = {'version': 'version.j2',
              'commit_info': 'commit_info.j2',
              'lldp_info': 'lldp_info.j2',
              'chassis_alarms': 'chassis_alarms.j2',
-             're_info': 're_info.j2',
+             'config_set': 'config_set.j2',
+             'config_xml': 'config_xml.j2',
+             'config_ascii': 'config_ascii.j2',
              'interface_ri_juniper_private1': 'interface_ri_juniper_private1.j2'
             }
 
@@ -30,6 +34,9 @@ class NetconfPlugin(NetconfPluginBase):
         self.update_system_info()
         self.chassis_alarms = dict()
         self.interfaces = dict()
+        self.commit_revision = 1000
+        self.commit_timestamp = time.strftime("%Y-%m-%d %H:%M:%S %Z")
+        self.commit_id = str(uuid.uuid4())
 
     def update_system_info(self):
         content = self._convert_template('system_info', rtype='raw')
@@ -37,12 +44,17 @@ class NetconfPlugin(NetconfPluginBase):
             fd.write(content)
 
     def rpc_get_configuration(self, session, rpc, *args, **kwargs):
-        rpc = rpc.xpath('./get-configuration')[0]
+        rpc = rpc.getchildren()[0]
         is_diff = rpc.get('compare') == 'rollback'
         if is_diff:
             reply = etree.Element('configuration-information')
             reply.append(etree.Element('configuration-output'))
             return reply
+        output_format = rpc.get('format')
+        if output_format == 'set':
+            return self._convert_template('config_set')
+        elif output_format == 'ascii':
+            return self._convert_template('config_ascii')
         is_committed = rpc.get('database') == 'committed'
         is_interfaces = rpc.xpath('./configuration/interfaces')
         is_roptions = rpc.xpath('./configuration/routing-options')
@@ -54,10 +66,15 @@ class NetconfPlugin(NetconfPluginBase):
                 '<name>0.0.0.0/0</name>\n<next-hop>10.87.101.13</next-hop>\n'+\
                 '</route>\n</static>\n</routing-options>\n</configuration>'
             return etree.fromstring(reply)
+        return self._convert_template('config_xml')
 
     def rpc_command(self, session, rpc):
         command = rpc.xpath('./command')[0].text
         filename = None
+        kwargs = dict()
+        rformat = rpc.getchildren()[0].get('format')
+        if rformat == 'json':
+            kwargs['rtype'] = 'json'
         if 'show chassis hardware' in command:
             template = 'hardware_inventory'
         elif 'show interfaces' in command:
@@ -75,7 +92,7 @@ class NetconfPlugin(NetconfPluginBase):
         else:
             print 'ToDo: command is ', command
             raise Exception('command is %s'%command)
-        return self._convert_template(template)
+        return self._convert_template(template, **kwargs)
 
     def rpc_file_show(self, session, rpc, *args, **kwargs):
         FILES_DIR=os.path.join(MYDIR, 'files')
@@ -93,27 +110,16 @@ class NetconfPlugin(NetconfPluginBase):
             reply = None
         return reply
 
-    def rpc_get_lldp_neighbors_information(self, *args, **kwargs):
-        return self._convert_template('lldp_info')
-
-    def rpc_get_system_information(self, *args, **kwargs):
-        return self._convert_template('system_info')
-
     def rpc_get_interface_information(self, session, rpc, *args, **kwargs):
         ri = rpc.xpath('./routing-instance')
+        kwargs = dict()
+        rformat = rpc.getchildren()[0].get('format')
+        if rformat == 'json':
+            kwargs['rtype'] = 'json'
         if ri:
             if "__juniper_private1__" in ri[0].text:
                 return self._convert_template('interface_ri_juniper_private1')
         return self._convert_template('interfaces')
-
-    def rpc_get_software_information(self, *args, **kwargs):
-        return self._convert_template('version')
-
-    def rpc_get_alarm_information(self, *args, **kwargs):
-        return self._convert_template('chassis_alarms')
-
-    def rpc_get_route_engine_information(self, *args, **kwargs):
-        return self._convert_template('re_info')
 
 class SSHPlugin(object):
     def check_channel_exec_request(self, channel, command):

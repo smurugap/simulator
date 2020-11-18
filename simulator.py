@@ -151,8 +151,9 @@ class Services(object):
         elif service == 'sFlows':
             sflows_file = service_config.get('flows')
             server = service_config.get('collector')
+            port = service_config.get('port', 6343)
             if server:
-                sflow = sFlowEngine(server, sflows_file)
+                sflow = sFlowEngine(server, sflows_file, port=port)
                 self.sflow = Daemonize('sflow', sflow.start)
                 self.sflow.start()
         elif service == 'Syslog':

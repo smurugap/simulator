@@ -3,222 +3,222 @@
 <name>FPC 0 Power Supply 0</name>
 <class>Power</class>
 <status>OK</status>
-<temperature junos:celsius="33">33 degrees C / 91 degrees F</temperature>
+<temperature celsius="33">33 degrees C / 91 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 Power Supply 1</name>
 <status>OK</status>
-<temperature junos:celsius="34">34 degrees C / 93 degrees F</temperature>
+<temperature celsius="34">34 degrees C / 93 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 Intake Temp Sensor</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="34">34 degrees C / 93 degrees F</temperature>
+<temperature celsius="34">34 degrees C / 93 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 Exhaust Temp Sensor</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="38">38 degrees C / 100 degrees F</temperature>
+<temperature celsius="38">38 degrees C / 100 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PE2 Temp Sensor</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="45">45 degrees C / 113 degrees F</temperature>
+<temperature celsius="45">45 degrees C / 113 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PE1 Temp Sensor</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="43">43 degrees C / 109 degrees F</temperature>
+<temperature celsius="43">43 degrees C / 109 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PF0 Temp Sensor</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="48">48 degrees C / 118 degrees F</temperature>
+<temperature celsius="48">48 degrees C / 118 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PE0 Temp Sensor</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="42">42 degrees C / 107 degrees F</temperature>
+<temperature celsius="42">42 degrees C / 107 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 CPU Die Temp Sensor</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="45">45 degrees C / 113 degrees F</temperature>
+<temperature celsius="45">45 degrees C / 113 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 OCXO Temp Sensor</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="44">44 degrees C / 111 degrees F</temperature>
+<temperature celsius="44">44 degrees C / 111 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE0-HMC0-DIE</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="52">52 degrees C / 125 degrees F</temperature>
+<temperature celsius="52">52 degrees C / 125 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE0-HMC0-TOP</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="40">40 degrees C / 104 degrees F</temperature>
+<temperature celsius="40">40 degrees C / 104 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE0-HMC0-BOT</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="49">49 degrees C / 120 degrees F</temperature>
+<temperature celsius="49">49 degrees C / 120 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE0-HMC1-DIE</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="57">57 degrees C / 134 degrees F</temperature>
+<temperature celsius="57">57 degrees C / 134 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE0-HMC1-TOP</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="43">43 degrees C / 109 degrees F</temperature>
+<temperature celsius="43">43 degrees C / 109 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE0-HMC1-BOT</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="54">54 degrees C / 129 degrees F</temperature>
+<temperature celsius="54">54 degrees C / 129 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE0-HMC2-DIE</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="56">56 degrees C / 132 degrees F</temperature>
+<temperature celsius="56">56 degrees C / 132 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE0-HMC2-TOP</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="47">47 degrees C / 116 degrees F</temperature>
+<temperature celsius="47">47 degrees C / 116 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE0-HMC2-BOT</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="53">53 degrees C / 127 degrees F</temperature>
+<temperature celsius="53">53 degrees C / 127 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE1-HMC0-DIE</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="54">54 degrees C / 129 degrees F</temperature>
+<temperature celsius="54">54 degrees C / 129 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE1-HMC0-TOP</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="45">45 degrees C / 113 degrees F</temperature>
+<temperature celsius="45">45 degrees C / 113 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE1-HMC0-BOT</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="51">51 degrees C / 123 degrees F</temperature>
+<temperature celsius="51">51 degrees C / 123 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE1-HMC1-DIE</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="58">58 degrees C / 136 degrees F</temperature>
+<temperature celsius="58">58 degrees C / 136 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE1-HMC1-TOP</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="47">47 degrees C / 116 degrees F</temperature>
+<temperature celsius="47">47 degrees C / 116 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE1-HMC1-BOT</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="55">55 degrees C / 131 degrees F</temperature>
+<temperature celsius="55">55 degrees C / 131 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE1-HMC2-DIE</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="58">58 degrees C / 136 degrees F</temperature>
+<temperature celsius="58">58 degrees C / 136 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE1-HMC2-TOP</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="49">49 degrees C / 120 degrees F</temperature>
+<temperature celsius="49">49 degrees C / 120 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE1-HMC2-BOT</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="55">55 degrees C / 131 degrees F</temperature>
+<temperature celsius="55">55 degrees C / 131 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE2-HMC0-DIE</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="58">58 degrees C / 136 degrees F</temperature>
+<temperature celsius="58">58 degrees C / 136 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE2-HMC0-TOP</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="48">48 degrees C / 118 degrees F</temperature>
+<temperature celsius="48">48 degrees C / 118 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE2-HMC0-BOT</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="55">55 degrees C / 131 degrees F</temperature>
+<temperature celsius="55">55 degrees C / 131 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE2-HMC1-DIE</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="64">64 degrees C / 147 degrees F</temperature>
+<temperature celsius="64">64 degrees C / 147 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE2-HMC1-TOP</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="54">54 degrees C / 129 degrees F</temperature>
+<temperature celsius="54">54 degrees C / 129 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE2-HMC1-BOT</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="61">61 degrees C / 141 degrees F</temperature>
+<temperature celsius="61">61 degrees C / 141 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE2-HMC2-DIE</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="62">62 degrees C / 143 degrees F</temperature>
+<temperature celsius="62">62 degrees C / 143 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE2-HMC2-TOP</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="52">52 degrees C / 125 degrees F</temperature>
+<temperature celsius="52">52 degrees C / 125 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 PFE2-HMC2-BOT</name>
 <class>Temp</class>
 <status>OK</status>
-<temperature junos:celsius="59">59 degrees C / 138 degrees F</temperature>
+<temperature celsius="59">59 degrees C / 138 degrees F</temperature>
 </environment-item>
 <environment-item>
 <name>FPC 0 Fan Tray 0 Fan 0</name>

@@ -1,0 +1,18 @@
+<bfd-session-information xmlns="http://xml.juniper.net/junos/19.4R0/junos-bfd" style="brief">
+{% set bfd_dct = bfd|default({}) %}
+{% set sessions = bfd_dct.get('sessions', []) %}
+{% for session in sessions %}
+        <bfd-session>
+            <session-neighbor>{{session.get('ip', '1.1.1.1')}}</session-neighbor>
+            <session-state>{{session.get('state', 'Up')}}</session-state>
+            <session-interface>irb.{{loop.index}}</session-interface>
+            <session-detection-time>0.072</session-detection-time>
+            <session-transmission-interval>0.024</session-transmission-interval>
+            <session-adaptive-multiplier>3</session-adaptive-multiplier>
+        </bfd-session>
+{% endfor %}
+<sessions>{{ sessions }}</sessions>
+<clients>{{ sessions }}</clients>
+<cumulative-transmission-rate>100.0</cumulative-transmission-rate>
+<cumulative-reception-rate>100.0</cumulative-reception-rate>
+</bfd-session-information>

@@ -10,7 +10,7 @@ from netconf import server, nsmap_add
 from engines.netconf.juniper import NetconfPlugin, SSHPlugin
 from engines.netconf.dic import DeviceInitiatedConnection
 from common.constants import USERNAME, PASSWORD
-from common.util import register_event
+from common.util import register_event, nc_elem2dict
 from common.ipc_api import register_listener
 
 import logging
@@ -19,6 +19,8 @@ nsmap_add("sys", "urn:ietf:params:xml:ns:yang:ietf-system")
 MYDIR = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_DIR = os.path.join(MYDIR, 'templates')
 NETCONF_EVENTS = dict()
+
+from lxml import etree
 
 class NetconfServer(object):
     def __init__(self, port=22, username=USERNAME, password=PASSWORD,
@@ -66,8 +68,12 @@ class NetconfServer(object):
         self.server.close()
 
     def dynamic_rpc_fn(self, rpc_name):
-        def wrapper(*args, **kwargs):
-            return self.plugin._convert_template(rpc_name)
+        def wrapper(session, rpc, *args, **kwargs):
+            kwargs = dict()
+            rformat = rpc.getchildren()[0].get('format')
+            if rformat == 'json':
+                kwargs['rtype'] = 'json'
+            return self.plugin._convert_template(rpc_name, **kwargs)
         return wrapper
 
     def dic_callback(self, payload):

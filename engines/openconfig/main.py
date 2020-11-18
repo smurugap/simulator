@@ -19,6 +19,7 @@ import sys
 OPENCONFIG_EVENTS = dict()
 PATHS = {'/interfaces/interface/state/': Interfaces,
          '/interfaces/interface/subinterfaces/subinterface/state/': SubInterfaces,
+         '/interfaces/': Interfaces,
          '/components/': Components,
          '/network-instances/network-instance/protocols/protocol/bgp/neighbors/': BGP,
          '/lldp/': LLDP

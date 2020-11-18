@@ -26,6 +26,18 @@ index 88a943b..06b7eb5 100644
  
          if self.debug:
              logger.debug("%s: Client session-id %s created", str(self), str(sid))
+@@ -279,7 +279,10 @@ class NetconfServerSession(base.NetconfSession):
+             rpc_reply.getchildren  # pylint: disable=W0104
+             reply.append(rpc_reply)
+         except AttributeError:
+-            reply.extend(rpc_reply)
++            try:
++                reply.extend(rpc_reply)
++            except TypeError:
++                reply.text = rpc_reply
+         ucode = etree.tounicode(reply, pretty_print=True)
+         if self.debug:
+             logger.debug("%s: Sending RPC-Reply: %s", str(self), str(ucode))
 @@ -302,7 +306,7 @@ class NetconfServerSession(base.NetconfSession):
          # Any error with XML encoding here is going to cause a session close
          # Technically we should be able to return malformed message I think.

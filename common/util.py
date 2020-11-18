@@ -147,6 +147,26 @@ def elem2dict(node, alist=False):
             d[e.tag] = value
     return d
 
+def nc_elem2dict(node, root=False):
+    d = dict()
+    for e in node.iterchildren():
+        if e.text:
+            if e.text and e.getchildren():
+                value = nc_elem2dict(e)
+            else:
+                value = e.text.strip()
+        else:
+            value = nc_elem2dict(e)
+        if e.tag in d:
+            if len(d[e.tag]) == 1:
+                d[e.tag] = [d[e.tag][0]['data']]
+            d[e.tag].append(value)
+        else:
+            d[e.tag] = [{'data': value}]
+    if root:
+        d = {node.tag: [d]}
+    return d
+
 def get_file(device, engine=None, ftype='sock'):
     if ftype == 'sock':
         name = engine+'.sock'
