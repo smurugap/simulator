@@ -13,6 +13,7 @@ TEMPLATES = {'version': 'version.j2',
              'chassis_mac': 'chassis_mac.j2',
              'chassis_fan': 'chassis_fan.j2',
              'interfaces': 'interfaces.j2',
+             'prds_token_cnts': 'prds_token_cnts.j2',
              'config_interfaces': 'config_interfaces.j2',
              'hardware_inventory': 'rpc_get_chassis_inventory',
              'commit_info': 'commit_info.j2',
@@ -21,7 +22,15 @@ TEMPLATES = {'version': 'version.j2',
              'config_set': 'config_set.j2',
              'config_xml': 'config_xml.j2',
              'config_ascii': 'config_ascii.j2',
-             'interface_ri_juniper_private1': 'interface_ri_juniper_private1.j2'
+             'interface_ri_juniper_private1': 'interface_ri_juniper_private1.j2',
+             'vtep_info': 'vtep_info.j2',
+             'bfd_info': 'rpc_get_bfd_session_information',
+             'pfe_drops': 'rpc_get_pfe_statistics',
+             'fpc_errors': 'rpc_get_fpc_error_information',
+             'core_dumps': 'rpc_get_system_core_dumps',
+             'bfd_info': 'rpc_get_bfd_session_information',
+             'system_memory': 'rpc_get_system_memory_information',
+             'system_storage': 'rpc_get_system_storage'
             }
 
 def get_templates_abs_path():
@@ -89,6 +98,24 @@ class NetconfPlugin(NetconfPluginBase):
             template = 'lldp_info'
         elif 'show chassis fan' in command:
             template = 'chassis_fan'
+        elif 'prds_token_cnts' in command:
+            template = 'prds_token_cnts'
+        elif 'show system storage' in command:
+            template = 'system_storage'
+        elif 'show bfd session' in command:
+            template = 'bfd_info'
+        elif 'show interfaces vtep extensive' in command:
+            template = 'vtep_info'
+        elif 'show system memory' in command:
+            template = 'system_memory'
+        elif 'show system core-dumps' in command:
+            template = 'core_dumps'
+        elif 'show bfd session' in command:
+            template = 'bfd_info'
+        elif 'show pfe statistics traffic' in command:
+            template = 'pfe_drops'
+        elif 'show chassis fpc errors' in command:
+            template = 'fpc_errors'
         else:
             print 'ToDo: command is ', command
             raise Exception('command is %s'%command)
@@ -119,7 +146,7 @@ class NetconfPlugin(NetconfPluginBase):
         if ri:
             if "__juniper_private1__" in ri[0].text:
                 return self._convert_template('interface_ri_juniper_private1')
-        return self._convert_template('interfaces')
+        return self._convert_template('interfaces', **kwargs)
 
 class SSHPlugin(object):
     def check_channel_exec_request(self, channel, command):

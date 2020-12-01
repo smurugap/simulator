@@ -1,0 +1,27 @@
+[
+{% set dct = mac_ip_table|default({}) %}
+{"sensor_1009:/network-instances/network-instance/macip-table/:/network-instances/network-instance/macip-table/:l2ald":     [
+    {"__prefix__": {"str_value": "/network-instances/network-instance[name='default-switch']/macip-table/entries/entry[vlan-name='bd-45+181']/"}},
+        {"ip-address":    {"str_value": "{{ dct.get('ip-address', '181.181.181.1') }}" } },
+        {"mac-address":    {"str_value": "{{ dct.get('mac-address', '00:00:5e:01:00:01') }}" } },
+        {"vlan-id":    {"uint_value": {{ dct.get('vlan-id', 181.000000) }} } },
+        {"vni":    {"uint_value": {{ dct.get('vni', 45.000000) }} } },
+        {"interface":    {"str_value": "{{ dct.get('interface', 'irb.45') }}" } },
+        {"l3-interface":    {"str_value": "{{ dct.get('l3-interface', '') }}" } },
+        {"entry-type":    {"str_value": "{{ dct.get('entry-type', 'LOCAL-GATEWAY') }}" } },
+        {"event-type":    {"str_value": "{{ dct.get('event-type', 'LOCAL-ADD') }}" } },
+        {"ethernet-tag-id":    {"uint_value": {{ dct.get('ethernet-tag-id', 45.000000) }} } }    ]
+},
+{"sensor_1009:/network-instances/network-instance/macip-table/:/network-instances/network-instance/macip-table/:l2ald":     [
+    {"__prefix__": {"str_value": "/network-instances/network-instance[name='default-switch']/macip-table/entries/entry[vlan-name='bd-45+181']/"}},
+        {"ip-address":    {"str_value": "{{ dct.get('ip-address', '181.181.181.1') }}" } },
+        {"mac-address":    {"str_value": "{{ dct.get('mac-address', '00:00:5e:01:00:01') }}" } },
+        {"vlan-id":    {"uint_value": {{ dct.get('vlan-id', 181.000000) }} } },
+        {"vni":    {"uint_value": {{ dct.get('vni', 45.000000) }} } },
+        {"interface":    {"str_value": "{{ dct.get('interface', 'irb.45') }}" } },
+        {"l3-interface":    {"str_value": "{{ dct.get('l3-interface', '') }}" } },
+        {"entry-type":    {"str_value": "{{ dct.get('entry-type', 'LOCAL-GATEWAY') }}" } },
+        {"event-type":    {"str_value": "{{ dct.get('event-type', 'LOCAL-ADD') }}" } },
+        {"ethernet-tag-id":    {"uint_value": {{ dct.get('ethernet-tag-id', 45.000000) }} } }    ]
+}
+]

@@ -1,6 +1,6 @@
-<bfd-session-information xmlns="http://xml.juniper.net/junos/19.4R0/junos-bfd" style="brief">
+<bfd-session-information>
 {% set bfd_dct = bfd|default({}) %}
-{% set sessions = bfd_dct.get('sessions', []) %}
+{% set sessions = bfd_dct.get('sessions', [{1:1}]) %}
 {% for session in sessions %}
         <bfd-session>
             <session-neighbor>{{session.get('ip', '1.1.1.1')}}</session-neighbor>

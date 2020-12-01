@@ -1,14 +1,15 @@
 import gevent
 from gevent import monkey
 monkey.patch_all()
+import subprocess
 import os
+import signal
 import time
 import threading
 import Queue as queue
 from netconf import server, nsmap_add
 #ToDo: Dynamically identify the plugin based on model
 from engines.netconf.juniper import NetconfPlugin, SSHPlugin
-from engines.netconf.dic import DeviceInitiatedConnection
 from common.constants import USERNAME, PASSWORD
 from common.util import register_event, nc_elem2dict
 from common.ipc_api import register_listener
@@ -17,6 +18,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 nsmap_add("sys", "urn:ietf:params:xml:ns:yang:ietf-system")
 MYDIR = os.path.dirname(os.path.abspath(__file__))
+DIC = os.path.join(MYDIR, 'dic.py')
 TEMPLATE_DIR = os.path.join(MYDIR, 'templates')
 NETCONF_EVENTS = dict()
 
@@ -41,11 +43,12 @@ class NetconfServer(object):
         self.start_dic()
 
     def start_dic(self):
-        self.dic_greenlet = None
+        self.dic_pid = None
         if self.manager and self.device_id and self.secret:
-            self.dic = DeviceInitiatedConnection((self.manager, 7804),
-                ('127.0.0.1', 22), self.device_id, self.secret)
-            self.dic_greenlet = gevent.spawn(self.dic.run)
+            proc = subprocess.Popen(
+                'python %s --manager %s --secret %s --device_id %s'%(
+                DIC, self.manager, self.secret, self.device_id), shell=True)
+            self.dic_pid = proc.pid
 
     def start(self):
         self.server = server.NetconfSSHServer(self.auth,
@@ -83,8 +86,9 @@ class NetconfServer(object):
         if manager != self.manager or \
            device_id != self.device_id or \
            secret != self.secret:
-            if self.dic_greenlet:
-                gevent.kill(self.dic_greenlet)
+            if self.dic_pid:
+                os.kill(self.dic_pid, signal.SIGTERM)
+                self.dic_pid = None
             self.manager = manager
             self.device_id = device_id
             self.secret = secret

@@ -76,7 +76,7 @@ class BaseSensor(object):
         for attr in attrs:
             if attr in IGNORE_KEYWORDS:
                 continue
-            kwargs[attr] = getattr(self, attr)
+            kwargs[attr] = getattr(self, attr, dict())
         template = Template(content)
         rendered = template.render(**kwargs)
         return rendered
@@ -114,6 +114,31 @@ class BGP(BaseSensor):
     def __init__(self, bgp=None, *args, **kwargs):
         self.bgp = bgp
         super(BGP, self).__init__(*args, **kwargs)
+
+class LACP(BaseSensor):
+    SENSOR = "/lacp/"
+    TEMPLATE = "lacp.json.j2"
+    def __init__(self, lacp=None, *args, **kwargs):
+        self.lacp = lacp
+        super(LACP, self).__init__(*args, **kwargs)
+
+class Optics(BaseSensor):
+    SENSOR = "/junos/system/linecard/optics/"
+    TEMPLATE = "optics.json.j2"
+    def __init__(self, *args, **kwargs):
+        super(Optics, self).__init__(*args, **kwargs)
+
+class MAC_IP(BaseSensor):
+    SENSOR = "/network-instances/network-instance/macip-table/"
+    TEMPLATE = "mac_ip.json.j2"
+    def __init__(self, *args, **kwargs):
+        super(MAC_IP, self).__init__(*args, **kwargs)
+
+class Interfaces_Full(BaseSensor):
+    SENSOR = "/interfaces/"
+    TEMPLATE = "interfaces_full.json.j2"
+    def __init__(self, *args, **kwargs):
+        super(Interfaces_Full, self).__init__(*args, **kwargs)
 
 class LLDP(BaseSensor):
     SENSOR = "/lldp/"

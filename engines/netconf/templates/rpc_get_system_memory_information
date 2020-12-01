@@ -1,0 +1,1580 @@
+<system-memory-information>
+        <system-memory-summary-information>
+            <system-memory-total>7951812</system-memory-total>
+            <system-memory-total-percent>100%</system-memory-total-percent>
+            <system-memory-reserved> 212460</system-memory-reserved>
+            <system-memory-reserved-percent>  2%</system-memory-reserved-percent>
+            <system-memory-wired> 637568</system-memory-wired>
+            <system-memory-wired-percent>  8%</system-memory-wired-percent>
+            <system-memory-active>  94368</system-memory-active>
+            <system-memory-active-percent>  1%</system-memory-active-percent>
+            <system-memory-inactive> 931288</system-memory-inactive>
+            <system-memory-inactive-percent> 11%</system-memory-inactive-percent>
+            <system-memory-cache>      0</system-memory-cache>
+            <system-memory-cache-percent>  0%</system-memory-cache-percent>
+            <system-memory-free>6076128</system-memory-free>
+            <system-memory-free-percent> 76%</system-memory-free-percent>
+        </system-memory-summary-information>
+        <pmap-terse-information xmlns="http://xml.juniper.net/fbsd10/14.2I0/junos-pmap">
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>0</pid>
+                <process-name>[kernel]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>1</pid>
+                <process-name>/sbin/init --</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>2</pid>
+                <process-name>[jfe_job_0_0]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3</pid>
+                <process-name>[jfe_job_1_0]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>4</pid>
+                <process-name>[jfe_job_1_1]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>5</pid>
+                <process-name>[jfe_job_2_0]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>6</pid>
+                <process-name>[jfe_job_3_0]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7</pid>
+                <process-name>[jfe_job_3_1]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>8</pid>
+                <process-name>[jfe_job_4_0]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>9</pid>
+                <process-name>[jfe_job_4_1]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>10</pid>
+                <process-name>[audit]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>11</pid>
+                <process-name>[idle]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>12</pid>
+                <process-name>[intr]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>13</pid>
+                <process-name>[geom]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>14</pid>
+                <process-name>[crypto]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>15</pid>
+                <process-name>[crypto returns]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>16</pid>
+                <process-name>[cam]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>17</pid>
+                <process-name>[usb]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>18</pid>
+                <process-name>[rand_harvestq]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>19</pid>
+                <process-name>[md0]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>20</pid>
+                <process-name>[md0.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>21</pid>
+                <process-name>[soaiod1]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>22</pid>
+                <process-name>[soaiod2]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>23</pid>
+                <process-name>[soaiod3]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>24</pid>
+                <process-name>[soaiod4]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>25</pid>
+                <process-name>[kern_dump_proc]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>26</pid>
+                <process-name>[pagedaemon]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>27</pid>
+                <process-name>[vmdaemon]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>28</pid>
+                <process-name>[pagezero]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>29</pid>
+                <process-name>[bufspacedaemon]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>30</pid>
+                <process-name>[bufdaemon]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>31</pid>
+                <process-name>[vnlru]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>32</pid>
+                <process-name>[syncer]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>33</pid>
+                <process-name>[netdaemon]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>34</pid>
+                <process-name>[kern_pir_proc]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>35</pid>
+                <process-name>[jsr_kkcm]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>36</pid>
+                <process-name>[jsr_jsm]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>37</pid>
+                <process-name>[delayedexecd]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>38</pid>
+                <process-name>[tnparpproc]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>39</pid>
+                <process-name>[if_pfe_listen]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>40</pid>
+                <process-name>[if_pic_listen0]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>41</pid>
+                <process-name>[wkupdaemon]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>42</pid>
+                <process-name>[ifsclientclosed]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>43</pid>
+                <process-name>[ddostasks]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>175</pid>
+                <process-name>[md1]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>176</pid>
+                <process-name>[md1.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>525</pid>
+                <process-name>[md2]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>526</pid>
+                <process-name>[md2.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>825</pid>
+                <process-name>[md3]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>826</pid>
+                <process-name>[md3.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>881</pid>
+                <process-name>[md4]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>882</pid>
+                <process-name>[md4.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>940</pid>
+                <process-name>[md5]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>941</pid>
+                <process-name>[md5.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>997</pid>
+                <process-name>[md6]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>998</pid>
+                <process-name>[md6.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>1056</pid>
+                <process-name>[md7]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>1057</pid>
+                <process-name>[md7.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>1115</pid>
+                <process-name>[md8]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>1116</pid>
+                <process-name>[md8.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>1174</pid>
+                <process-name>[md9]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>1175</pid>
+                <process-name>[md9.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>1233</pid>
+                <process-name>[md10]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>1234</pid>
+                <process-name>[md10.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>1309</pid>
+                <process-name>[md11]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>1310</pid>
+                <process-name>[md11.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>1384</pid>
+                <process-name>[md12]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>1385</pid>
+                <process-name>[md12.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>1441</pid>
+                <process-name>[md13]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>1442</pid>
+                <process-name>[md13.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>1498</pid>
+                <process-name>[md14]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>1499</pid>
+                <process-name>[md14.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>2030</pid>
+                <process-name>[md15]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>2031</pid>
+                <process-name>[md15.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>2143</pid>
+                <process-name>[md16]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>2144</pid>
+                <process-name>[md16.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>2257</pid>
+                <process-name>[md17]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>2258</pid>
+                <process-name>[md17.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>2342</pid>
+                <process-name>[md18]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>2401</pid>
+                <process-name>[md19]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>2459</pid>
+                <process-name>[md20]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>2596</pid>
+                <process-name>[md21]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>2655</pid>
+                <process-name>[md22]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>2656</pid>
+                <process-name>[md22.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>2712</pid>
+                <process-name>[md23]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>2713</pid>
+                <process-name>[md23.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>2771</pid>
+                <process-name>[md24]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>2772</pid>
+                <process-name>[md24.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>2828</pid>
+                <process-name>[md25]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>2829</pid>
+                <process-name>[md25.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>2885</pid>
+                <process-name>[md26]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>2980</pid>
+                <process-name>[md27]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>2981</pid>
+                <process-name>[md27.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3039</pid>
+                <process-name>[md28]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3040</pid>
+                <process-name>[md28.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3061</pid>
+                <process-name>sshd: root@0</process-name>
+                <size>131536</size>
+                <size-percent>00.00</size-percent>
+                <resident>12308</resident>
+                <resident-percent>00.15</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3067</pid>
+                <process-name>-csh</process-name>
+                <size>59500</size>
+                <size-percent>00.00</size-percent>
+                <resident>7028</resident>
+                <resident-percent>00.09</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3113</pid>
+                <process-name>[md29]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3114</pid>
+                <process-name>[md29.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3172</pid>
+                <process-name>[md30]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3173</pid>
+                <process-name>[md30.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3246</pid>
+                <process-name>[md31]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3247</pid>
+                <process-name>[md31.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3305</pid>
+                <process-name>[md32]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3306</pid>
+                <process-name>[md32.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3364</pid>
+                <process-name>[md33]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3365</pid>
+                <process-name>[md33.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3423</pid>
+                <process-name>[md34]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3424</pid>
+                <process-name>[md34.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3482</pid>
+                <process-name>[md35]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3483</pid>
+                <process-name>[md35.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3541</pid>
+                <process-name>[md36]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3542</pid>
+                <process-name>[md36.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3600</pid>
+                <process-name>[md37]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3601</pid>
+                <process-name>[md37.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3659</pid>
+                <process-name>[md38]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3660</pid>
+                <process-name>[md38.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3718</pid>
+                <process-name>[md39]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>3719</pid>
+                <process-name>[md39.uzip]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>4318</pid>
+                <process-name>sshd: root@1</process-name>
+                <size>131536</size>
+                <size-percent>00.00</size-percent>
+                <resident>12088</resident>
+                <resident-percent>00.15</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>4321</pid>
+                <process-name>-csh</process-name>
+                <size>59500</size>
+                <size-percent>00.00</size-percent>
+                <resident>7020</resident>
+                <resident-percent>00.09</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>4909</pid>
+                <process-name>cli</process-name>
+                <size>82364</size>
+                <size-percent>02.03</size-percent>
+                <resident>63660</resident>
+                <resident-percent>00.80</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>4910</pid>
+                <process-name>mgd: (mgd) (root)/dev/pts/1</process-name>
+                <size>66296</size>
+                <size-percent>01.63</size-percent>
+                <resident>40940</resident>
+                <resident-percent>00.51</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>5615</pid>
+                <process-name>[ftcleanup]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>5880</pid>
+                <process-name>[md40]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>6549</pid>
+                <process-name>/usr/libexec/mosquitto -c /var/etc/mosquitto.conf --on_sighup_reload_exit</process-name>
+                <size>11092</size>
+                <size-percent>00.27</size-percent>
+                <resident>3408</resident>
+                <resident-percent>00.04</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>6606</pid>
+                <process-name>/usr/sbin/eventd -r -s -A</process-name>
+                <size>37004</size>
+                <size-percent>00.91</size-percent>
+                <resident>22308</resident>
+                <resident-percent>00.28</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>6610</pid>
+                <process-name>/sbin/jlaunchhelperd</process-name>
+                <size>39508</size>
+                <size-percent>00.00</size-percent>
+                <resident>1812</resident>
+                <resident-percent>00.02</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>6612</pid>
+                <process-name>/sbin/jlaunchd -N</process-name>
+                <size>79640</size>
+                <size-percent>00.00</size-percent>
+                <resident>3456</resident>
+                <resident-percent>00.04</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>6707</pid>
+                <process-name>/sbin/watchdog -t-1</process-name>
+                <size>7860</size>
+                <size-percent>00.19</size-percent>
+                <resident>1468</resident>
+                <resident-percent>00.02</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>6711</pid>
+                <process-name>/usr/sbin/tnetd -N</process-name>
+                <size>11144</size>
+                <size-percent>00.27</size-percent>
+                <resident>2996</resident>
+                <resident-percent>00.04</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>6713</pid>
+                <process-name>/usr/sbin/chassisd -N</process-name>
+                <size>121856</size>
+                <size-percent>03.00</size-percent>
+                <resident>48952</resident>
+                <resident-percent>00.62</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>6714</pid>
+                <process-name>/usr/sbin/mgd -N</process-name>
+                <size>64032</size>
+                <size-percent>01.58</size-percent>
+                <resident>39912</resident>
+                <resident-percent>00.50</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>6715</pid>
+                <process-name>/usr/sbin/inetd -N -w</process-name>
+                <size>59132</size>
+                <size-percent>00.00</size-percent>
+                <resident>3500</resident>
+                <resident-percent>00.04</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>6717</pid>
+                <process-name>/usr/sbin/irsd -N</process-name>
+                <size>15604</size>
+                <size-percent>00.38</size-percent>
+                <resident>6320</resident>
+                <resident-percent>00.08</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>6718</pid>
+                <process-name>/usr/sbin/sdk-mgmtd -N</process-name>
+                <size>13756</size>
+                <size-percent>00.34</size-percent>
+                <resident>5832</resident>
+                <resident-percent>00.07</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>6719</pid>
+                <process-name>/usr/sbin/sdk-vmmd -N</process-name>
+                <size>22920</size>
+                <size-percent>00.56</size-percent>
+                <resident>11292</resident>
+                <resident-percent>00.14</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>6721</pid>
+                <process-name>/usr/sbin/vccpd -N</process-name>
+                <size>54788</size>
+                <size-percent>01.35</size-percent>
+                <resident>19240</resident>
+                <resident-percent>00.24</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>6722</pid>
+                <process-name>/usr/sbin/dc-pfe -N</process-name>
+                <size>96100</size>
+                <size-percent>02.37</size-percent>
+                <resident>844</resident>
+                <resident-percent>00.01</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7275</pid>
+                <process-name>tail -F /var/log/nc</process-name>
+                <size>8168</size>
+                <size-percent>00.00</size-percent>
+                <resident>1916</resident>
+                <resident-percent>00.02</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7276</pid>
+                <process-name>grep fpc</process-name>
+                <size>16600</size>
+                <size-percent>00.00</size-percent>
+                <resident>2208</resident>
+                <resident-percent>00.03</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7277</pid>
+                <process-name>grep show</process-name>
+                <size>16600</size>
+                <size-percent>00.00</size-percent>
+                <resident>2212</resident>
+                <resident-percent>00.03</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7686</pid>
+                <process-name>/usr/sbin/cron -s</process-name>
+                <size>57060</size>
+                <size-percent>00.00</size-percent>
+                <resident>3212</resident>
+                <resident-percent>00.04</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7705</pid>
+                <process-name>/usr/libexec/getty.junos 3wire ttyu0</process-name>
+                <size>39892</size>
+                <size-percent>00.00</size-percent>
+                <resident>2300</resident>
+                <resident-percent>00.03</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7774</pid>
+                <process-name>/usr/sbin/l2cpd -N</process-name>
+                <size>66628</size>
+                <size-percent>01.64</size-percent>
+                <resident>29172</resident>
+                <resident-percent>00.37</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7777</pid>
+                <process-name>/usr/sbin/ppmd -N</process-name>
+                <size>23812</size>
+                <size-percent>00.59</size-percent>
+                <resident>12156</resident>
+                <resident-percent>00.15</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7781</pid>
+                <process-name>/usr/sbin/smartd -n</process-name>
+                <size>31124</size>
+                <size-percent>00.00</size-percent>
+                <resident>3036</resident>
+                <resident-percent>00.04</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7782</pid>
+                <process-name>/usr/sbin/alarmd -N</process-name>
+                <size>28736</size>
+                <size-percent>00.71</size-percent>
+                <resident>14196</resident>
+                <resident-percent>00.18</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7783</pid>
+                <process-name>/usr/sbin/craftd -N</process-name>
+                <size>20236</size>
+                <size-percent>00.50</size-percent>
+                <resident>9384</resident>
+                <resident-percent>00.12</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7784</pid>
+                <process-name>/usr/sbin/mib2d -N</process-name>
+                <size>61120</size>
+                <size-percent>01.50</size-percent>
+                <resident>43212</resident>
+                <resident-percent>00.54</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7785</pid>
+                <process-name>/usr/sbin/rpd -N</process-name>
+                <size>632404</size>
+                <size-percent>15.57</size-percent>
+                <resident>99316</resident>
+                <resident-percent>01.25</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7786</pid>
+                <process-name>/usr/libexec32/pfed -N</process-name>
+                <size>60016</size>
+                <size-percent>01.48</size-percent>
+                <resident>30788</resident>
+                <resident-percent>00.39</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7787</pid>
+                <process-name>/usr/sbin/rmopd -N</process-name>
+                <size>93268</size>
+                <size-percent>02.30</size-percent>
+                <resident>13244</resident>
+                <resident-percent>00.17</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7788</pid>
+                <process-name>/usr/libexec32/cosd</process-name>
+                <size>31916</size>
+                <size-percent>00.79</size-percent>
+                <resident>15548</resident>
+                <resident-percent>00.20</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7789</pid>
+                <process-name>/usr/libexec32/dfwd -N</process-name>
+                <size>40748</size>
+                <size-percent>01.00</size-percent>
+                <resident>18972</resident>
+                <resident-percent>00.24</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7790</pid>
+                <process-name>/usr/sbin/bfdd -N</process-name>
+                <size>22068</size>
+                <size-percent>00.54</size-percent>
+                <resident>10884</resident>
+                <resident-percent>00.14</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7791</pid>
+                <process-name>/usr/sbin/rdd -N</process-name>
+                <size>13772</size>
+                <size-percent>00.34</size-percent>
+                <resident>5452</resident>
+                <resident-percent>00.07</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7792</pid>
+                <process-name>/usr/sbin/dfcd -N</process-name>
+                <size>41792</size>
+                <size-percent>01.03</size-percent>
+                <resident>23140</resident>
+                <resident-percent>00.29</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7793</pid>
+                <process-name>/usr/sbin/lfmd -N</process-name>
+                <size>20100</size>
+                <size-percent>00.49</size-percent>
+                <resident>10620</resident>
+                <resident-percent>00.13</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7804</pid>
+                <process-name>/usr/sbin/mplsoamd -N</process-name>
+                <size>13720</size>
+                <size-percent>00.34</size-percent>
+                <resident>4760</resident>
+                <resident-percent>00.06</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7805</pid>
+                <process-name>/usr/sbin/sendd -N</process-name>
+                <size>15708</size>
+                <size-percent>00.39</size-percent>
+                <resident>5656</resident>
+                <resident-percent>00.07</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7806</pid>
+                <process-name>/usr/sbin/shm-rtsdbd -N</process-name>
+                <size>75612</size>
+                <size-percent>01.86</size-percent>
+                <resident>13500</resident>
+                <resident-percent>00.17</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7807</pid>
+                <process-name>/usr/libexec32/smid -N</process-name>
+                <size>38172</size>
+                <size-percent>00.94</size-percent>
+                <resident>14960</resident>
+                <resident-percent>00.19</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7808</pid>
+                <process-name>/usr/sbin/xntpd -j -N -g</process-name>
+                <size>67792</size>
+                <size-percent>00.00</size-percent>
+                <resident>16660</resident>
+                <resident-percent>00.21</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7809</pid>
+                <process-name>/usr/sbin/snmpd -N</process-name>
+                <size>34088</size>
+                <size-percent>00.84</size-percent>
+                <resident>21272</resident>
+                <resident-percent>00.27</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7810</pid>
+                <process-name>/usr/sbin/iccpd -N</process-name>
+                <size>11444</size>
+                <size-percent>00.28</size-percent>
+                <resident>5180</resident>
+                <resident-percent>00.07</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7811</pid>
+                <process-name>/usr/sbin/l2ald -N</process-name>
+                <size>197832</size>
+                <size-percent>00.00</size-percent>
+                <resident>41964</resident>
+                <resident-percent>00.53</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7813</pid>
+                <process-name>/usr/sbin/tnp.sntpd -Ji -N</process-name>
+                <size>8520</size>
+                <size-percent>00.21</size-percent>
+                <resident>2184</resident>
+                <resident-percent>00.03</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7814</pid>
+                <process-name>/usr/sbin/clksyncd -N</process-name>
+                <size>27764</size>
+                <size-percent>00.68</size-percent>
+                <resident>12684</resident>
+                <resident-percent>00.16</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7815</pid>
+                <process-name>/usr/sbin/jddosd -N</process-name>
+                <size>20492</size>
+                <size-percent>00.50</size-percent>
+                <resident>5704</resident>
+                <resident-percent>00.07</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7816</pid>
+                <process-name>/usr/sbin/agentd -N</process-name>
+                <size>39220</size>
+                <size-percent>00.97</size-percent>
+                <resident>23492</resident>
+                <resident-percent>00.30</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7819</pid>
+                <process-name>/usr/sbin/commit-syncd -N</process-name>
+                <size>20068</size>
+                <size-percent>00.49</size-percent>
+                <resident>7628</resident>
+                <resident-percent>00.10</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7821</pid>
+                <process-name>/usr/sbin/rpcbind -N -I -h 128.0.0.1</process-name>
+                <size>57036</size>
+                <size-percent>00.00</size-percent>
+                <resident>3200</resident>
+                <resident-percent>00.04</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7822</pid>
+                <process-name>/usr/sbin/jkdsd -N</process-name>
+                <size>129588</size>
+                <size-percent>00.00</size-percent>
+                <resident>7996</resident>
+                <resident-percent>00.10</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7823</pid>
+                <process-name>/usr/sbin/datapath-traced -N</process-name>
+                <size>13676</size>
+                <size-percent>00.34</size-percent>
+                <resident>5256</resident>
+                <resident-percent>00.07</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7824</pid>
+                <process-name>/usr/sbin/gstatd -N</process-name>
+                <size>105564</size>
+                <size-percent>00.00</size-percent>
+                <resident>5280</resident>
+                <resident-percent>00.07</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7825</pid>
+                <process-name>/usr/sbin/jinsightd -N</process-name>
+                <size>39048</size>
+                <size-percent>00.96</size-percent>
+                <resident>20460</resident>
+                <resident-percent>00.26</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7826</pid>
+                <process-name>/usr/sbin/sdxd -N</process-name>
+                <size>15672</size>
+                <size-percent>00.39</size-percent>
+                <resident>5528</resident>
+                <resident-percent>00.07</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7827</pid>
+                <process-name>/usr/sbin/license-check -U -M -p 10 -i 10</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7828</pid>
+                <process-name>/usr/sbin/jsd -N</process-name>
+                <size>53180</size>
+                <size-percent>01.31</size-percent>
+                <resident>27656</resident>
+                <resident-percent>00.35</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7829</pid>
+                <process-name>/usr/sbin/na-mqttd -c /opt/telemetry/na-mqttd/na-mqtt.conf</process-name>
+                <size>69668</size>
+                <size-percent>00.00</size-percent>
+                <resident>4084</resident>
+                <resident-percent>00.05</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7830</pid>
+                <process-name>/usr/sbin/mgd-api -N</process-name>
+                <size>15212</size>
+                <size-percent>00.37</size-percent>
+                <resident>6684</resident>
+                <resident-percent>00.08</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7831</pid>
+                <process-name>/usr/sbin/xmlproxyd -N</process-name>
+                <size>17288</size>
+                <size-percent>00.43</size-percent>
+                <resident>7772</resident>
+                <resident-percent>00.10</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7832</pid>
+                <process-name>/usr/sbin/overlayd -N</process-name>
+                <size>36292</size>
+                <size-percent>00.89</size-percent>
+                <resident>7968</resident>
+                <resident-percent>00.10</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7833</pid>
+                <process-name>/usr/sbin/ntf-agent -N -c /var/etc/ntf-agent.conf</process-name>
+                <size>17920</size>
+                <size-percent>00.44</size-percent>
+                <resident>5616</resident>
+                <resident-percent>00.07</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7834</pid>
+                <process-name>/usr/sbin/na-grpcd -c /opt/telemetry/na-grpcd/na-grpc-server.ini</process-name>
+                <size>43700</size>
+                <size-percent>01.08</size-percent>
+                <resident>19016</resident>
+                <resident-percent>00.24</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7835</pid>
+                <process-name>/usr/sbin/pkid -N</process-name>
+                <size>33832</size>
+                <size-percent>00.83</size-percent>
+                <resident>13452</resident>
+                <resident-percent>00.17</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7837</pid>
+                <process-name>/sbin/dcd -N</process-name>
+                <size>491932</size>
+                <size-percent>12.11</size-percent>
+                <resident>17720</resident>
+                <resident-percent>00.22</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7913</pid>
+                <process-name>[ppt_1b_80000010]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7975</pid>
+                <process-name>[ppt_1b_80000010]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>7984</pid>
+                <process-name>mgd: (mgd) /packages/mnt/junos-runtime/usr/sbin/mgd (root)</process-name>
+                <size>72564</size>
+                <size-percent>01.79</size-percent>
+                <resident>47720</resident>
+                <resident-percent>00.60</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>8290</pid>
+                <process-name>[md41]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>10228</pid>
+                <process-name>/usr/sbin/sdxd -N</process-name>
+                <size>15672</size>
+                <size-percent>00.39</size-percent>
+                <resident>5524</resident>
+                <resident-percent>00.07</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>11390</pid>
+                <process-name>[md42]</process-name>
+                <size>0</size>
+                <size-percent>00.00</size-percent>
+                <resident>0</resident>
+                <resident-percent>00.00</resident-percent>
+            </pmap-terse-summary>
+            <pmap-terse-summary style="pmap-process-terse-summary">
+                <pid>90194</pid>
+                <process-name>/usr/sbin/mcsnoopd -N</process-name>
+                <size>81908</size>
+                <size-percent>02.02</size-percent>
+                <resident>29016</resident>
+                <resident-percent>00.36</resident-percent>
+            </pmap-terse-summary>
+        </pmap-terse-information>
+    </system-memory-information>

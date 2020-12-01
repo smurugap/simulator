@@ -1,0 +1,36 @@
+<directory-list root-path="/var/tmp/cores" seconds="1603437907" style="verbose">
+<directory name="/var/tmp/cores">
+<directory-name>
+/var/tmp/cores
+</directory-name>
+<total-file-blocks>
+16
+</total-file-blocks>
+<file-information>
+<file-name>
+chassisd.core.0.201311081429.3485600.gz
+</file-name>
+<file-permissions format="-rw-r--r--">
+644
+</file-permissions>
+<file-owner>
+root
+</file-owner>
+<file-group>
+wheel
+</file-group>
+<file-links>
+1
+</file-links>
+<file-size>
+0
+</file-size>
+<file-date format="Oct 23 00:24">
+1603437874
+</file-date>
+</file-information>
+<total-files>
+1
+</total-files>
+</directory>
+</directory-list>

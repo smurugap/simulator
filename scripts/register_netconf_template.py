@@ -9,7 +9,7 @@ def update(content, template, kv_pairs, fabric, devices):
     agent_h = SimulatorAgentApi()
     payload = dict()
     if content:
-        payload['template'] = {'content': content, 'rpc_name': os.path.basename(rpc_name)}
+        payload['template'] = {'content': content, 'rpc_name': os.path.basename(template)}
     if kv_pairs:
         kv_pair_payload = list()
         for kv_pair in kv_pairs:

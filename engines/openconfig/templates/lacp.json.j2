@@ -1,0 +1,34 @@
+[
+{% set dct = lacp|default({}) %}
+{"sensor_1010:/lacp/:/lacp/:lacpd":     [
+        {"/lacp/state/system-priority":    {"uint_value": {{ dct.get('/lacp/state/system-priority', 127.000000) }} } },
+    {"__prefix__": {"str_value": "/lacp/interfaces/interface[name='ae0']/"}},
+        {"state/name":    {"str_value": "{{ dct.get('state/name', 'ae0') }}" } },
+        {"state/interval":    {"str_value": "{{ dct.get('state/interval', 'FAST') }}" } },
+        {"state/lacp-mode":    {"str_value": "{{ dct.get('state/lacp-mode', 'ACTIVE') }}" } },
+        {"state/system-id-mac":    {"str_value": "{{ dct.get('state/system-id-mac', '00:d1:5b:19:8a:01') }}" } },
+        {"state/system-priority":    {"uint_value": {{ dct.get('state/system-priority', 100.000000) }} } },
+    {"__prefix__": {"str_value": "/lacp/interfaces/interface[name='ae0']/members/member[interface='xe-0/0/6']/"}},
+        {"state/interface":    {"str_value": "{{ dct.get('state/interface', 'xe-0/0/6') }}" } },
+        {"state/activity":    {"str_value": "{{ dct.get('state/activity', 'ACTIVE') }}" } },
+        {"state/timeout":    {"str_value": "{{ dct.get('state/timeout', 'SHORT') }}" } },
+        {"state/synchronization":    {"str_value": "{{ dct.get('state/synchronization', 'IN_SYNC') }}" } },
+        {"state/aggregatable":    {"bool_value": {{ dct.get('state/aggregatable', 'true') }} } },
+        {"state/collecting":    {"bool_value": {{ dct.get('state/collecting', 'true') }} } },
+        {"state/distributing":    {"bool_value": {{ dct.get('state/distributing', 'true') }} } },
+        {"state/system-id":    {"str_value": "{{ dct.get('state/system-id', '00:d1:5b:19:8a:01') }}" } },
+        {"state/oper-key":    {"uint_value": {{ dct.get('state/oper-key', 1.000000) }} } },
+        {"state/partner-id":    {"str_value": "{{ dct.get('state/partner-id', '00:e0:ed:25:1c:a5') }}" } },
+        {"state/partner-key":    {"uint_value": {{ dct.get('state/partner-key', 15.000000) }} } },
+        {"state/port-num":    {"uint_value": {{ dct.get('state/port-num', 1.000000) }} } },
+        {"state/partner-port-num":    {"uint_value": {{ dct.get('state/partner-port-num', 2.000000) }} } },
+        {"state/counters/lacp-in-pkts":    {"uint_value": {{ dct.get('state/counters/lacp-in-pkts', 554808.000000) }} } },
+        {"state/counters/lacp-out-pkts":    {"uint_value": {{ dct.get('state/counters/lacp-out-pkts', 550340.000000) }} } },
+        {"state/counters/lacp-rx-errors":    {"uint_value": {{ dct.get('state/counters/lacp-rx-errors', 0.000000) }} } },
+        {"state/counters/lacp-tx-errors":    {"uint_value": {{ dct.get('state/counters/lacp-tx-errors', 0.000000) }} } },
+        {"state/counters/lacp-unknown-errors":    {"uint_value": {{ dct.get('state/counters/lacp-unknown-errors', 0.000000) }} } },
+        {"state/counters/lacp-errors":    {"uint_value": {{ dct.get('state/counters/lacp-errors', 0.000000) }} } },
+        {"state/counters/collection-time":    {"str_value": "{{ dct.get('state/counters/collection-time', '2020-11-29 20:15:28 PST') }}" } },
+        {"state/mux-state":    {"str_value": "{{ dct.get('state/mux-state', 'COLLECTING_DISTRIBUTING') }}" } }    ]
+}
+]

@@ -1,0 +1,273 @@
+<fpc-error-information>
+{% set no_of_fpcs = n_fpcs|default(1) %}
+{% for fpc in range(no_of_fpcs) %}
+{% set fpcs_dct = fpcs|default({}) %}
+{% set fpc_dct = fpcs_dct.get(fpc, {}) %}
+<fpc>
+<slot>{{ fpc }}</slot>
+<scope-level>
+<scope>board</scope>
+<category-level>
+{% set dct = fpc_dct.get('functional', {}) %}
+<category>functional</category>
+<minor-level-occurred>{{ dct.get('minor_level_occurred', 0) }}</minor-level-occurred>
+<minor-level-cleared>0</minor-level-cleared>
+<minor-level-threshold>10</minor-level-threshold>
+<minor-level-action-taken>0</minor-level-action-taken>
+<minor-level-action>LOG|</minor-level-action>
+<major-level-occurred>{{ dct.get('major_level_occurred', 0) }}</major-level-occurred>
+<major-level-cleared>0</major-level-cleared>
+<major-level-threshold>1</major-level-threshold>
+<major-level-action-taken>0</major-level-action-taken>
+<major-level-action>CM ALARM|</major-level-action>
+<fatal-level-occurred>{{ dct.get('fatal_level_occurred', 0) }}</fatal-level-occurred>
+<fatal-level-cleared>0</fatal-level-cleared>
+<fatal-level-threshold>1</fatal-level-threshold>
+<fatal-level-action-taken>0</fatal-level-action-taken>
+<fatal-level-action>CM ALARM|DISABLE PFE</fatal-level-action>
+</category-level>
+<category-level>
+{% set dct = fpc_dct.get('memory', {}) %}
+<category>memory</category>
+<minor-level-occurred>{{ dct.get('minor_occurred', 0) }}</minor-level-occurred>
+<minor-level-cleared>0</minor-level-cleared>
+<minor-level-threshold>10</minor-level-threshold>
+<minor-level-action-taken>0</minor-level-action-taken>
+<minor-level-action>LOG|</minor-level-action>
+<major-level-occurred>{{ dct.get('major_occurred', 0) }}</major-level-occurred>
+<major-level-cleared>0</major-level-cleared>
+<major-level-threshold>1</major-level-threshold>
+<major-level-action-taken>0</major-level-action-taken>
+<major-level-action>CM ALARM|</major-level-action>
+<fatal-level-occurred>{{ dct.get('fatal_occurred', 0) }}</fatal-level-occurred>
+<fatal-level-cleared>0</fatal-level-cleared>
+<fatal-level-threshold>1</fatal-level-threshold>
+<fatal-level-action-taken>0</fatal-level-action-taken>
+<fatal-level-action>CM ALARM|DISABLE PFE</fatal-level-action>
+</category-level>
+<category-level>
+<category>io</category>
+{% set dct = fpc_dct.get('io', {}) %}
+<minor-level-occurred>{{ dct.get('minor_occurred', 0) }}</minor-level-occurred>
+<minor-level-cleared>0</minor-level-cleared>
+<minor-level-threshold>10</minor-level-threshold>
+<minor-level-action-taken>0</minor-level-action-taken>
+<minor-level-action>LOG|</minor-level-action>
+<major-level-occurred>{{ dct.get('major_occurred', 0) }}</major-level-occurred>
+<major-level-cleared>0</major-level-cleared>
+<major-level-threshold>1</major-level-threshold>
+<major-level-action-taken>0</major-level-action-taken>
+<major-level-action>CM ALARM|</major-level-action>
+<fatal-level-occurred>{{ dct.get('fatal_occurred', 0) }}</fatal-level-occurred>
+<fatal-level-cleared>0</fatal-level-cleared>
+<fatal-level-threshold>1</fatal-level-threshold>
+<fatal-level-action-taken>0</fatal-level-action-taken>
+<fatal-level-action>CM ALARM|DISABLE PFE</fatal-level-action>
+</category-level>
+<category-level>
+{% set dct = fpc_dct.get('storage', {}) %}
+<category>storage</category>
+<minor-level-occurred>{{ dct.get('minor_occurred', 0) }}</minor-level-occurred>
+<minor-level-cleared>0</minor-level-cleared>
+<minor-level-threshold>10</minor-level-threshold>
+<minor-level-action-taken>0</minor-level-action-taken>
+<minor-level-action>LOG|</minor-level-action>
+<major-level-occurred>0</major-level-occurred>
+<major-level-cleared>0</major-level-cleared>
+<major-level-threshold>1</major-level-threshold>
+<major-level-action-taken>0</major-level-action-taken>
+<major-level-action>CM ALARM|</major-level-action>
+<fatal-level-occurred>0</fatal-level-occurred>
+<fatal-level-cleared>0</fatal-level-cleared>
+<fatal-level-threshold>1</fatal-level-threshold>
+<fatal-level-action-taken>0</fatal-level-action-taken>
+<fatal-level-action>CM ALARM|DISABLE PFE</fatal-level-action>
+</category-level>
+<category-level>
+<category>switch</category>
+<minor-level-occurred>0</minor-level-occurred>
+<minor-level-cleared>0</minor-level-cleared>
+<minor-level-threshold>10</minor-level-threshold>
+<minor-level-action-taken>0</minor-level-action-taken>
+<minor-level-action>LOG|</minor-level-action>
+<major-level-occurred>0</major-level-occurred>
+<major-level-cleared>0</major-level-cleared>
+<major-level-threshold>1</major-level-threshold>
+<major-level-action-taken>0</major-level-action-taken>
+<major-level-action>CM ALARM|</major-level-action>
+<fatal-level-occurred>0</fatal-level-occurred>
+<fatal-level-cleared>0</fatal-level-cleared>
+<fatal-level-threshold>1</fatal-level-threshold>
+<fatal-level-action-taken>0</fatal-level-action-taken>
+<fatal-level-action>CM ALARM|DISABLE PFE</fatal-level-action>
+</category-level>
+<category-level>
+<category>processing</category>
+<minor-level-occurred>0</minor-level-occurred>
+<minor-level-cleared>0</minor-level-cleared>
+<minor-level-threshold>10</minor-level-threshold>
+<minor-level-action-taken>0</minor-level-action-taken>
+<minor-level-action>LOG|</minor-level-action>
+<major-level-occurred>0</major-level-occurred>
+<major-level-cleared>0</major-level-cleared>
+<major-level-threshold>1</major-level-threshold>
+<major-level-action-taken>0</major-level-action-taken>
+<major-level-action>CM ALARM|</major-level-action>
+<fatal-level-occurred>0</fatal-level-occurred>
+<fatal-level-cleared>0</fatal-level-cleared>
+<fatal-level-threshold>1</fatal-level-threshold>
+<fatal-level-action-taken>0</fatal-level-action-taken>
+<fatal-level-action>CM ALARM|DISABLE PFE</fatal-level-action>
+</category-level>
+<category-level>
+<category>internal</category>
+<minor-level-occurred>0</minor-level-occurred>
+<minor-level-cleared>0</minor-level-cleared>
+<minor-level-threshold>10</minor-level-threshold>
+<minor-level-action-taken>0</minor-level-action-taken>
+<minor-level-action>LOG|</minor-level-action>
+<major-level-occurred>0</major-level-occurred>
+<major-level-cleared>0</major-level-cleared>
+<major-level-threshold>1</major-level-threshold>
+<major-level-action-taken>0</major-level-action-taken>
+<major-level-action>CM ALARM|</major-level-action>
+<fatal-level-occurred>0</fatal-level-occurred>
+<fatal-level-cleared>0</fatal-level-cleared>
+<fatal-level-threshold>1</fatal-level-threshold>
+<fatal-level-action-taken>0</fatal-level-action-taken>
+<fatal-level-action>CM ALARM|DISABLE PFE</fatal-level-action>
+</category-level>
+</scope-level>
+<scope-level>
+<scope>pfe</scope>
+<category-level>
+<category>functional</category>
+<minor-level-occurred>0</minor-level-occurred>
+<minor-level-cleared>0</minor-level-cleared>
+<minor-level-threshold>10</minor-level-threshold>
+<minor-level-action-taken>0</minor-level-action-taken>
+<minor-level-action>LOG|</minor-level-action>
+<major-level-occurred>0</major-level-occurred>
+<major-level-cleared>0</major-level-cleared>
+<major-level-threshold>1</major-level-threshold>
+<major-level-action-taken>0</major-level-action-taken>
+<major-level-action>CM ALARM|</major-level-action>
+<fatal-level-occurred>0</fatal-level-occurred>
+<fatal-level-cleared>0</fatal-level-cleared>
+<fatal-level-threshold>1</fatal-level-threshold>
+<fatal-level-action-taken>0</fatal-level-action-taken>
+<fatal-level-action>CM ALARM|DISABLE PFE</fatal-level-action>
+</category-level>
+<category-level>
+<category>memory</category>
+<minor-level-occurred>0</minor-level-occurred>
+<minor-level-cleared>0</minor-level-cleared>
+<minor-level-threshold>10</minor-level-threshold>
+<minor-level-action-taken>0</minor-level-action-taken>
+<minor-level-action>LOG|</minor-level-action>
+<major-level-occurred>0</major-level-occurred>
+<major-level-cleared>0</major-level-cleared>
+<major-level-threshold>1</major-level-threshold>
+<major-level-action-taken>0</major-level-action-taken>
+<major-level-action>CM ALARM|</major-level-action>
+<fatal-level-occurred>0</fatal-level-occurred>
+<fatal-level-cleared>0</fatal-level-cleared>
+<fatal-level-threshold>1</fatal-level-threshold>
+<fatal-level-action-taken>0</fatal-level-action-taken>
+<fatal-level-action>CM ALARM|DISABLE PFE</fatal-level-action>
+</category-level>
+<category-level>
+<category>io</category>
+<minor-level-occurred>0</minor-level-occurred>
+<minor-level-cleared>0</minor-level-cleared>
+<minor-level-threshold>10</minor-level-threshold>
+<minor-level-action-taken>0</minor-level-action-taken>
+<minor-level-action>LOG|</minor-level-action>
+<major-level-occurred>0</major-level-occurred>
+<major-level-cleared>0</major-level-cleared>
+<major-level-threshold>1</major-level-threshold>
+<major-level-action-taken>0</major-level-action-taken>
+<major-level-action>CM ALARM|</major-level-action>
+<fatal-level-occurred>0</fatal-level-occurred>
+<fatal-level-cleared>0</fatal-level-cleared>
+<fatal-level-threshold>1</fatal-level-threshold>
+<fatal-level-action-taken>0</fatal-level-action-taken>
+<fatal-level-action>CM ALARM|DISABLE PFE</fatal-level-action>
+</category-level>
+<category-level>
+<category>storage</category>
+<minor-level-occurred>0</minor-level-occurred>
+<minor-level-cleared>0</minor-level-cleared>
+<minor-level-threshold>10</minor-level-threshold>
+<minor-level-action-taken>0</minor-level-action-taken>
+<minor-level-action>LOG|</minor-level-action>
+<major-level-occurred>0</major-level-occurred>
+<major-level-cleared>0</major-level-cleared>
+<major-level-threshold>1</major-level-threshold>
+<major-level-action-taken>0</major-level-action-taken>
+<major-level-action>CM ALARM|</major-level-action>
+<fatal-level-occurred>0</fatal-level-occurred>
+<fatal-level-cleared>0</fatal-level-cleared>
+<fatal-level-threshold>1</fatal-level-threshold>
+<fatal-level-action-taken>0</fatal-level-action-taken>
+<fatal-level-action>CM ALARM|DISABLE PFE</fatal-level-action>
+</category-level>
+<category-level>
+<category>switch</category>
+<minor-level-occurred>0</minor-level-occurred>
+<minor-level-cleared>0</minor-level-cleared>
+<minor-level-threshold>10</minor-level-threshold>
+<minor-level-action-taken>0</minor-level-action-taken>
+<minor-level-action>LOG|</minor-level-action>
+<major-level-occurred>0</major-level-occurred>
+<major-level-cleared>0</major-level-cleared>
+<major-level-threshold>1</major-level-threshold>
+<major-level-action-taken>0</major-level-action-taken>
+<major-level-action>CM ALARM|</major-level-action>
+<fatal-level-occurred>0</fatal-level-occurred>
+<fatal-level-cleared>0</fatal-level-cleared>
+<fatal-level-threshold>1</fatal-level-threshold>
+<fatal-level-action-taken>0</fatal-level-action-taken>
+<fatal-level-action>CM ALARM|DISABLE PFE</fatal-level-action>
+</category-level>
+<category-level>
+<category>processing</category>
+<minor-level-occurred>0</minor-level-occurred>
+<minor-level-cleared>0</minor-level-cleared>
+<minor-level-threshold>10</minor-level-threshold>
+<minor-level-action-taken>0</minor-level-action-taken>
+<minor-level-action>LOG|</minor-level-action>
+<major-level-occurred>0</major-level-occurred>
+<major-level-cleared>0</major-level-cleared>
+<major-level-threshold>1</major-level-threshold>
+<major-level-action-taken>0</major-level-action-taken>
+<major-level-action>CM ALARM|</major-level-action>
+<fatal-level-occurred>0</fatal-level-occurred>
+<fatal-level-cleared>0</fatal-level-cleared>
+<fatal-level-threshold>1</fatal-level-threshold>
+<fatal-level-action-taken>0</fatal-level-action-taken>
+<fatal-level-action>CM ALARM|DISABLE PFE</fatal-level-action>
+</category-level>
+<category-level>
+<category>internal</category>
+<minor-level-occurred>0</minor-level-occurred>
+<minor-level-cleared>0</minor-level-cleared>
+<minor-level-threshold>10</minor-level-threshold>
+<minor-level-action-taken>0</minor-level-action-taken>
+<minor-level-action>LOG|</minor-level-action>
+<major-level-occurred>0</major-level-occurred>
+<major-level-cleared>0</major-level-cleared>
+<major-level-threshold>1</major-level-threshold>
+<major-level-action-taken>0</major-level-action-taken>
+<major-level-action>CM ALARM|</major-level-action>
+<fatal-level-occurred>0</fatal-level-occurred>
+<fatal-level-cleared>0</fatal-level-cleared>
+<fatal-level-threshold>1</fatal-level-threshold>
+<fatal-level-action-taken>0</fatal-level-action-taken>
+<fatal-level-action>CM ALARM|DISABLE PFE</fatal-level-action>
+</category-level>
+</scope-level>
+<fpc-pfe-state>pfe-0 -ENABLED | pfe-1 -ENABLED | pfe-2 -ENABLED | </fpc-pfe-state>
+</fpc>
+{% endfor %}
+</fpc-error-information>

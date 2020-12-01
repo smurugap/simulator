@@ -1,0 +1,57 @@
+{% set pfe_drops_dct = pfe_drops|default({}) %}
+<pfe-statistics>
+        <pfe-traffic-statistics>
+            <pfe-input-packets>35200033</pfe-input-packets>
+            <input-pps>5</input-pps>
+            <pfe-output-packets>41774576</pfe-output-packets>
+            <output-pps>5</output-pps>
+            <pfe-fabric-input>0</pfe-fabric-input>
+            <pfe-fabric-input-pps>0</pfe-fabric-input-pps>
+            <pfe-fabric-output>0</pfe-fabric-output>
+            <pfe-fabric-output-pps>0</pfe-fabric-output-pps>
+        </pfe-traffic-statistics>
+        <pfe-local-traffic-statistics>
+            <pfe-input-packets>1537046</pfe-input-packets>
+            <pfe-output-packets>4218424</pfe-output-packets>
+            <software-input-control-drops>0</software-input-control-drops>
+            <software-input-high-drops>0</software-input-high-drops>
+            <software-input-medium-drops>0</software-input-medium-drops>
+            <software-input-low-drops>0</software-input-low-drops>
+            <software-output-low-drops>0</software-output-low-drops>
+            <hardware-input-drops>0</hardware-input-drops>
+        </pfe-local-traffic-statistics>
+        <pfe-local-protocol-statistics>
+            <hdlc-keepalive-count>0</hdlc-keepalive-count>
+            <atm-oam-count>0</atm-oam-count>
+            <fr-lmi-count>0</fr-lmi-count>
+            <ppp-lcp-ncp-count>0</ppp-lcp-ncp-count>
+            <ospf-hello-count>0</ospf-hello-count>
+            <ospf3-hello-count>0</ospf3-hello-count>
+            <rsvp-hello-count>0</rsvp-hello-count>
+            <ldp-hello-count>0</ldp-hello-count>
+            <bfd-count>2459541</bfd-count>
+            <isis-iih-count>0</isis-iih-count>
+            <lacp-count>0</lacp-count>
+            <arp-count>36721</arp-count>
+            <ether-oam-count>0</ether-oam-count>
+            <unknown-count>0</unknown-count>
+        </pfe-local-protocol-statistics>
+        <pfe-hardware-discard-statistics>
+            <timeout-discard>{{ pfe_drops_dct.get('timeout_discard', 0) }}</timeout-discard>
+            <truncated-key-discard>{{ pfe_drops_dct.get('truncated_key_discard', 0) }}</truncated-key-discard>
+            <bits-to-test-discard>{{ pfe_drops_dct.get('truncated_key_discard', 0) }}</bits-to-test-discard>
+            <data-error-discard>{{ pfe_drops_dct.get('truncated_key_discard', 0) }}</data-error-discard>
+            <tcp-header-error-discard>{{ pfe_drops_dct.get('truncated_key_discard', 0) }}</tcp-header-error-discard>
+            <stack-underflow-discard>{{ pfe_drops_dct.get('truncated_key_discard', 0) }}</stack-underflow-discard>
+            <stack-overflow-discard>{{ pfe_drops_dct.get('truncated_key_discard', 0) }}</stack-overflow-discard>
+            <bad-route-discard>{{ pfe_drops_dct.get('normal_discard', 1000) }}</bad-route-discard>
+            <nexthop-discard>{{ pfe_drops_dct.get('nexthop_discard', 1) }}</nexthop-discard>
+            <invalid-iif-discard>{{ pfe_drops_dct.get('invalid_iif_discard', 117)}}</invalid-iif-discard>
+            <info-cell-discard>0</info-cell-discard>
+            <fabric-discard>0</fabric-discard>
+        </pfe-hardware-discard-statistics>
+        <pfe-chip-statistics>
+            <input-checksum>0</input-checksum>
+            <output-mtu>0</output-mtu>
+        </pfe-chip-statistics>
+    </pfe-statistics>

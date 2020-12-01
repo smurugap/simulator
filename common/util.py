@@ -154,15 +154,13 @@ def nc_elem2dict(node, root=False):
             if e.text and e.getchildren():
                 value = nc_elem2dict(e)
             else:
-                value = e.text.strip()
+                value = {'data': e.text.strip()}
         else:
             value = nc_elem2dict(e)
         if e.tag in d:
-            if len(d[e.tag]) == 1:
-                d[e.tag] = [d[e.tag][0]['data']]
             d[e.tag].append(value)
         else:
-            d[e.tag] = [{'data': value}]
+            d[e.tag] = [value]
     if root:
         d = {node.tag: [d]}
     return d
