@@ -60,7 +60,7 @@ class BaseSensor(object):
                     system_id=self.hostname,
                     component_id=1,
                     sequence_number=count,
-                    timestamp=int(time.time()),
+                    timestamp=int(round(time.time() * 1000)),
                     path=path,
                     kv=kv_pairs)
                 self.queue.put_nowait(data)
