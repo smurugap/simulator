@@ -6,7 +6,7 @@ requests==2.23.0
 urllib3==1.25.9
 future==0.18.2
 netconf==1.13.0
-jinja2==2.10.1
+jinja2==2.11.3
 exabgp==4.1.2
 scapy==2.4.3
 docker==4.2.2
