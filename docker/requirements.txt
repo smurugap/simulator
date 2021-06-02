@@ -3,7 +3,7 @@ lxml==4.5.0
 netaddr==0.7.19
 PyYaml==5.3.1
 requests==2.23.0
-urllib3==1.25.9
+urllib3==1.26.5
 future==0.18.2
 netconf==1.13.0
 jinja2==2.10.1
