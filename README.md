@@ -12,7 +12,7 @@ $ docker pull smurugap/simulator:latest
 ```
 * Launch the simulator agent container
 ```sh
-$ echo 1024 > /proc/sys/fs/inotify/max_user_instances
+$ echo 4096 > /proc/sys/fs/inotify/max_user_instances
 $ sysctl -w net.ipv4.ip_forward=1
 $ service firewalld stop
 $ iptables -P FORWARD ACCEPT
